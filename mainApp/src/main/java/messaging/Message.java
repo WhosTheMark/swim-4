@@ -1,5 +1,9 @@
 package messaging;
 
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.node.Node;
+import static org.elasticsearch.node.NodeBuilder.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,6 +51,19 @@ public class Message {
 		}
 		return json;
 
+	}
+	
+	public String store(){
+		 // Initialize client to work with DB
+        Node node = nodeBuilder().client(true).node();
+        Client client = node.client();
+        
+		IndexResponse response = client.prepareIndex("swim", "result")
+                .setSource(this.toJson())
+                .execute()
+                .actionGet();
+		node.close();
+		return response.getId();
 	}
 
 }
