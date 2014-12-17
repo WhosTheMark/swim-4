@@ -9,11 +9,11 @@ public class MessageError extends Message{
 		this.errorMessage = errorMessage;
 	}
 
-	public String getError() {
+	public String getErrorMessage() {
 		return errorMessage;
 	}
 
-	public void setError(String error) {
-		this.errorMessage = error;
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 }
