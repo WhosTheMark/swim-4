@@ -55,9 +55,6 @@ public class MessageIsParsedIntoJson {
 	public void testConfigurationProducerMessageIsConvertedIntoJson() {
 		MessageConfigurationProducer message = new MessageConfigurationProducer("me", "you", 2, 10);
 		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"duration\":2,\"dataSize\":10}", message.toJson());
-	}
-	
-	//TODO test if MessageRequest and MessageResponse are converted into Json
-	
+	}	
 	
 }
