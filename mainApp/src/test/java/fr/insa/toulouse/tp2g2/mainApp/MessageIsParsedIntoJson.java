@@ -59,4 +59,5 @@ public class MessageIsParsedIntoJson {
 	
 	//TODO test if MessageRequest and MessageResponse are converted into Json
 	
+	
 }
