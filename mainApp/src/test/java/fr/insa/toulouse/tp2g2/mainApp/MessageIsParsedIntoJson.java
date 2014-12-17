@@ -8,6 +8,7 @@ import messaging.Message;
 import messaging.MessageConfigurationConsumer;
 import messaging.MessageConfigurationProducer;
 import messaging.MessageError;
+import messaging.MessageResult;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -57,4 +58,9 @@ public class MessageIsParsedIntoJson {
 		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"duration\":2,\"dataSize\":10}", message.toJson());
 	}	
 	
+	@Test
+	public void testResultMessageIsConvertedIntoJson() {
+		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30);
+		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30}", message.toJson());
+	}	
 }
