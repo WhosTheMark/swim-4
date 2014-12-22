@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import scenario.ScenarioException;
@@ -44,14 +43,48 @@ public class ScenarioParserTest {
 		String scenarioName = "ressources/notXMLInput.txt";
 		try {
 			scenario = scenarioParser.parseScenario(scenarioName);
-		} catch(RuntimeException exception) {
+		} catch(ScenarioException exception) {
 			assertEquals("ERROR - file " + scenarioName + " is not an XML file", exception.getMessage());
 			assertNull(scenario);
 			throw new ScenarioException(exception);
 		}
 	}
 	
-
+	@Test(expected=ScenarioException.class)
+	public void noConsumersInScenario() {
+		Scenario scenario = null;
+		String scenarioName = "ressources/scenarioWithoutConsumer.xml";
+		try {
+			scenario = scenarioParser.parseScenario(scenarioName);
+		} catch(ScenarioException exception) {
+			assertNull(scenario);
+			throw new ScenarioException(exception);
+		}
+	}
+	
+	@Test(expected=ScenarioException.class)
+	public void validStructureButWrongValues() {
+		Scenario scenario = null;
+		String scenarioName = "ressources/scenarioWithWrongValues.xml";
+		try {
+			scenario = scenarioParser.parseScenario(scenarioName);
+		} catch(ScenarioException exception) {
+			assertNull(scenario);
+			throw new ScenarioException(exception);
+		}
+	}
+	
+	@Test(expected=ScenarioException.class)
+	public void nonExistingProducerReferenced() {
+		Scenario scenario = null;
+		String scenarioName = "ressources/wrongProducerReferenced.xml";
+		try {
+			scenario = scenarioParser.parseScenario(scenarioName);
+		} catch(ScenarioException exception) {
+			assertNull(scenario);
+			throw new ScenarioException(exception);
+		}
+	}
 	@Test
 	public void inputIsValid() {
 		String scenarioName = "ressources/xml/scenario1.xml";
@@ -73,54 +106,104 @@ public class ScenarioParserTest {
 		}
 	}
 
+	@Test
+	public void veryLargeValidScenario() {
+		String scenarioName = "ressources/xml/largeScenario.xml";
+		Scenario scenario = scenarioParser.parseScenario(scenarioName);
+		Scenario expectedScenario = buildExpectedScenario2();
+		assertEquals(expectedScenario, scenario);
+	}
+	
 	private Scenario buildExpectedScenario1() {
-		Scenario scenario = new Scenario();
-		TimeT duration = new TimeT();
-		duration.setValue(BigInteger.valueOf(155));
-		duration.setTimeUnit(TimeUnitType.MS);
-		scenario.setDuration(duration);
-		
-		Producers producers = new Producers();
-		List<ProducerT> producersList = new ArrayList<ProducerT>();
-		ProducerT producer1 = createProducer("p1", "producer1", SizeUnitType.BYTES, 40);
-		ProducerT producer2 = createProducer("p2", "producer2", SizeUnitType.BYTES, 50);
-		producersList.add(producer1);
-		producersList.add(producer2);
-		
-		producers.setProducers(producersList);
-		scenario.setProducers(producers);
+
+		List<ProducerT> producers = new ArrayList<ProducerT>();
+		producers.add(createProducer("p1", "producer1", 40));
+		producers.add(createProducer("p2", "producer2", 50));
 		
 		List<BehaviourT> behaviours1 = new ArrayList<BehaviourT>();
-		BehaviourT behaviour1 = createBehaviour(1, 10, 45, 125, 1);
-		behaviours1.add(behaviour1);
+		behaviours1.add(createBehaviour(1, 10, 45, 125, 1));
 		
 		List<BehaviourT> behaviours2 = new ArrayList<BehaviourT>();
-		BehaviourT behaviour2 = createBehaviour(1, 10, 12, 20, 5);
-		behaviours2.add(behaviour2);
+		behaviours2.add(createBehaviour(1, 10, 12, 20, 5));
 		
-		Consumers consumers = new Consumers();
+		List<ConsumerT> consumers = new ArrayList<ConsumerT>();
+		consumers.add(createConsumer("c1", "consumer1", producers.get(0), behaviours1));
+		consumers.add(createConsumer("c2", "consumer2", producers.get(1), behaviours2));
+
+		return createScenario(155, consumers, producers);
+	}
+	
+	private Scenario buildExpectedScenario2() {
+
+		List<ProducerT> producersList = new ArrayList<ProducerT>();
+		producersList.add(createProducer("p1", "producer1", 40));
+		producersList.add(createProducer("p2", "producer2", 50));
+		producersList.add(createProducer("p3", "producer3", 40));
+		producersList.add(createProducer("p4", "producer4", 50));
+		producersList.add(createProducer("p5", "producer5", 40));
+		producersList.add(createProducer("p6", "producer6", 50));
+		producersList.add(createProducer("p7", "producer7", 40));
+		producersList.add(createProducer("p8", "producer8", 50));
+		producersList.add(createProducer("p9", "producer9", 40));
+		producersList.add(createProducer("p10", "producer10", 50));
+
+		List<BehaviourT> behaviours = new ArrayList<BehaviourT> ();
+		behaviours.add(createBehaviour(1, 10, 45, 125, 1));
+		behaviours.add(createBehaviour(11, 20, 60, 100, 2));
+		behaviours.add(createBehaviour(21, 30, 30, 150, 4));
+		behaviours.add(createBehaviour(31, 40, 20, 100, 1));
+		behaviours.add(createBehaviour(41, 50, 50, 90, 2));
+		behaviours.add(createBehaviour(51, 60, 80, 110, 1));
+		behaviours.add(createBehaviour(61, 70, 60, 100, 2));
+
 		List<ConsumerT> consumersList = new ArrayList<ConsumerT>();
-		ConsumerT consumer1 = createConsumer("c1", "consumer1", producer1, behaviours1);
-		ConsumerT consumer2 = createConsumer("c2", "consumer2", producer2, behaviours2);
-
-		consumersList.add(consumer1);
-		consumersList.add(consumer2);
 		
-		consumers.setConsumers(consumersList);
-		scenario.setConsumers(consumers);
-
+		consumersList.add(createConsumer("c1", "consumer1", producersList.get(0), behaviours));
+		consumersList.add(createConsumer("c2", "consumer2", producersList.get(1), behaviours));
+		consumersList.add(createConsumer("c3", "consumer3", producersList.get(2), behaviours));
+		consumersList.add(createConsumer("c4", "consumer4", producersList.get(3), behaviours));
+		consumersList.add(createConsumer("c5", "consumer5", producersList.get(4), behaviours));
+		consumersList.add(createConsumer("c6", "consumer6", producersList.get(5), behaviours));
+		consumersList.add(createConsumer("c7", "consumer7", producersList.get(6), behaviours));
+		consumersList.add(createConsumer("c8", "consumer8", producersList.get(7), behaviours));
+		consumersList.add(createConsumer("c9", "consumer9", producersList.get(8), behaviours));
+		consumersList.add(createConsumer("c10", "consumer10", producersList.get(9), behaviours));
+		
+		return createScenario(155,consumersList,producersList);
+	}
+	
+	private Scenario createScenario(long timeDuration, List<ConsumerT> consumers, List<ProducerT> producers) {
+		Scenario scenario = new Scenario();
+		Consumers cons = new Consumers();
+		cons.setConsumers(consumers);
+		scenario.setConsumers(cons);
+		Producers prod = new Producers();
+		prod.setProducers(producers);
+		scenario.setProducers(prod);
+		scenario.setDuration(createTimeDuration(timeDuration));
 		return scenario;
 	}
 	
-	private ProducerT createProducer(String id, String name, SizeUnitType type, long datasizeValue) {
+	private TimeT createTimeDuration(long time) {
+		TimeT duration = new TimeT();
+		duration.setValue(BigInteger.valueOf(time));
+		duration.setTimeUnit(TimeUnitType.MS);
+		return duration;
+	}
+	
+	private ProducerT createProducer(String id, String name, long datasizeValue) {
 		ProducerT producer = new ProducerT();
 		producer.setId(id);
 		producer.setName(name);
-		DatasizeT datasize = new DatasizeT();
-		datasize.setSizeUnit(type);
-		datasize.setValue(BigInteger.valueOf(datasizeValue));
-		producer.setDatasize(datasize);
+		producer.setDatasize(createDatasize(datasizeValue));
 		return producer;
+	}
+	
+	private DatasizeT createDatasize(long value) {
+		DatasizeT datasize = new DatasizeT();
+		datasize.setValue(BigInteger.valueOf(value));
+		datasize.setSizeUnit(SizeUnitType.BYTES);
+		return datasize;
 	}
 	
 	private BehaviourT createBehaviour(long begin, long end, long frequency, long dValue, long pTime) {
@@ -129,14 +212,8 @@ public class ScenarioParserTest {
 		behaviour.setBegin(BigInteger.valueOf(begin));
 		behaviour.setEnd(BigInteger.valueOf(end));
 		behaviour.setFrequency(BigInteger.valueOf(frequency));
-		DatasizeT datasize = new DatasizeT();
-		datasize.setValue(BigInteger.valueOf(dValue));
-		datasize.setSizeUnit(SizeUnitType.BYTES);
-		behaviour.setDatasize(datasize);
-		TimeT processingTime = new TimeT();
-		processingTime.setTimeUnit(TimeUnitType.MS);
-		processingTime.setValue(BigInteger.valueOf(pTime));
-		behaviour.setProcessingTime(processingTime);
+		behaviour.setDatasize(createDatasize(dValue));
+		behaviour.setProcessingTime(createTimeDuration(pTime));
 		return behaviour;
 	}
 	

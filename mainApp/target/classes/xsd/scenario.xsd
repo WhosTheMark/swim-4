@@ -34,7 +34,7 @@
 	<xsd:element name="consumers">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="consumer" type="consumer_t" maxOccurs="unbounded"/>
+				<xsd:element name="consumer" type="consumer_t" minOccurs="1" maxOccurs="10"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
@@ -50,7 +50,7 @@
 	<xsd:element name="producers">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element name="producer" type="producer_t" maxOccurs="unbounded"/>
+				<xsd:element name="producer" type="producer_t" minOccurs="1" maxOccurs="10"/>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
