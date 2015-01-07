@@ -1,0 +1,17 @@
+<scenario>
+
+	<consumers>
+	</consumers>
+	
+	<producers>
+    	<producer id="p1">
+        	<datasize sizeUnit="bytes">40</datasize>
+    	</producer>
+		<producer id="p2">
+        	<name>producer2</name>
+        	<datasize sizeUnit="bytes">50</datasize>
+    	</producer>
+	</producers>
+
+	<duration timeUnit="ms">155</duration>
+	</scenario> 
