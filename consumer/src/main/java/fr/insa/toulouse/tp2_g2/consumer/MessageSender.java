@@ -8,16 +8,24 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Class to send messages to a producer through the bus.
+ * @author Marcos Campos
+ */
 public class MessageSender {
 
-    private String host;
+    private String producerAddress;
 
-    public MessageSender(String host){
-        this.host = host;
+    /**
+     * Constructor to create a MessageSender object.
+     * @param address the address of the producer in the bus.
+     */
+    public MessageSender(String address){
+        this.producerAddress = address;
     }
 
     /**
-     * Send the message to Mule ESB.
+     * Send the message to a producer through Mule ESB.
      * @param message The message to send.
      * @return the reply of the request.
      * @throws MalformedURLException if the address of the bus is malformed.
@@ -33,7 +41,7 @@ public class MessageSender {
     private HttpURLConnection setHTTPHeader(String message)
             throws MalformedURLException, IOException {
 
-        URL url = new URL(host);
+        URL url = new URL(producerAddress);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type","text/plain; charset=UTF-8");
