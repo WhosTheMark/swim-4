@@ -2,6 +2,9 @@ package messaging;
 
 public class MessageConfigurationProducer extends Message {
 
+	public MessageConfigurationProducer() {
+		super();
+	}
 	private int duration;
 	private int dataSize;
 

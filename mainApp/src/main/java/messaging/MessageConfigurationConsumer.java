@@ -2,6 +2,9 @@ package messaging;
 
 public class MessageConfigurationConsumer extends Message {
 
+	public MessageConfigurationConsumer() {
+		super();
+	}
 	private String producerId;
 	private int begin;
 	private int end;
