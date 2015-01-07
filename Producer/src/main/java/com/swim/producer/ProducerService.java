@@ -74,10 +74,7 @@ public class ProducerService {
     public String getRequest() {
 
         try {
-            long startTime = System.nanoTime();
             sleep(processingTime);
-            long endTime = System.nanoTime();
-            long duration = (endTime - startTime) / 1000000; //Conversion in milliseconds
         } catch (InterruptedException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
