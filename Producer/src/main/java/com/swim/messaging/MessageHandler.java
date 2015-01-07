@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.JSONObject;
 
 /**
  *
@@ -16,7 +15,7 @@ public class MessageHandler {
         super();
     }
 
-    public void handleMessage(JSONObject jsonMessage) {
+    public void handleMessage(String jsonMessage) {
 
     }
 
