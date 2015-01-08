@@ -33,28 +33,43 @@ public class MessagesAreRetrievedFromDB {
 	}
 
 	@Test
-	public void testGetValidMessagesFromDB() {
+	public void testGetValidResultMessagesFromDB() {
 		MessageResult mr1 = new MessageResult("him", "JavaApp", "c1", "p1", 2, 5, 10, 30);
 		MessageResult mr2 = new MessageResult("me", "JavaApp", "c2", "p2", 2, 5, 10, 30);
 		MessageResult mr3 = new MessageResult("me", "JavaApp", "c1", "p1", 3, 5, 20, 30);
 		MessageError me1 = new MessageError("me", "you", "NullPointerException");
-		// .store() stores under collection swim/result
-		mr1.store();
-		mr2.store();
-		mr3.store();
-		me1.store();
 		
-		ArrayList<Message> actual = Message.getResults();
-		ArrayList<Message> expected = new ArrayList<Message>();
+		// .store() stores under collection swim/result
+		ArrayList<String> idToDelete = new ArrayList<String>();
+		idToDelete.add(mr1.store());
+		idToDelete.add(mr2.store());
+		idToDelete.add(mr3.store());
+		idToDelete.add(me1.store());
+		
+		ArrayList<MessageResult> actual = Message.getMessageResults();
+		ArrayList<MessageResult> expected = new ArrayList<MessageResult>();
 		expected.add(mr1);
 		expected.add(mr2);
 		expected.add(mr3);
-		assertEquals(expected.toString(), actual.toString());
-		ArrayList<Message> actualErrors = Message.getErrors();
-		ArrayList<Message> expectedErrors = new ArrayList<Message>();
+		System.out.println("Result Messages");
+		System.out.println("Expected = "+expected.toString());
+		System.out.println("Actual = "+actual.toString());
+		assertEquals(expected.size(), actual.size());
+	
+		ArrayList<MessageError> actualErrors = Message.getMessageErrors();
+		ArrayList<MessageError> expectedErrors = new ArrayList<MessageError>();
 		expectedErrors.add(me1);
-		assertEquals(expectedErrors.toString(), actualErrors.toString());
-		fail("Not yet implemented");
-	}
+		System.out.println("Error Messages");
+		System.out.println("Expected = "+expected.toString());
+		System.out.println("Actual = "+actual.toString());
+		assertEquals(expectedErrors.size(), actualErrors.size());
+		
+		// Let's clean up the mess !
+		for (int i = 0; i < 3; i++){
+			Message.delete(MessageResult.class.toString(), idToDelete.get(i));
+		}
+		Message.delete(MessageError.class.toString(), idToDelete.get(3));
 
+	}
+	
 }

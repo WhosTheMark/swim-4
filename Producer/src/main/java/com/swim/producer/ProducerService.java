@@ -25,8 +25,8 @@ import org.apache.commons.lang.StringUtils;
 @Stateless()
 public class ProducerService {
 
-    private int responseSize; // In bytes
-    private int waitTime;
+    private int responseSize = 12; // In bytes
+    private int processingTime = 2000; //in milliseconds
 
     public ProducerService() {
         super();
@@ -34,9 +34,18 @@ public class ProducerService {
 
     public ProducerService(int responseSize, int waitTime) {
         this.responseSize = responseSize;
-        this.waitTime = waitTime;
+        this.processingTime = waitTime;
     }
 
+    @WebMethod(exclude=true)
+    public void setResponseSize(int responseSize) {
+        this.responseSize = responseSize;
+    }
+
+    @WebMethod(exclude=true)
+    public void setProcessingTime(int processingTime) {
+        this.processingTime = processingTime;
+    }
     private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
     String decodeUTF8(byte[] bytes) {
@@ -65,11 +74,11 @@ public class ProducerService {
     public String getRequest() {
 
         try {
-            sleep(waitTime);
+            sleep(processingTime);
         } catch (InterruptedException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         String response = createData();
         System.out.println("response : " + response);
 
