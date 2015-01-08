@@ -8,6 +8,7 @@ public class MessageConfigurationProducer extends Message {
 	private String name;
 	private Map<String, List<ProducerBehaviour>> producerBehaviours;
 
+
 	public MessageConfigurationProducer(String from, String to, String name,
 										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(from, to);

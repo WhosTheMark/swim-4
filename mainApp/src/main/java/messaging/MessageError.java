@@ -2,6 +2,10 @@ package messaging;
 
 public class MessageError extends Message{
 
+	public MessageError() {
+		super();
+	}
+
 	private String errorMessage;
 	
 	public MessageError(String from, String to, String errorMessage) {

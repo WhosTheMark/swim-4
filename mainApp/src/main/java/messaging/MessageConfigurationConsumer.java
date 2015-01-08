@@ -4,6 +4,9 @@ import java.util.List;
 
 public class MessageConfigurationConsumer extends Message {
 
+	public MessageConfigurationConsumer() {
+		super();
+	}
 	private String producerId;
 	private String name;
 	private List<ConsumerBehaviour> consumerBehaviours;

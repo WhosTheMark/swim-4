@@ -1,7 +1,7 @@
 package messaging;
 
 public class MessageResult extends Message{
-	
+
 	private String consumerId;
 	private String producerId;
 	private int requestTime;
@@ -9,6 +9,13 @@ public class MessageResult extends Message{
 	// Later, we will add a time unit, like seconds, milliseconds, nanoseconds...
 	private int requestDataSize;
 	private int responseDataSize;
+	
+	public MessageResult() {
+		super();
+	}
+	public MessageResult(String from, String to) {
+		super(from, to);
+	}
 	public String getConsumerId() {
 		return consumerId;
 	}

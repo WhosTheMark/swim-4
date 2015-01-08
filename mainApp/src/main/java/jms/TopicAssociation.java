@@ -20,9 +20,10 @@ public class TopicAssociation {
 	private Channel channel;
 	private Connection connection;
 	
-	public TopicAssociation() throws IOException{
+	public TopicAssociation(String ipAdress) throws IOException{
+		this.ipAdress=ipAdress;
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(ipAdress);
+		factory.setHost(this.ipAdress);
 		this.connection = factory.newConnection();
 		this.channel = this.connection.createChannel();
 		this.channel.exchangeDeclare(this.EXCHANGE_NAME, "fanout");
