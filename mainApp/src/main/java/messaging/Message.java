@@ -1,6 +1,6 @@
 package messaging;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -20,10 +20,11 @@ public class Message {
 	private String to;
 	
 	public Message(String from, String to) {
-		super();
 		this.from = from;
 		this.to = to;
 	}
+	
+	public Message() {}
 
 	public String getFrom() {
 		return from;
@@ -69,7 +70,7 @@ public class Message {
 		return response.getId();
 	}
 
-	public static ArrayList<Message> getResults() {
+	public static List<Message> getResults() {
 		 // Initialize client to work with DB
         Node node = nodeBuilder().client(true).node();
         Client client = node.client();
@@ -78,7 +79,7 @@ public class Message {
 		return null;
 	}
 
-	public static ArrayList<Message> getErrors() {
+	public static List<Message> getErrors() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,26 +1,38 @@
 package messaging;
 
+import java.util.List;
+import java.util.Map;
+
 public class MessageConfigurationProducer extends Message {
 
-	private int duration;
-	private int dataSize;
+	private String name;
+	private Map<String, List<ProducerBehaviour>> producerBehaviours;
 
-	public MessageConfigurationProducer(String from, String to, int duration,
-			int dataSize) {
+	public MessageConfigurationProducer(String from, String to, String name,
+										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(from, to);
-		this.duration = duration;
-		this.dataSize = dataSize;
+		this.name = name;
+		this.producerBehaviours = producerBehaviours;
 	}
-	public int getDuration() {
-		return duration;
+	
+	public MessageConfigurationProducer() {
+		super();
 	}
-	public void setDuration(int duration) {
-		this.duration = duration;
+
+	public String getName() {
+		return name;
 	}
-	public int getDataSize() {
-		return dataSize;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public void setDataSize(int dataSize) {
-		this.dataSize = dataSize;
+
+	public Map<String, List<ProducerBehaviour>> getProducerBehaviour() {
+		return producerBehaviours;
 	}
+
+	public void setProducerBehaviour(Map<String, List<ProducerBehaviour>> producerBehaviour) {
+		this.producerBehaviours = producerBehaviour;
+	}
+	
 }
