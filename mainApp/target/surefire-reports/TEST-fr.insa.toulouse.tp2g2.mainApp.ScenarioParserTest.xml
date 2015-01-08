@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="1.24" errors="2" skipped="0" tests="4" name="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest">
+<testsuite failures="0" time="8.391" errors="0" skipped="0" tests="8" name="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-7-openjdk-i386/jre/lib/i386"/>
@@ -19,7 +19,7 @@
     <property name="basedir" value="/home/swim/git/swim-4/mainApp"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-7-openjdk-i386/jre/lib/endorsed"/>
     <property name="os.arch" value="i386"/>
-    <property name="surefire.real.class.path" value="/home/swim/git/swim-4/mainApp/target/surefire/surefirebooter81879588502043395.jar"/>
+    <property name="surefire.real.class.path" value="/home/swim/git/swim-4/mainApp/target/surefire/surefirebooter8103929190639561441.jar"/>
     <property name="java.io.tmpdir" value="/tmp"/>
     <property name="line.separator" value="
 "/>
@@ -27,7 +27,7 @@
     <property name="os.name" value="Linux"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/lib/jvm/java-7-openjdk-i386/jre/lib/i386/client:/usr/lib/jvm/java-7-openjdk-i386/jre/lib/i386::/usr/java/packages/lib/i386:/usr/lib/i386-linux-gnu/jni:/lib/i386-linux-gnu:/usr/lib/i386-linux-gnu:/usr/lib/jni:/lib:/usr/lib"/>
-    <property name="surefire.test.class.path" value="/home/swim/git/swim-4/mainApp/target/test-classes:/home/swim/git/swim-4/mainApp/target/classes:/home/swim/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/swim/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/swim/.m2/repository/javax/xml/bind/jaxb-api/2.2.12/jaxb-api-2.2.12.jar:"/>
+    <property name="surefire.test.class.path" value="/home/swim/git/swim-4/mainApp/target/test-classes:/home/swim/git/swim-4/mainApp/target/classes:/home/swim/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/swim/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/swim/.m2/repository/javax/xml/bind/jaxb-api/2.2.12/jaxb-api-2.2.12.jar:/home/swim/.m2/repository/org/elasticsearch/elasticsearch/1.4.1/elasticsearch-1.4.1.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-core/4.10.2/lucene-core-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-analyzers-common/4.10.2/lucene-analyzers-common-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-queries/4.10.2/lucene-queries-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-memory/4.10.2/lucene-memory-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-highlighter/4.10.2/lucene-highlighter-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-queryparser/4.10.2/lucene-queryparser-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-sandbox/4.10.2/lucene-sandbox-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-suggest/4.10.2/lucene-suggest-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-misc/4.10.2/lucene-misc-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-join/4.10.2/lucene-join-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-grouping/4.10.2/lucene-grouping-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-spatial/4.10.2/lucene-spatial-4.10.2.jar:/home/swim/.m2/repository/com/spatial4j/spatial4j/0.4.1/spatial4j-0.4.1.jar:/home/swim/.m2/repository/org/antlr/antlr-runtime/3.5/antlr-runtime-3.5.jar:/home/swim/.m2/repository/org/ow2/asm/asm/4.1/asm-4.1.jar:/home/swim/.m2/repository/org/ow2/asm/asm-commons/4.1/asm-commons-4.1.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.1.3/jackson-databind-2.1.3.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.1.2/jackson-annotations-2.1.2.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.1.3/jackson-core-2.1.3.jar:"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="51.0"/>
     <property name="sun.management.compiler" value="HotSpot Client Compiler"/>
@@ -38,11 +38,11 @@
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.specification.version" value="1.7"/>
     <property name="user.name" value="swim"/>
-    <property name="java.class.path" value="/home/swim/git/swim-4/mainApp/target/test-classes:/home/swim/git/swim-4/mainApp/target/classes:/home/swim/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/swim/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/swim/.m2/repository/javax/xml/bind/jaxb-api/2.2.12/jaxb-api-2.2.12.jar:"/>
+    <property name="java.class.path" value="/home/swim/git/swim-4/mainApp/target/test-classes:/home/swim/git/swim-4/mainApp/target/classes:/home/swim/.m2/repository/junit/junit/4.12/junit-4.12.jar:/home/swim/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/swim/.m2/repository/javax/xml/bind/jaxb-api/2.2.12/jaxb-api-2.2.12.jar:/home/swim/.m2/repository/org/elasticsearch/elasticsearch/1.4.1/elasticsearch-1.4.1.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-core/4.10.2/lucene-core-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-analyzers-common/4.10.2/lucene-analyzers-common-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-queries/4.10.2/lucene-queries-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-memory/4.10.2/lucene-memory-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-highlighter/4.10.2/lucene-highlighter-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-queryparser/4.10.2/lucene-queryparser-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-sandbox/4.10.2/lucene-sandbox-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-suggest/4.10.2/lucene-suggest-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-misc/4.10.2/lucene-misc-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-join/4.10.2/lucene-join-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-grouping/4.10.2/lucene-grouping-4.10.2.jar:/home/swim/.m2/repository/org/apache/lucene/lucene-spatial/4.10.2/lucene-spatial-4.10.2.jar:/home/swim/.m2/repository/com/spatial4j/spatial4j/0.4.1/spatial4j-0.4.1.jar:/home/swim/.m2/repository/org/antlr/antlr-runtime/3.5/antlr-runtime-3.5.jar:/home/swim/.m2/repository/org/ow2/asm/asm/4.1/asm-4.1.jar:/home/swim/.m2/repository/org/ow2/asm/asm-commons/4.1/asm-commons-4.1.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-databind/2.1.3/jackson-databind-2.1.3.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-annotations/2.1.2/jackson-annotations-2.1.2.jar:/home/swim/.m2/repository/com/fasterxml/jackson/core/jackson-core/2.1.3/jackson-core-2.1.3.jar:"/>
     <property name="java.vm.specification.version" value="1.7"/>
     <property name="sun.arch.data.model" value="32"/>
     <property name="java.home" value="/usr/lib/jvm/java-7-openjdk-i386/jre"/>
-    <property name="sun.java.command" value="/home/swim/git/swim-4/mainApp/target/surefire/surefirebooter81879588502043395.jar /home/swim/git/swim-4/mainApp/target/surefire/surefire5376671988153353775tmp /home/swim/git/swim-4/mainApp/target/surefire/surefire6302539036030824116tmp"/>
+    <property name="sun.java.command" value="/home/swim/git/swim-4/mainApp/target/surefire/surefirebooter8103929190639561441.jar /home/swim/git/swim-4/mainApp/target/surefire/surefire1729221369669605916tmp /home/swim/git/swim-4/mainApp/target/surefire/surefire7755455381745477190tmp"/>
     <property name="java.specification.vendor" value="Oracle Corporation"/>
     <property name="user.language" value="fr"/>
     <property name="awt.toolkit" value="sun.awt.X11.XToolkit"/>
@@ -59,90 +59,12 @@
     <property name="sun.desktop" value="gnome"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase time="0.642" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="inputIsValid">
-    <error message="src-resolve : Impossible de résoudre le nom &apos;sizeUnitType&apos; en un composant &apos;type definition&apos;." type="scenario.ScenarioException">scenario.ScenarioException: src-resolve : Impossible de résoudre le nom &apos;sizeUnitType&apos; en un composant &apos;type definition&apos;.
-	at scenario.ScenarioParser.scenarioUnmarshall(ScenarioParser.java:24)
-	at scenario.ScenarioParser.parseScenario(ScenarioParser.java:36)
-	at fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest.inputIsValid(ScenarioParserTest.java:55)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:146)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
-	at com.sun.proxy.$Proxy0.invoke(Unknown Source)
-	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:145)
-	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
-</error>
-    <system-out>@HL
-@HL-------------------------------------------------------
-@HL T E S T S
-@HL-------------------------------------------------------
-@SLRunning fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest
-</system-out>
-  </testcase>
-  <testcase time="0.006" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="inputIsNotAnXMLFile"/>
-  <testcase time="0.009" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="fileDoesNotExist">
-    <error message="Unexpected exception, expected&lt;scenario.ScenarioException&gt; but was&lt;org.junit.ComparisonFailure&gt;" type="java.lang.Exception">java.lang.Exception: Unexpected exception, expected&lt;scenario.ScenarioException&gt; but was&lt;org.junit.ComparisonFailure&gt;
-	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:28)
-	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
-	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
-	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
-	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
-	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
-	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
-	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
-	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
-	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
-	at org.apache.maven.surefire.junit4.JUnit4TestSet.execute(JUnit4TestSet.java:35)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:146)
-	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:97)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.apache.maven.surefire.booter.ProviderFactory$ClassLoaderProxy.invoke(ProviderFactory.java:103)
-	at com.sun.proxy.$Proxy0.invoke(Unknown Source)
-	at org.apache.maven.surefire.booter.SurefireStarter.invokeProvider(SurefireStarter.java:145)
-	at org.apache.maven.surefire.booter.SurefireStarter.runSuitesInProcess(SurefireStarter.java:87)
-	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:69)
-Caused by: org.junit.ComparisonFailure: expected:&lt;...notExistingFile.txt [does not exist]&gt; but was:&lt;...notExistingFile.txt [is not an XML file]&gt;
-	at org.junit.Assert.assertEquals(Assert.java:115)
-	at org.junit.Assert.assertEquals(Assert.java:144)
-	at fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest.fileDoesNotExist(ScenarioParserTest.java:33)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
-	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
-	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
-	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
-	at org.junit.internal.runners.statements.ExpectException.evaluate(ExpectException.java:19)
-	... 22 more
-</error>
-  </testcase>
-  <testcase time="0.105" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="scenarioIsIllFormated"/>
+  <testcase time="5.615" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="inputIsValid"/>
+  <testcase time="0.001" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="noConsumersInScenario"/>
+  <testcase time="1.182" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="veryLargeValidScenario"/>
+  <testcase time="0" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="validStructureButWrongValues"/>
+  <testcase time="0.001" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="inputIsNotAnXMLFile"/>
+  <testcase time="0.001" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="fileDoesNotExist"/>
+  <testcase time="0.001" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="nonExistingProducerReferenced"/>
+  <testcase time="0.481" classname="fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest" name="scenarioIsIllFormated"/>
 </testsuite>

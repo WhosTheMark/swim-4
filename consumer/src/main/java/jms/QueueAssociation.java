@@ -21,9 +21,10 @@ public class QueueAssociation {
 	private Channel channel;
 	
 	
-	public QueueAssociation() throws IOException{
+	public QueueAssociation(String ipAdress) throws IOException{
+		this.ipAdress=ipAdress;
 		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(ipAdress);
+		factory.setHost(this.ipAdress);
 		this.connection = factory.newConnection();
 		this.channel = connection.createChannel();
 		this.channel.queueDeclare(this.QUEUE_NAME, false, false, false, null);

@@ -20,7 +20,8 @@ public class TopicAssociation {
 	private Channel channel;
 	private Connection connection;
 	
-	public TopicAssociation() throws IOException{
+	public TopicAssociation(String ipAdress) throws IOException{
+		this.ipAdress=ipAdress;
 		ConnectionFactory factory = new ConnectionFactory();
 		factory.setHost(this.ipAdress);
 		this.connection = factory.newConnection();

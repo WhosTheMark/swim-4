@@ -7,17 +7,25 @@
  */
 
 package jms;
+
+import java.io.IOException;
+
+import messaging.Message;
+
 public class JavaAppSender {
-	
-	public JavaAppSender(){
-		
+	private TopicAssociation topicAssociation;
+	private final String from="JavaApp";
+	public JavaAppSender(TopicAssociation topicAssociation) throws IOException{
+		this.topicAssociation=topicAssociation;
 	}
 	
-	public void send(String message,TopicAssociation association) throws java.io.IOException {
+	public void send(Message message) throws java.io.IOException {
+		message.setFrom(this.from);
+		
 		System.out.println("Sending a message");
-		association.getChannel().basicPublish(association.getExchangeName(), "", null, message.getBytes());//modif2 publish to the named exchange
-		System.out.println(" The Publisher Sent: "+message);
-		association.getChannel().close();
-		association.getConnection().close();
+		this.topicAssociation.getChannel().basicPublish(this.topicAssociation.getExchangeName(), "", null, message.toJson().getBytes());//modif2 publish to the named exchange
+		System.out.println(" The Publisher Sent: "+message.toJson());
+		this.topicAssociation.getChannel().close();
+		this.topicAssociation.getConnection().close();
 	}
 }
