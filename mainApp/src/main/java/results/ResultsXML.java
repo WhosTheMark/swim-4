@@ -12,11 +12,12 @@ import model.*;
 
 public class ResultsXML {
 
-	private static final String outputXML = "/mainApp/src/main/java/results/results.xml";
-	private static final TimeUnitType millisecond = TimeUnitType.MS;
+	private static final String OUTPUTXML = "/mainApp/src/main/java/results/results.xml";
+	private static final TimeUnitType MILLISECOND = TimeUnitType.MS;
 	
 	
 	/**
+	 * Generate the result XML file
 	 * @author David
 	 * @param results object
 	 * @throws JAXB Exception
@@ -28,7 +29,7 @@ public class ResultsXML {
 		JAXBContext jaxbContext = JAXBContext.newInstance(Results.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		marshaller.marshal(results, new File(outputXML));
+		marshaller.marshal(results, new File(OUTPUTXML));
 	}
 
 	/**
@@ -98,7 +99,7 @@ public class ResultsXML {
 	public ResponseTimeT createResponseTime(String responseTime) {
 		
 		ResponseTimeT averageResponseTime = new ResponseTimeT();
-		averageResponseTime.setTimeUnit(millisecond);
+		averageResponseTime.setTimeUnit(MILLISECOND);
 		averageResponseTime.setValue(new BigInteger(responseTime));
 		
 		return averageResponseTime;
