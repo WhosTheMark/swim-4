@@ -4,13 +4,11 @@ public class ProducerBehaviour {
 	
 	private int begin;
 	private int end;
-	private int datasize;
 	private int processingTime;
 
-	public ProducerBehaviour(int begin, int end, int datasize, int processingTime) {
+	public ProducerBehaviour(int begin, int end, int processingTime) {
 		this.begin = begin;
 		this.end = end;
-		this.datasize = datasize;
 		this.processingTime = processingTime;
 	}
 	
@@ -20,10 +18,6 @@ public class ProducerBehaviour {
 
 	public int getEnd() {
 		return end;
-	}
-
-	public int getDatasize() {
-		return datasize;
 	}
 
 	public int getProcessingTime() {
