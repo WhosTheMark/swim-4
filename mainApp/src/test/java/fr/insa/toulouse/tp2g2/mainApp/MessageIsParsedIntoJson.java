@@ -1,6 +1,7 @@
 package fr.insa.toulouse.tp2g2.mainApp;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class MessageIsParsedIntoJson {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,11 +37,6 @@ public class MessageIsParsedIntoJson {
 	}
 	@After
 	public void tearDown() throws Exception {
-	}
-	@Test
-	public void testGenericMessageIsConvertedIntoJson() {
-		Message messageGeneric = new Message("me", "you");
-		assertEquals("{\"from\":\"me\",\"to\":\"you\"}", messageGeneric.toJson());
 	}
 	@Test
 	public void testErrorMessageIsConvertedIntoJson() {
