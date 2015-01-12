@@ -2,8 +2,9 @@ package fr.insa.toulouse.tp2g2.mainApp;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.ErrorManager;
+import java.util.Map;
 
 import messaging.ConsumerBehaviour;
 import messaging.Message;
@@ -11,6 +12,8 @@ import messaging.MessageConfigurationConsumer;
 import messaging.MessageConfigurationProducer;
 import messaging.MessageError;
 import messaging.MessageResult;
+import messaging.ProducerBehaviour;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,13 +47,17 @@ public class MessageIsParsedIntoJson {
 	public void testConfigurationConsumerMessageIsConvertedIntoJson() {
 		List<ConsumerBehaviour> behaviours = new ArrayList<ConsumerBehaviour> ();
 		behaviours.add(new ConsumerBehaviour(0, 10, 12, 20));
-		//MessageConfigurationConsumer message = new MessageConfigurationConsumer("me", "you", "p1", behaviours);
-		//assertEquals("{\"from\":\"me\",\"to\":\"you\",\"producerId\":\"p1\",\"begin\":0,\"end\":10,\"frequency\":12,\"processingTime\":2,\"dataSize\":20}", message.toJson());
+		MessageConfigurationConsumer message = new MessageConfigurationConsumer("me", "you", "p1", "consumer1", behaviours);
+		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"producerId\":\"p1\",\"name\":\"consumer1\",\"consumerBehaviours\":[{\"begin\":0,\"end\":10,\"frequency\":12,\"datasize\":20}]}", message.toJson());
 	}
 	@Test
 	public void testConfigurationProducerMessageIsConvertedIntoJson() {
-		//MessageConfigurationProducer message = new MessageConfigurationProducer("me", "you", 2, 10);
-		//assertEquals("{\"from\":\"me\",\"to\":\"you\",\"duration\":2,\"dataSize\":10}", message.toJson());
+		List<ProducerBehaviour> behaviours = new ArrayList<ProducerBehaviour> ();
+		behaviours.add(new ProducerBehaviour(0, 100, 12));
+		Map<String, List<ProducerBehaviour>> behaviorsMap = new HashMap<String, List<ProducerBehaviour>>();
+		behaviorsMap.put("consumer1", behaviours);
+		MessageConfigurationProducer message = new MessageConfigurationProducer("me", "you", "p1", 10,behaviorsMap);
+		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"consumer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}", message.toJson());
 	}
 	@Test
 	public void testResultMessageIsConvertedIntoJson() {

@@ -16,3 +16,7 @@ hs_err_pid*
 
 # backup files from text editors
 *~
+
+# target files.
+consumer/target/
+mainApp/target/

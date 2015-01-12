@@ -8,10 +8,8 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.Table;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.sort.SortOrder;
 
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.node.NodeBuilder.*;
@@ -20,6 +18,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import database.Database;
 
 /* All messages sent through our application
  * Described as classes and objects to manage their structure
@@ -72,7 +72,7 @@ public class Message {
 		Node node = nodeBuilder().client(true).node();
 		Client client = node.client();
 
-		IndexResponse response = client.prepareIndex("swim", this.getClass().toString())
+		IndexResponse response = client.prepareIndex(Database.DATABASE_NAME, this.getClass().toString())
 				.setSource(this.toJson())
 				.execute()
 				.actionGet();
@@ -81,19 +81,19 @@ public class Message {
 	}
 
 	public static List<MessageResult> getMessageResults() {
-		return search(MessageResult.class, "swim", MessageResult.class.toString());
+		return search(MessageResult.class, Database.DATABASE_NAME, MessageResult.class.toString());
 	}
 
 	public static List<MessageError> getMessageErrors() {
-		return search(MessageError.class, "swim", MessageError.class.toString());
+		return search(MessageError.class, Database.DATABASE_NAME, MessageError.class.toString());
 	}
 
 	public static List<MessageConfigurationProducer> getMessageConfigurationProducers() {
-		return search(MessageConfigurationProducer.class, "swim", MessageConfigurationProducer.class.toString());
+		return search(MessageConfigurationProducer.class, Database.DATABASE_NAME, MessageConfigurationProducer.class.toString());
 	}
 
 	public static List<MessageConfigurationConsumer> getMessageConfigurationConsumers() {
-		return search(MessageConfigurationConsumer.class, "swim", MessageConfigurationConsumer.class.toString());
+		return search(MessageConfigurationConsumer.class, Database.DATABASE_NAME, MessageConfigurationConsumer.class.toString());
 	}
 
 	public static <T> List<T> search(Class T, String collection, String type){
@@ -148,7 +148,7 @@ public class Message {
 	public static void delete(String type, String id){
 		Node node = nodeBuilder().client(true).node();
 		Client client = node.client();
-		DeleteResponse response = client.prepareDelete("swim", type, id)
+		DeleteResponse response = client.prepareDelete(Database.DATABASE_NAME, type, id)
 				.execute()
 				.actionGet();
 		client.close();
