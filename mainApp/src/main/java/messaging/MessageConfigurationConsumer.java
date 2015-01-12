@@ -15,6 +15,7 @@ public class MessageConfigurationConsumer extends Message {
 										String name, List<ConsumerBehaviour> consumerBehaviours) {
 		super(from, to);
 		this.name = name;
+		this.producerId = producerId;
 		this.consumerBehaviours = consumerBehaviours;
 	}
 	

@@ -1,4 +1,4 @@
-package fr.insa.toulouse.tp2_g2.consumer;
+package esbcomunication;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
