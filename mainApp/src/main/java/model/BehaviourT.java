@@ -221,4 +221,35 @@ public class BehaviourT {
     	}
     	return false;
     }
+    
+    public int getBeginInMs() {
+    	return getTimeElementInMs(begin, timeUnit);
+    }
+    
+    public int getEndInMs() {
+    	return getTimeElementInMs(end, timeUnit);
+    }
+    
+    public int getProcessingTimeInMs() {
+    	return getTimeElementInMs(processingTime.getValue(), processingTime.getTimeUnit());
+    }
+    
+    public int getDatasizeInBytes() {
+    	return datasize.getDatasizeInBytes();
+    }
+    
+    private int getTimeElementInMs(BigInteger timeLimit, TimeUnitType unit) {
+    	int value = timeLimit.intValue();
+    	switch(unit) {
+    	case MINS:
+    		value = value * 3600;
+    		break;
+    	case MS:
+    		break;
+    	case SECS:
+    		value = value * 60;
+    		break;
+    	}
+    	return value;
+    }
 }
