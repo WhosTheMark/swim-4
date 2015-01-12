@@ -1,4 +1,4 @@
-package fr.insa.toulouse.tp2_g2.consumer;
+package esbcomunication;
 
 import static org.junit.Assert.*;
 
