@@ -1,14 +1,11 @@
-package messaging;
-
-import java.util.concurrent.TimeUnit;
+package com.swim.messaging;
 
 public class MessageResult extends Message{
 
 	private String consumerId;
 	private String producerId;
-	// always in TimeUnit.milliseconds
-	private long requestTime;
-	private long responseTime;
+	private int requestTime;
+	private int responseTime;
 	// Later, we will add a time unit, like seconds, milliseconds, nanoseconds...
 	private int requestDataSize;
 	private int responseDataSize;
@@ -31,13 +28,13 @@ public class MessageResult extends Message{
 	public void setProducerId(String producerId) {
 		this.producerId = producerId;
 	}
-	public long getRequestTime() {
+	public int getRequestTime() {
 		return requestTime;
 	}
 	public void setRequestTime(int requestTime) {
 		this.requestTime = requestTime;
 	}
-	public long getResponseTime() {
+	public int getResponseTime() {
 		return responseTime;
 	}
 	public void setResponseTime(int responseTime) {

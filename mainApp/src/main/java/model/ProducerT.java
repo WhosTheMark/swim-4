@@ -141,5 +141,9 @@ public class ProducerT {
     	}
     	return false;
     }
+    
+    public int getDatasizeInBytes() {
+    	return datasize.getDatasizeInBytes();
+    }
 
 }

@@ -1,35 +1,39 @@
 package com.swim.messaging;
 
+import java.util.List;
+import java.util.Map;
+
 public class MessageConfigurationProducer extends Message {
 
-    private int duration;
-    private int dataSize;
+	private String name;
+	private Map<String, List<ProducerBehaviour>> producerBehaviours;
 
-    // Dummy constructor. Useful for Jackson
-    public MessageConfigurationProducer() {
-        
-    }
 
-    public MessageConfigurationProducer(String from, String to, int duration,
-            int dataSize) {
-        super(from, to);
-        this.duration = duration;
-        this.dataSize = dataSize;
-    }
+	public MessageConfigurationProducer(String from, String to, String name,
+										Map<String, List<ProducerBehaviour>> producerBehaviours) {
+		super(from, to);
+		this.name = name;
+		this.producerBehaviours = producerBehaviours;
+	}
+	
+	public MessageConfigurationProducer() {
+		super();
+	}
 
-    public int getDuration() {
-        return duration;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public int getDataSize() {
-        return dataSize;
-    }
+	public Map<String, List<ProducerBehaviour>> getProducerBehaviour() {
+		return producerBehaviours;
+	}
 
-    public void setDataSize(int dataSize) {
-        this.dataSize = dataSize;
-    }
+	public void setProducerBehaviour(Map<String, List<ProducerBehaviour>> producerBehaviour) {
+		this.producerBehaviours = producerBehaviour;
+	}
+	
 }

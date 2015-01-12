@@ -11,7 +11,6 @@ import java.util.Map;
 import jms.JavaAppSender;
 
 import messaging.ConsumerBehaviour;
-import messaging.Message;
 import messaging.MessageConfigurationConsumer;
 import messaging.MessageConfigurationProducer;
 import messaging.ProducerBehaviour;
@@ -19,18 +18,15 @@ import model.Scenario;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 import scenario.Configurator;
-import model.*;
 
 public class ConfiguratorTest {
 
 	private Configurator configurator;
 	private TestScenarioFactory scenarioFactory;
 	
-	@Mock
 	private JavaAppSender sender;
 	
 
@@ -38,6 +34,7 @@ public class ConfiguratorTest {
 	public void setUp() {
 		configurator = new Configurator(sender);
 		scenarioFactory = new TestScenarioFactory();
+		sender = mock(JavaAppSender.class);
 	}
 	
 	@Test
@@ -46,11 +43,11 @@ public class ConfiguratorTest {
 		configurator.sendConfigurationMessages(scenario);
 		List<MessageConfigurationProducer> pMessages = getProducerMessages();
 		for(MessageConfigurationProducer message: pMessages) {
-			Mockito.verify(sender,Mockito.times(1)).send(message);
+			verify(sender,times(1)).send(message);
 		}
 		List<MessageConfigurationConsumer> cMessages = getConsumerMessages();
 		for(MessageConfigurationConsumer message: cMessages) {
-			Mockito.verify(sender,Mockito.times(1)).send(message);
+			verify(sender,times(1)).send(message);
 		}
 	}
 	
