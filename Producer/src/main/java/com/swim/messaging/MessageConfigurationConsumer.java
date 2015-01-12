@@ -1,4 +1,4 @@
-package messaging;
+package com.swim.messaging;
 
 import java.util.List;
 
@@ -15,17 +15,9 @@ public class MessageConfigurationConsumer extends Message {
 										String name, List<ConsumerBehaviour> consumerBehaviours) {
 		super(from, to);
 		this.name = name;
-		this.producerId = producerId;
 		this.consumerBehaviours = consumerBehaviours;
 	}
 	
-	public MessageConfigurationConsumer(String to, String producerId, String name,
-										List<ConsumerBehaviour> consumerBehaviours) {
-		super(null, to);
-		this.name = name;
-		this.consumerBehaviours = consumerBehaviours;
-	}
-
 	public String getProducerId() {
 		return producerId;
 	}

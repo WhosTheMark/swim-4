@@ -105,4 +105,16 @@ public class DatasizeT {
     	return false;
     }
 
+    public int getDatasizeInBytes() {
+    	int result;
+    	switch(sizeUnit) {
+    	case BYTES :
+    		result = value.intValue();
+    		break;
+    	default : 
+    		result = value.intValue() * 1024;
+    		break;
+    	}
+    	return result;
+    }
 }

@@ -5,10 +5,15 @@
  */
 package com.swim.producer;
 
+import com.swim.messaging.MessageHandler;
+import com.swim.messaging.ProducerBehaviour;
 import static java.lang.Thread.sleep;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
@@ -27,22 +32,27 @@ public class ProducerService {
 
     private int responseSize = 12; // In bytes
     private int processingTime = 2000; //in milliseconds
+    private String name = "";
+    private long startTime;
+    private Map<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
 
     public ProducerService() {
         super();
+
     }
 
     public ProducerService(int responseSize, int waitTime) {
         this.responseSize = responseSize;
         this.processingTime = waitTime;
+        MessageHandler messageHandler = new MessageHandler(this);
     }
 
-    @WebMethod(exclude=true)
+    @WebMethod(exclude = true)
     public void setResponseSize(int responseSize) {
         this.responseSize = responseSize;
     }
 
-    @WebMethod(exclude=true)
+    @WebMethod(exclude = true)
     public void setProcessingTime(int processingTime) {
         this.processingTime = processingTime;
     }
@@ -57,8 +67,8 @@ public class ProducerService {
     }
 
     private String createData() {
-        byte[] utf8Bytes = new byte[responseSize];
-        for (int i = 0; i < responseSize; i++) {
+        byte[] utf8Bytes = new byte[getResponseSize()];
+        for (int i = 0; i < getResponseSize(); i++) {
             utf8Bytes[i] = (byte) 'a';
         }
         String response = decodeUTF8(utf8Bytes);
@@ -74,15 +84,76 @@ public class ProducerService {
     public String getRequest() {
 
         try {
-            sleep(processingTime);
+            sleep(getProcessingTime());
         } catch (InterruptedException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
+        String idConsumer = "0"; // TODO : retrieve the ID of the consumer from the request
 
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
+        int dataSize = getDataSize(idConsumer, elapsedTime);
         String response = createData();
         System.out.println("response : " + response);
 
         return response;
+    }
+
+    public int getDataSize(String idConsumer, long elapsedTime) {
+        int dataSize = 0;
+        List<ProducerBehaviour> behavioursList = getProducerBehaviours().get(idConsumer);
+        int j = 0;
+        boolean notFound = true;
+        while (behavioursList.size() > j && notFound) {
+            if (behavioursList.get(j).getBegin()<elapsedTime && behavioursList.get(j).getEnd()>=elapsedTime) {
+                notFound= false;
+                dataSize = behavioursList.get(j).getDatasize();
+            }
+            j++;
+        }
+        return dataSize;
+    }
+
+    /**
+     * @return the responseSize
+     */
+    public int getResponseSize() {
+        return responseSize;
+    }
+
+    /**
+     * @return the processingTime
+     */
+    public int getProcessingTime() {
+        return processingTime;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the producerBehaviours
+     */
+    public Map<String, List<ProducerBehaviour>> getProducerBehaviours() {
+        return producerBehaviours;
+    }
+
+    /**
+     * @param producerBehaviours the producerBehaviours to set
+     */
+    public void setProducerBehaviours(Map<String, List<ProducerBehaviour>> producerBehaviours) {
+        this.producerBehaviours = producerBehaviours;
     }
 
 }
