@@ -1,11 +1,14 @@
 package messaging;
 
+import java.util.concurrent.TimeUnit;
+
 public class MessageResult extends Message{
 
 	private String consumerId;
 	private String producerId;
-	private int requestTime;
-	private int responseTime;
+	// always in TimeUnit.milliseconds
+	private long requestTime;
+	private long responseTime;
 	// Later, we will add a time unit, like seconds, milliseconds, nanoseconds...
 	private int requestDataSize;
 	private int responseDataSize;
@@ -28,13 +31,13 @@ public class MessageResult extends Message{
 	public void setProducerId(String producerId) {
 		this.producerId = producerId;
 	}
-	public int getRequestTime() {
+	public long getRequestTime() {
 		return requestTime;
 	}
 	public void setRequestTime(int requestTime) {
 		this.requestTime = requestTime;
 	}
-	public int getResponseTime() {
+	public long getResponseTime() {
 		return responseTime;
 	}
 	public void setResponseTime(int responseTime) {
