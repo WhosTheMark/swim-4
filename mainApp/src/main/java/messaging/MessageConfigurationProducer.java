@@ -19,6 +19,14 @@ public class MessageConfigurationProducer extends Message {
 		this.producerBehaviours = producerBehaviours;
 	}
 	
+	public MessageConfigurationProducer(String to, String name, int datasize,
+										Map<String, List<ProducerBehaviour>> producerBehaviours) {
+		super(null, to);
+		this.name = name;
+		this.datasize = datasize;
+		this.producerBehaviours = producerBehaviours;
+	}
+
 	public MessageConfigurationProducer() {
 		super();
 	}
