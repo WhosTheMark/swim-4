@@ -56,7 +56,7 @@ public class MessageResult extends Message{
 		this.responseDataSize = responseDataSize;
 	}
 	public MessageResult(String from, String to, String consumerId,
-			String producerId, int requestTime, int responseTime,
+			String producerId, long requestTime, long responseTime,
 			int requestDataSize, int responseDataSize) {
 		super(from, to);
 		this.consumerId = consumerId;
