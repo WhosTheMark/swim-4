@@ -6,9 +6,9 @@
 package com.swim.producer;
 
 import com.swim.messaging.MessageHandler;
-import com.swim.messaging.ProducerBehaviour;
-import java.io.IOException;
 import static java.lang.Thread.sleep;
+
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +23,8 @@ import javax.ejb.Stateless;
 import jmsproducer.JMSManager;
 import jmsproducer.ProducerReceiverThread;
 import jmsproducer.TopicAssociation;
+
+import messaging.ProducerBehaviour;
 
 import org.apache.commons.lang.StringUtils;
 
