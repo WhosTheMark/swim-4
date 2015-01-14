@@ -117,4 +117,9 @@ public class DatasizeT {
     	}
     	return result;
     }
+    
+    public String toString() {
+        return "{ size unit : " + sizeUnit.toString()
+        		+ " value : " + value.toString() + " }";
+    }
 }

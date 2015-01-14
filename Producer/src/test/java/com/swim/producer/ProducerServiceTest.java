@@ -24,11 +24,20 @@ public class ProducerServiceTest {
     public void testMethodGetRequest() throws Exception {
         ProducerService instance = new ProducerService();
         System.out.println("getRequest");
-        int expResult = 2097152; //2 Mo
+        int expResult = 200; //2 Mo
         int waitTime = 3;
-        instance.setResponseSize(expResult);
+        
+        List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
+        producerBehaviourList.add(new ProducerBehaviour(0, 3, 12, 10));
+        producerBehaviourList.add(new ProducerBehaviour(3, 6, 20, 1));
+        HashMap<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
+        producerBehaviours.put("aa", producerBehaviourList);
+        producerBehaviourList = new ArrayList<>();
+        producerBehaviourList.add(new ProducerBehaviour(2, 3000, 200, 2));
+        producerBehaviours.put("bb", producerBehaviourList);
+        instance.setProducerBehaviours(producerBehaviours);
         instance.setProcessingTime(waitTime);
-        String result = instance.getRequest();
+        String result = instance.getRequest("bb"," ");
         byte[] resultByte = instance.encodeUTF8(result);
         int size = resultByte.length;
         assertEquals(expResult, size);

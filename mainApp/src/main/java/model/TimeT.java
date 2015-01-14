@@ -102,5 +102,10 @@ public class TimeT {
     	}
     	return false;
     }
+    
+    public String toString() {
+    	return "{ time unit : " + timeUnit
+    			+ " value : " + value + " }";
+    }
 
 }

@@ -47,7 +47,7 @@ import javax.xml.bind.annotation.XmlType;
     "processingTime",
     "datasize"
 })
-public class BehaviourT {
+public class BehaviourT implements Comparable<BehaviourT>{
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "positiveInteger")
@@ -252,4 +252,43 @@ public class BehaviourT {
     	}
     	return value;
     }
+    
+    public boolean doesBehaviourOverlapWith(BehaviourT behaviour) {
+    	boolean overlap;
+    	if(getBeginInMs() < behaviour.getBeginInMs()) {
+    		 overlap = getEndInMs() > behaviour.getBeginInMs();
+    	} else {
+    		overlap = behaviour.getEndInMs() > getBeginInMs();
+    	}
+    	return overlap;
+    }
+
+	public int compareTo(BehaviourT arg) {
+		int result;
+		if(getBeginInMs() < arg.getBeginInMs()) {
+			result = -1;
+		} else if(getBeginInMs() > arg.getBeginInMs()) {
+			result = 1;
+		} else {
+			if(getEndInMs() <= arg.getEndInMs()) {
+				result = -1;
+			} else {
+				result = 1;
+			}
+		}
+		return result;
+	}
+	
+	public boolean isPossibleBehaviour() {
+		return getBeginInMs() < getEndInMs();
+	}
+	
+	public String toString() {
+		   return "{ frequency : " + frequency.toString()
+				   + " processing time : " + processingTime.toString()
+				   + " datasize : " + datasize.toString()
+				   + " begin : " + begin.toString()
+				   + " end : " + end.toString()
+				   + " timeUnit : " + timeUnit.toString() + " }";
+	}
 }
