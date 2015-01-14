@@ -1,6 +1,5 @@
 package scenario;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +8,7 @@ import java.util.Map;
 
 import messaging.*;
 import model.*;
-import jms.JavaAppSender;
+import jmsmainapp.JavaAppSender;
 
 public class Configurator {
 
@@ -28,11 +27,7 @@ public class Configurator {
 		List<MessageConfigurationConsumer> messages
 			= createConsumersConfigurationMessage(consumers.getConsumers());
 		for(MessageConfigurationConsumer message: messages) {
-			try {
-				sender.send(message);
-			} catch(IOException exception) {
-				System.out.println("ouch consumer");
-			}
+			sender.send(message);
 		}
 	}
 	
@@ -101,11 +96,7 @@ public class Configurator {
 	
 	private void sendConfigurationMessageToProducer(ProducerT producer, Scenario scenario) {
 		MessageConfigurationProducer message = createProducerConfigurationMessage(producer, scenario);
-		try {
-			sender.send(message);
-		} catch(IOException exceptio) {
-			System.out.println("ouch");
-		}
+		sender.send(message);
 	}
 	
 	private MessageConfigurationProducer createProducerConfigurationMessage(ProducerT producer, Scenario scenario) {

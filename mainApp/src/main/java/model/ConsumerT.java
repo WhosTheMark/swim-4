@@ -174,7 +174,6 @@ public class ConsumerT {
     public boolean equals(Object o) {
     	if(o.getClass() == ConsumerT.class) {
     		ConsumerT aux = (ConsumerT) o;
-    		System.out.println(getProducerId().equals(aux.getProducerId()));
     		return name.equals(aux.getName())
     			&& producerId.equals(aux.getProducerId())
     			&& behaviours.equals(aux.getBehaviours())
