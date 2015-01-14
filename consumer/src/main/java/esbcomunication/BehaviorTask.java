@@ -37,7 +37,8 @@ class BehaviorTask implements Runnable {
      */
     private int calculateNumberOfCycles() {
 
-        int duration = behavior.getEnd() - behavior.getBegin();
+        // -1 So the interval is opened at the end. [begin,end)
+        int duration = behavior.getEnd() - behavior.getBegin() - 1;
 
         if(behavior.getFrequency() != 0) {
             return duration / behavior.getFrequency();
