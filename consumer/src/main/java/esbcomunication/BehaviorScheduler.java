@@ -1,0 +1,132 @@
+package esbcomunication;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import messaging.ConsumerBehaviour;
+
+/**
+ * This class schedules when each behavior will start. This class cannot be
+ * created directly, to do this use {@link BehaviorSchedulerBuilder} class.
+ * @author Marcos Campos
+ */
+public class BehaviorScheduler {
+
+    private List<ConsumerBehaviour> behaviors;
+    private ESBDeliveryInformation deliveryInfo;
+    private long scenarioDuration;
+
+    /** Max number of threads in the pool.*/
+    private static final int MAX_NUMBER_THREADS = 4;
+
+    /**
+     * Class to build a {@link BehaviorScheduler} object.
+     * @author Marcos Campos
+     */
+    public static class BehaviorSchedulerBuilder {
+
+        private List<ConsumerBehaviour> behaviors = null;
+        private String consumerId;
+        private String producerId;
+        private String esbAddress;
+        private long scenarioDuration;
+
+        public BehaviorSchedulerBuilder() {}
+
+        /**
+         * Adds a single behavior to the list. Can be called several times to
+         * add all the behaviors needed.
+         * @param behavior to add.
+         * @return the reference to the builder.
+         */
+        public BehaviorSchedulerBuilder addBehavior(ConsumerBehaviour behavior){
+
+            if (behaviors == null) {
+                behaviors = new ArrayList<>();
+            }
+
+            behaviors.add(behavior);
+            return this;
+        }
+
+        public BehaviorSchedulerBuilder setConsumerId(String consumerId){
+            this.consumerId = consumerId;
+            return this;
+        }
+
+        public BehaviorSchedulerBuilder setProducerId(String producerId){
+            this.producerId = producerId;
+            return this;
+        }
+
+        public BehaviorSchedulerBuilder setESBAddress(String esbAddress){
+            this.esbAddress = esbAddress;
+            return this;
+        }
+
+        public BehaviorSchedulerBuilder setScenarioDuration(long scenarioDuration){
+            this.scenarioDuration = scenarioDuration;
+            return this;
+        }
+
+        public BehaviorSchedulerBuilder setBehaviors(List<ConsumerBehaviour> behaviors){
+            this.behaviors = behaviors;
+            return this;
+        }
+
+        /**
+         * Builds a {@link BehaviorScheduler} object.
+         * @throws IllegalStateException if any value to create the object is missing.
+         */
+        public BehaviorScheduler build() {
+
+            if(behaviors == null || consumerId == null || producerId == null
+                    || esbAddress == null) {
+                throw new IllegalStateException("Some parameters were not set when"
+                        + "build() was called.");
+            }
+
+            return new BehaviorScheduler(behaviors,consumerId,producerId,
+                    esbAddress, scenarioDuration);
+        }
+    }
+
+    private BehaviorScheduler(List<ConsumerBehaviour> behaviors, String consumerId,
+            String producerId, String esbAddress, long scenarioDuration) {
+
+        this.behaviors = behaviors;
+        this.scenarioDuration = scenarioDuration;
+        this.deliveryInfo = new ESBDeliveryInformation(consumerId,producerId,esbAddress);
+    }
+
+    /**
+     * Schedules all the behaviors added by the builder.
+     */
+    public void scheduleBehaviors() {
+
+        ScheduledExecutorService executor =
+                Executors.newScheduledThreadPool(MAX_NUMBER_THREADS);
+
+        for(ConsumerBehaviour behavior : behaviors){
+            BehaviorTask task = new BehaviorTask(behavior, deliveryInfo);
+            executor.schedule(task, behavior.getBegin(), TimeUnit.MILLISECONDS);
+        }
+
+        waitForBehaviors(executor);
+    }
+
+    /**
+     * Waits for all the tasks to finish.
+     * @param executor the pool with all tasks.
+     */
+    private void waitForBehaviors(ScheduledExecutorService executor) {
+        try {
+            executor.awaitTermination(scenarioDuration, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}

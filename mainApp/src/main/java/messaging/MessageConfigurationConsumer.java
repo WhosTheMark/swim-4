@@ -19,6 +19,13 @@ public class MessageConfigurationConsumer extends Message {
 		this.consumerBehaviours = consumerBehaviours;
 	}
 	
+	public MessageConfigurationConsumer(String to, String producerId, String name,
+										List<ConsumerBehaviour> consumerBehaviours) {
+		super(null, to);
+		this.name = name;
+		this.consumerBehaviours = consumerBehaviours;
+	}
+
 	public String getProducerId() {
 		return producerId;
 	}

@@ -25,7 +25,7 @@ import database.Database;
  * Described as classes and objects to manage their structure
  * Stored into database in JSON
  */
-public class Message {
+public abstract class Message {
 	private String from;
 	private String to;
 

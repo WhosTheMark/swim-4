@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: fr.insa.toulouse.tp2g2.mainApp.ScenarioParserTest
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.391 sec

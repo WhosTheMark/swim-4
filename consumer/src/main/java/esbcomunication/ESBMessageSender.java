@@ -1,4 +1,4 @@
-package fr.insa.toulouse.tp2_g2.consumer;
+package esbcomunication;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -6,39 +6,70 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
- * Class to send messages to a producer through the bus.
+ * Class to send messages to a producer through the bus. For a HTTPURLConnection
+ * object there are two timeouts, a timeout for connecting to the URL, and a
+ * timeout to wait for the response. These timeouts are calculated using the
+ * field TIMEOUT.
  * @author Marcos Campos
  */
-public class MessageSender {
+class ESBMessageSender {
 
-    private String producerAddress;
+    /** Timeout in milliseconds */
+    private static final int TIMEOUT = 10 * 1000;
 
-    /**
-     * Constructor to create a MessageSender object.
-     * @param address the address of the producer in the bus.
-     */
-    public MessageSender(String address){
-        this.producerAddress = address;
+    /** The address of the producer in the bus. */
+    private final String producerAddress;
+
+    ESBMessageSender(String producerAddress){
+        this.producerAddress = producerAddress;
     }
 
     /**
-     * Send the message to a producer through Mule ESB.
+     * Send the message to a producer through Mule ESB. It sets the corresponding
+     * timeouts.
      * @param message The message to send.
      * @return the reply of the request.
      * @throws MalformedURLException if the address of the bus is malformed.
      * @throws IOException if cannot connect to bus or the message is malformed.
+     * @throws SocketTimeoutException if the timer runs out.
      */
-    public String send(String message) throws MalformedURLException, IOException {
+    String send(String message)
+            throws MalformedURLException, IOException, SocketTimeoutException {
 
-        HttpURLConnection connection = setHTTPHeader(message);
+        HttpURLConnection connection = setHTTPHeader(producerAddress, message);
+
+        connection.setConnectTimeout(TIMEOUT);
+
+        long timeBeforeRequest = System.currentTimeMillis();
         sendRequest(connection, message);
+        long timeAfterRequest = System.currentTimeMillis();
+
+        setResponseTimeout(connection, timeBeforeRequest, timeAfterRequest);
+
         return getResponse(connection);
     }
 
-    private HttpURLConnection setHTTPHeader(String message)
+    /**
+     * Sets the timeout to wait for the response. This timeout is based on how
+     * much time took connecting to the address and the time to send a request.
+     * @param connection the connection to the ESB.
+     * @param timeBeforeRequest the time when the request started.
+     * @param timeAfterRequest
+     * @see HttpURLConnection#setReadTimeout(int)
+     */
+    private void setResponseTimeout(HttpURLConnection connection,
+            long timeBeforeRequest, long timeAfterRequest) {
+
+        int timePast = (int) (timeAfterRequest - timeBeforeRequest);
+        int remainingTime = Math.max(1, TIMEOUT - timePast);
+        connection.setReadTimeout(remainingTime);
+    }
+
+    private HttpURLConnection setHTTPHeader(String producerAddress, String message)
             throws MalformedURLException, IOException {
 
         URL url = new URL(producerAddress);
