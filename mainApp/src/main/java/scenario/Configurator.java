@@ -2,6 +2,7 @@ package scenario;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,18 +25,23 @@ public class Configurator {
 	}
 	
 	private void sendConfigurationMessageToConsumers(Consumers consumers) {
-		for(ConsumerT consumer: consumers.getConsumers()) {
-			sendConfigurationMessageToConsumer(consumer);
+		List<MessageConfigurationConsumer> messages
+			= createConsumersConfigurationMessage(consumers.getConsumers());
+		for(MessageConfigurationConsumer message: messages) {
+			try {
+				sender.send(message);
+			} catch(IOException exception) {
+				System.out.println("ouch consumer");
+			}
 		}
 	}
 	
-	private void sendConfigurationMessageToConsumer(ConsumerT consumer) {
-		MessageConfigurationConsumer message = createConsumerConfigurationMessage(consumer);
-		try {
-			sender.send(message);
-		} catch(IOException exception) {
-			System.out.println("ouch consumer");
+	private List<MessageConfigurationConsumer> createConsumersConfigurationMessage(List<ConsumerT> consumers) {
+		List<MessageConfigurationConsumer> messages = new ArrayList<MessageConfigurationConsumer> ();
+		for(ConsumerT consumer: consumers) {
+			messages.add(createConsumerConfigurationMessage(consumer));
 		}
+		return messages;
 	}
 	
 	private MessageConfigurationConsumer createConsumerConfigurationMessage(ConsumerT consumer) {
@@ -49,27 +55,42 @@ public class Configurator {
 	
 	private List<ConsumerBehaviour> determineConsumerBehaviours(List<BehaviourT> behaviours) {
 		List<ConsumerBehaviour> consumerBehaviours = new ArrayList<ConsumerBehaviour> ();
+		checkIfBehavioursOK(behaviours);
 		for(BehaviourT behaviour: behaviours) {
 			consumerBehaviours.add(determineConsumerBehaviour(behaviour));
 		}
 		return consumerBehaviours;
 	}
 	
-	private ConsumerBehaviour determineConsumerBehaviour(BehaviourT behaviour) {
-		ConsumerBehaviour consumerBehaviour = null;
-		if(isOKBehaviourConfiguration(behaviour)) {
-			consumerBehaviour = new ConsumerBehaviour(behaviour.getBeginInMs(),
-													  behaviour.getEndInMs(),
-													  behaviour.getFrequency().intValue(),
-													  behaviour.getDatasizeInBytes());
-		} else {
-			throw new ScenarioException("ERROR - Impossible consumer behaviour " + behaviour.toString());
+	/**
+	 * @throws ScenarioException if behaviours overlap or are impossible
+	 */
+	private void checkIfBehavioursOK(List<BehaviourT> behaviours) {
+		Collections.sort(behaviours);
+		for(int i=0; i < behaviours.size(); i++) {
+			if(!behaviours.get(i).isPossibleBehaviour()) {
+				throw new ScenarioException("ERROR - Behaviour "
+						+ behaviours.get(i).toString()
+						+ " is impossible to achieve");
+				
+			} else if(i>0 && doBehavioursOverlap(behaviours.get(i),behaviours.get(i-1))) {
+				throw new ScenarioException("ERROR - Behaviours "
+						+ behaviours.get(i-1).toString() + " and "
+						+ behaviours.get(i).toString()
+						+ " overlap");
+			}
 		}
-		return consumerBehaviour;
 	}
-
-	private boolean isOKBehaviourConfiguration(BehaviourT behaviour) {
-		return true; //TODO
+	
+	private boolean doBehavioursOverlap(BehaviourT b1, BehaviourT b2) {
+		return b1.doesBehaviourOverlapWith(b2);
+	}
+	
+	private ConsumerBehaviour determineConsumerBehaviour(BehaviourT behaviour) {
+		return new ConsumerBehaviour(behaviour.getBeginInMs(),
+									 behaviour.getEndInMs(),
+									 behaviour.getFrequency().intValue(),
+									 behaviour.getDatasizeInBytes());
 	}
 	
 	private void sendConfigurationMessageToProducers(Scenario scenario) {

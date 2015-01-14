@@ -34,7 +34,10 @@ public class Message {
 		this.to = to;
 	}
 	
-	public Message() {}
+	public Message() {
+		this.from = null;
+		this.to = null;
+	}
 
 	public String getFrom() {
 		return from;
@@ -154,5 +157,23 @@ public class Message {
 		client.close();
 		node.close();
 		return ;
+	}
+	
+	public boolean equals(Object o) {
+		if(Message.class.isInstance(o)) {
+			Message aux = (Message) o;
+			return areReceiversEquals(aux) && areSendersEquals(aux);
+		}
+		return false;
+	}
+
+	public boolean areSendersEquals(Message aux) {
+		return (from == null && aux.getFrom() == null)
+			|| from.equals(aux.getFrom());
+	}
+	
+	public boolean areReceiversEquals(Message aux) {
+		return (to== null && aux.getTo() == null)
+			|| to.equals(aux.getTo());
 	}
 }

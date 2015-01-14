@@ -23,5 +23,15 @@ public class ProducerBehaviour {
 	public int getProcessingTime() {
 		return processingTime;
 	}
+	
+	public boolean equals(Object o) {
+		if(o.getClass() == ProducerBehaviour.class) {
+			ProducerBehaviour aux = (ProducerBehaviour) o;
+			return begin == aux.getBegin()
+				&& end == aux.getEnd()
+				&& processingTime == aux.getProcessingTime();
+		}
+		return false;
+	}
 
 }
