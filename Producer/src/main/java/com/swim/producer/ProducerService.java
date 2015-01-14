@@ -6,7 +6,6 @@
 package com.swim.producer;
 
 import com.swim.messaging.MessageHandler;
-import com.swim.messaging.ProducerBehaviour;
 import static java.lang.Thread.sleep;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.ejb.Stateless;
+
+import messaging.ProducerBehaviour;
 
 import org.apache.commons.lang.StringUtils;
 
