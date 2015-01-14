@@ -7,6 +7,7 @@ package com.swim.producer;
 
 import com.swim.messaging.MessageHandler;
 import com.swim.messaging.ProducerBehaviour;
+import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -19,6 +20,9 @@ import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.ejb.Stateless;
+import jmsproducer.JMSManager;
+import jmsproducer.ProducerReceiverThread;
+import jmsproducer.TopicAssociation;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -30,7 +34,6 @@ import org.apache.commons.lang.StringUtils;
 @Stateless()
 public class ProducerService {
 
-    private int responseSize = 12; // In bytes
     private int processingTime = 2000; //in milliseconds
     private String name = "";
     private long startTime;
@@ -41,16 +44,17 @@ public class ProducerService {
 
     }
 
-    public ProducerService(int responseSize, int waitTime) {
-        this.responseSize = responseSize;
+    public ProducerService(int waitTime) {
         this.processingTime = waitTime;
         MessageHandler messageHandler = new MessageHandler(this);
+        try {
+            JMSManager.getInstance().getReceiver().start();
+        } catch (IOException ex) {
+            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    @WebMethod(exclude = true)
-    public void setResponseSize(int responseSize) {
-        this.responseSize = responseSize;
-    }
+
 
     @WebMethod(exclude = true)
     public void setProcessingTime(int processingTime) {
@@ -66,9 +70,9 @@ public class ProducerService {
         return string.getBytes(UTF8_CHARSET);
     }
 
-    private String createData() {
-        byte[] utf8Bytes = new byte[getResponseSize()];
-        for (int i = 0; i < getResponseSize(); i++) {
+    private String createData(int dataSize) {
+        byte[] utf8Bytes = new byte[dataSize];
+        for (int i = 0; i < dataSize; i++) {
             utf8Bytes[i] = (byte) 'a';
         }
         String response = decodeUTF8(utf8Bytes);
@@ -78,22 +82,24 @@ public class ProducerService {
     /**
      * Producer Service
      *
+     * @param from 
+     * @param messageResquest
      * @return A string of the size defined in the conf
      */
     @WebMethod(operationName = "request")
-    public String getRequest() {
+    public String getRequest(String from, String messageResquest) {
 
         try {
             sleep(getProcessingTime());
         } catch (InterruptedException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String idConsumer = "0"; // TODO : retrieve the ID of the consumer from the request
+        String idConsumer = from;
 
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - startTime;
         int dataSize = getDataSize(idConsumer, elapsedTime);
-        String response = createData();
+        String response = createData(dataSize);
         System.out.println("response : " + response);
 
         return response;
@@ -105,7 +111,7 @@ public class ProducerService {
         int j = 0;
         boolean notFound = true;
         while (behavioursList.size() > j && notFound) {
-            if (behavioursList.get(j).getBegin()<elapsedTime && behavioursList.get(j).getEnd()>=elapsedTime) {
+            if (behavioursList.get(j).getBegin()<elapsedTime) {
                 notFound= false;
                 dataSize = behavioursList.get(j).getDatasize();
             }
@@ -114,12 +120,6 @@ public class ProducerService {
         return dataSize;
     }
 
-    /**
-     * @return the responseSize
-     */
-    public int getResponseSize() {
-        return responseSize;
-    }
 
     /**
      * @return the processingTime
