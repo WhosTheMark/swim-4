@@ -1,6 +1,7 @@
 package com.swim.messaging;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swim.producer.Model;
 import com.swim.producer.ProducerService;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -12,10 +13,10 @@ import java.util.logging.Logger;
  */
 public class MessageHandler {
 
-    private ProducerService producerService ;
-    public MessageHandler(ProducerService service) {
+    private Model model ;
+    public MessageHandler(Model model) {
         super();
-        this.producerService = service;
+        this.model = model;
     }
 
     public void handleMessage(String jsonMessage) {

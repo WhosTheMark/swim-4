@@ -20,6 +20,7 @@ import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.ejb.Stateless;
+import javax.jws.WebParam;
 import jmsproducer.JMSManager;
 import jmsproducer.ProducerReceiverThread;
 import jmsproducer.TopicAssociation;
@@ -34,126 +35,52 @@ import org.apache.commons.lang.StringUtils;
 @Stateless()
 public class ProducerService {
 
-    private int processingTime = 2000; //in milliseconds
-    private String name = "";
+    private Model model;
     private long startTime;
-    private Map<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
+    private MessageHandler messageHandler;
 
     public ProducerService() {
-        super();
-
+        this.model = new Model(10);
+       // this.messageHandler = new MessageHandler(model);
     }
 
-    public ProducerService(int waitTime) {
-        this.processingTime = waitTime;
-        MessageHandler messageHandler = new MessageHandler(this);
-        try {
-            JMSManager.getInstance().getReceiver().start();
-        } catch (IOException ex) {
-            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-
-
-    @WebMethod(exclude = true)
-    public void setProcessingTime(int processingTime) {
-        this.processingTime = processingTime;
-    }
-    private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
-
-    String decodeUTF8(byte[] bytes) {
-        return new String(bytes, UTF8_CHARSET);
-    }
-
-    byte[] encodeUTF8(String string) {
-        return string.getBytes(UTF8_CHARSET);
-    }
-
-    private String createData(int dataSize) {
-        byte[] utf8Bytes = new byte[dataSize];
-        for (int i = 0; i < dataSize; i++) {
-            utf8Bytes[i] = (byte) 'a';
-        }
-        String response = decodeUTF8(utf8Bytes);
-        return response;
+    public ProducerService(int dataSize) {
+        this.model = new Model(dataSize);
+        //MessageHandler messageHandler = new MessageHandler(model);
+//        try {
+//            JMSManager.getInstance().getReceiver().start();
+//        } catch (IOException ex) {
+//            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
      * Producer Service
      *
-     * @param from 
-     * @param messageResquest
+     * @param from
+     * @param messageRequest
      * @return A string of the size defined in the conf
      */
     @WebMethod(operationName = "request")
-    public String getRequest(String from, String messageResquest) {
-
+    public String getRequest(@WebParam(name = "from") String from, @WebParam(name = "messageRequest") String messageRequest) {
+        long currentTime = System.currentTimeMillis();
+        long elapsedTime = currentTime - startTime;
         try {
-            sleep(getProcessingTime());
+          sleep(model.getProcessingTime(from, elapsedTime));
         } catch (InterruptedException ex) {
             Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String idConsumer = from;
-
-        long currentTime = System.currentTimeMillis();
-        long elapsedTime = currentTime - startTime;
-        int dataSize = getDataSize(idConsumer, elapsedTime);
-        String response = createData(dataSize);
+        String response = getModel().getData();
         System.out.println("response : " + response);
 
         return response;
     }
 
-    public int getDataSize(String idConsumer, long elapsedTime) {
-        int dataSize = 0;
-        List<ProducerBehaviour> behavioursList = getProducerBehaviours().get(idConsumer);
-        int j = 0;
-        boolean notFound = true;
-        while (behavioursList.size() > j && notFound) {
-            if (behavioursList.get(j).getBegin()<elapsedTime) {
-                notFound= false;
-                dataSize = behavioursList.get(j).getDatasize();
-            }
-            j++;
-        }
-        return dataSize;
-    }
-
-
     /**
-     * @return the processingTime
+     * @return the model
      */
-    public int getProcessingTime() {
-        return processingTime;
+    @WebMethod(exclude = true)
+    public Model getModel() {
+        return model;
     }
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * @return the producerBehaviours
-     */
-    public Map<String, List<ProducerBehaviour>> getProducerBehaviours() {
-        return producerBehaviours;
-    }
-
-    /**
-     * @param producerBehaviours the producerBehaviours to set
-     */
-    public void setProducerBehaviours(Map<String, List<ProducerBehaviour>> producerBehaviours) {
-        this.producerBehaviours = producerBehaviours;
-    }
-
 }
