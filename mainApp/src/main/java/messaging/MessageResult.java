@@ -3,7 +3,9 @@ package messaging;
 import java.util.concurrent.TimeUnit;
 
 public class MessageResult extends Message{
-
+	public static final String STATUS_OK = "STATUS_OK";
+	public static final String STATUS_TIMEOUT = "STATUS_TIMEOUT";
+	
 	private String consumerId;
 	private String producerId;
 	// always in TimeUnit.milliseconds
@@ -12,6 +14,7 @@ public class MessageResult extends Message{
 	// Later, we will add a time unit, like seconds, milliseconds, nanoseconds...
 	private int requestDataSize;
 	private int responseDataSize;
+	private String status;
 	
 	public MessageResult() {
 		super();
@@ -57,7 +60,7 @@ public class MessageResult extends Message{
 	}
 	public MessageResult(String from, String to, String consumerId,
 			String producerId, long requestTime, long responseTime,
-			int requestDataSize, int responseDataSize) {
+			int requestDataSize, int responseDataSize, final String status) {
 		super(from, to);
 		this.consumerId = consumerId;
 		this.producerId = producerId;
@@ -65,6 +68,7 @@ public class MessageResult extends Message{
 		this.responseTime = responseTime;
 		this.requestDataSize = requestDataSize;
 		this.responseDataSize = responseDataSize;
+		this.status = status;
 	}
 
 
