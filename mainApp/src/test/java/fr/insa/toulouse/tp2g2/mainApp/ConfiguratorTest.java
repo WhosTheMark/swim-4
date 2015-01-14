@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jms.JavaAppSender;
+import jmsmainapp.JavaAppSender;
 
 import messaging.ConsumerBehaviour;
 import messaging.Message;
@@ -94,12 +94,7 @@ public class ConfiguratorTest {
 			configurator.sendConfigurationMessages(scenario);
 		} catch(ScenarioException exception) {
 			assertEquals(expectedErrorMsg, exception.getMessage());
-			try {
-				verify(sender,never()).send(any(Message.class));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			verify(sender,never()).send(any(Message.class));
 			throw new ScenarioException(exception);
 		}
 		
@@ -114,12 +109,7 @@ public class ConfiguratorTest {
 			configurator.sendConfigurationMessages(scenario);
 		} catch(ScenarioException exception) {
 			assertEquals(expectedErrorMsg, exception.getMessage());
-			try {
-				verify(sender,never()).send(any(Message.class));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			verify(sender,never()).send(any(Message.class));
 			throw new ScenarioException(exception);
 		}
 	}
