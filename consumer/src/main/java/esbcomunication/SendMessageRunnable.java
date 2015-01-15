@@ -44,21 +44,26 @@ class SendMessageRunnable implements Runnable {
     public void run() {
 
         Message jmsMessage = null;
+        long beforeSendTime = System.currentTimeMillis();
 
         try {
 
-            long beforeSendTime = System.currentTimeMillis();
             reply = deliberyInfo.getESBSender().send(message);
             long afterSendTime = System.currentTimeMillis();
 
             // TODO extra nulls for "from" and "to"
             jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
                                 deliberyInfo.getProducerId(),beforeSendTime,
-                                afterSendTime,message.length(),getResponseDataSize(reply));
+                                afterSendTime,message.length(),getResponseDataSize(reply),
+                                MessageResult.STATUS_OK);
 
         } catch (SocketTimeoutException e) {
             // Ran out of time, send lost message to the JavaAPP
-            jmsMessage = new MessageError();
+            // TODO extra nulls for "from" and "to"
+            jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
+                                deliberyInfo.getProducerId(),beforeSendTime,
+                                -1,message.length(),-1,
+                                MessageResult.STATUS_TIMEOUT);
 
         } catch (Exception e) {
             e.printStackTrace();
