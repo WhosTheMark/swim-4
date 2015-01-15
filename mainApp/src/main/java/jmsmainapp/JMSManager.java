@@ -8,7 +8,6 @@
 
 package jmsmainapp;
 
-import java.io.IOException;
 
 public class JMSManager {
 	protected static JMSManager jmsConnection=null;
@@ -20,51 +19,31 @@ public class JMSManager {
 	
 	/**
 	 * Constructor
-	 * @throws IOException
 	 */
-	protected JMSManager() {
-		
-		try {
-			this.topicAssociation=new TopicAssociation(this.ipAdress);		
-			this.sender=new JavaAppSender(this.topicAssociation);
-			this.queueAssociation=new QueueAssociation(this.ipAdress);
-			this.receiver=new JavaAppReceiverThread(this.queueAssociation);
-			this.receiver.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private JMSManager() {
+		this.topicAssociation=new TopicAssociation(this.ipAdress);		
+		this.sender=new JavaAppSender(this.topicAssociation);
+		this.queueAssociation=new QueueAssociation(this.ipAdress);
+		this.receiver=new JavaAppReceiverThread(this.queueAssociation);
+		this.receiver.start();
 	}
-		
-	
+			
 	/**
 	 * Singleton de JMS Connection
-	 * @return
-	 * @throws IOException 
+	 * @return unique JMS manager instance
 	 */
-	public static JMSManager getInstance() throws IOException{
-		
+	public synchronized static JMSManager getInstance(){	
 		if(jmsConnection==null){
 			jmsConnection=new JMSManager();
 		}
 		return jmsConnection;
 	}
 
-
-	
-	
-	////GETTERS & SETTERS
 	public JavaAppSender getSender() {
 		return sender;
 	}
 
-
 	public JavaAppReceiverThread getReceiver() {
 		return receiver;
-	}
-
-
-
-	
-	
+	}	
 }

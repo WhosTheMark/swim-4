@@ -46,6 +46,15 @@ public class ConsumerBehaviour {
 		this.datasize = datasize;
 	}
 	
-	
+	public boolean equals(Object o) {
+		if(o.getClass() == ConsumerBehaviour.class) {
+			ConsumerBehaviour aux = (ConsumerBehaviour) o;
+			return begin == aux.getBegin()
+				&& end == aux.getEnd()
+				&& frequency == aux.getFrequency()
+				&& datasize == aux.getDatasize();
+		}
+		return false;
+	}
 
 }

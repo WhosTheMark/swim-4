@@ -37,7 +37,7 @@ public class MessageResultStoredInDatabase {
 
 	@Test
 	public void testResultMessageStoredInDatabase() {
-		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30);
+		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30, MessageResult.STATUS_OK);
 		String _id = message.store();
 		// Message stored. Let's look for it in database.
 		
@@ -48,7 +48,7 @@ public class MessageResultStoredInDatabase {
 		GetResponse responseGet = client.prepareGet(Database.DATABASE_NAME, MessageResult.class.toString(), _id)
                 .execute()
                 .actionGet();
-		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30}", responseGet.getSourceAsString());
+		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}", responseGet.getSourceAsString());
 		node.close();
 		
 		// Clean the database

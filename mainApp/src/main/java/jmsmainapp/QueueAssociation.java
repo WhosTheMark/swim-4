@@ -16,39 +16,37 @@ import com.rabbitmq.client.Channel;
 public class QueueAssociation {
 	
 	private final  String QUEUE_NAME = "result";
-	private String ipAdress="localhost";
+	private String ipAddress="localhost";
 	private Connection connection;
 	private Channel channel;
 	
-	
-	public QueueAssociation(String ipAdress) throws IOException{
-		this.ipAdress=ipAdress;
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(ipAdress);
-		this.connection = factory.newConnection();
-		this.channel = connection.createChannel();
-		this.channel.queueDeclare(this.QUEUE_NAME, false, false, false, null);
-
+	public QueueAssociation(String ipAddress) {
+		try {
+			this.ipAddress=ipAddress;
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(ipAddress);
+			this.connection = factory.newConnection();
+			this.channel = connection.createChannel();
+			this.channel.queueDeclare(this.QUEUE_NAME, false, false, false, null);
+		} catch(IOException exception) {
+			throw new JMSException("ERROR - Problem at creation of queue with IP address " + ipAddress + " "
+									+ exception.getMessage());
+		}
 	}
-
 
 	public String getQUEUE_NAME() {
 		return QUEUE_NAME;
 	}
 
-
-	public String getIpAdress() {
-		return ipAdress;
+	public String getIpAddress() {
+		return ipAddress;
 	}
-
 
 	public Connection getConnection() {
 		return connection;
 	}
 
-
 	public Channel getChannel() {
 		return channel;
 	}
-	
 }

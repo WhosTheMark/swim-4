@@ -50,4 +50,14 @@ public class MessageConfigurationConsumer extends Message {
 		this.consumerBehaviours = consumerBehaviours;
 	}
 	
+	public boolean equals(Object o) {
+		if(o.getClass() == MessageConfigurationConsumer.class) {
+			MessageConfigurationConsumer aux = (MessageConfigurationConsumer) o;
+			return super.equals(aux)
+					&& producerId.equals(aux.getProducerId())
+					&& name.equals(aux.getName())
+					&&consumerBehaviours.equals(aux.getConsumerBehaviours());
+		}
+		return false;
+	}
 }

@@ -8,12 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jms.JavaAppSender;
+import jmsmainapp.JavaAppSender;
 
 import messaging.ConsumerBehaviour;
+import messaging.Message;
 import messaging.MessageConfigurationConsumer;
 import messaging.MessageConfigurationProducer;
 import messaging.ProducerBehaviour;
+import model.BehaviourT;
 import model.Scenario;
 
 import org.junit.Before;
@@ -21,6 +23,7 @@ import org.junit.Test;
 import static org.mockito.Mockito.*;
 
 import scenario.Configurator;
+import scenario.ScenarioException;
 
 public class ConfiguratorTest {
 
@@ -32,9 +35,9 @@ public class ConfiguratorTest {
 
 	@Before
 	public void setUp() {
+		sender = mock(JavaAppSender.class);
 		configurator = new Configurator(sender);
 		scenarioFactory = new TestScenarioFactory();
-		sender = mock(JavaAppSender.class);
 	}
 	
 	@Test
@@ -53,11 +56,11 @@ public class ConfiguratorTest {
 	
 	private List<MessageConfigurationProducer> getProducerMessages() {
 		List<MessageConfigurationProducer> messages = new ArrayList<MessageConfigurationProducer>();
-		messages.add(createProducerMessage("p1", "producer1", "c1", 125, 1, 10, 1));
+		messages.add(createProducerMessage("p1", "producer1", "c1", 40, 1, 10, 1));
 		messages.add(createProducerMessage("p2", "producer2", "c2", 50, 1, 10, 5));
 		return messages;
 	}
-	
+
 	private MessageConfigurationProducer createProducerMessage(String id, String name,String consumerId,
 															   int datasize, int begin, int end, int processingTime) {
 		Map<String, List<ProducerBehaviour>> pBehaviour = new HashMap<String, List<ProducerBehaviour>>();
@@ -81,15 +84,46 @@ public class ConfiguratorTest {
 		return new MessageConfigurationConsumer(null, id, producerId, name, behaviours);
 	}
 	
-	/*<consumer id="c2">
-			<name>consumer2</name>
-			<producerId>p2</producerId>
-
-			<behaviour timeUnit="ms" begin="1" end="10">
-    			<frequency>12</frequency>
-    			<processingTime timeUnit="ms">5</processingTime>
-    			<datasize sizeUnit="bytes">20</datasize>
-			</behaviour>    
-		</consumer>
-	 * */
+	@Test(expected=ScenarioException.class)
+	public void consumerBehavioursOverlap() {
+		Scenario scenario = scenarioFactory.buildOverlappingBehavioursScenario();
+		List<BehaviourT> behaviours = scenarioFactory.getOverlappingBehaviour();
+		String expectedErrorMsg
+			= getExpectedOverlappingErrorMessage(behaviours.get(0),behaviours.get(1));
+		try {
+			configurator.sendConfigurationMessages(scenario);
+		} catch(ScenarioException exception) {
+			assertEquals(expectedErrorMsg, exception.getMessage());
+			verify(sender,never()).send(any(Message.class));
+			throw new ScenarioException(exception);
+		}
+		
+	}
+	
+	@Test(expected=ScenarioException.class)
+	public void impossibleBehaviour() {
+		Scenario scenario = scenarioFactory.buildImpossibleBehaviourScenario();
+		BehaviourT behaviour = scenarioFactory.getImpossibleBehaviour();
+		String expectedErrorMsg = getExpectedImpossibleBehaviourMsg(behaviour);
+		try {
+			configurator.sendConfigurationMessages(scenario);
+		} catch(ScenarioException exception) {
+			assertEquals(expectedErrorMsg, exception.getMessage());
+			verify(sender,never()).send(any(Message.class));
+			throw new ScenarioException(exception);
+		}
+	}
+	
+	private String getExpectedImpossibleBehaviourMsg(BehaviourT behaviour) {
+		return "ERROR - Behaviour "
+			 + behaviour.toString()
+			 + " is impossible to achieve";
+	}
+	
+	private String getExpectedOverlappingErrorMessage(BehaviourT b1, BehaviourT b2) {
+		return "ERROR - Behaviours "
+		      + b1.toString() + " and "
+			  + b2.toString()
+			  + " overlap";
+	}
 }

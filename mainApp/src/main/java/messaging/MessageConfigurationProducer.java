@@ -55,4 +55,15 @@ public class MessageConfigurationProducer extends Message {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public boolean equals(Object o) {
+		if(o.getClass() == MessageConfigurationProducer.class) {
+			MessageConfigurationProducer aux = (MessageConfigurationProducer) o;
+			return super.equals(aux)
+					&& name.equals(aux.getName())
+					&& datasize == aux.getDatasize()
+					&& producerBehaviours.equals(aux.getProducerBehaviours());
+		}
+		return false;
+	}
 }
