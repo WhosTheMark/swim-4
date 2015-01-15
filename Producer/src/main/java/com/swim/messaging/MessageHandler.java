@@ -9,6 +9,8 @@ import java.util.logging.Logger;
 import messaging.MessageConfigurationProducer;
 
 
+import messaging.MessageConfigurationProducer;
+
 /**
  *
  * @author Thomas
