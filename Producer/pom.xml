@@ -52,6 +52,12 @@
             <type>jar</type>
         </dependency>
         <dependency>
+            <groupId>fr.insa.toulouse.tp2_g2</groupId>
+            <artifactId>mainApp</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>

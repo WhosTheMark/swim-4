@@ -1,6 +1,6 @@
 package com.swim.producer;
 
-import com.swim.messaging.ProducerBehaviour;
+import messaging.ProducerBehaviour;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +28,12 @@ public class ProducerServiceTest {
         int waitTime = 3;
         
         List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(0, 3, 12, 10));
-        producerBehaviourList.add(new ProducerBehaviour(3, 6, 20, 1));
+        producerBehaviourList.add(new ProducerBehaviour(0, 3, 10));
+        producerBehaviourList.add(new ProducerBehaviour(3, 6, 1));
         HashMap<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
         producerBehaviours.put("aa", producerBehaviourList);
         producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(2, 3000, 200, 2));
+        producerBehaviourList.add(new ProducerBehaviour(2, 3000, 2));
         producerBehaviours.put("bb", producerBehaviourList);
         System.out.println(instance.getModel().getData());
         instance.getModel().setProducerBehaviours(producerBehaviours);

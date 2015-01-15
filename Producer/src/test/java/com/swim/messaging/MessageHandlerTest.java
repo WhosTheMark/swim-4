@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.junit.Test;
+
+import com.swim.producer.ProducerService;
+import java.util.Map;
+import messaging.MessageConfigurationProducer;
+import messaging.ProducerBehaviour;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,42 +19,39 @@ import static org.junit.Assert.*;
  * @author Thomas
  */
 public class MessageHandlerTest {
+	MessageConfigurationProducer message;
+	public MessageHandlerTest() {
+		List<ProducerBehaviour> behaviours = new ArrayList<> ();
+		behaviours.add(new ProducerBehaviour(0, 100, 12));
+		Map<String, List<ProducerBehaviour>> behaviorsMap = new HashMap<String, List<ProducerBehaviour>>();
+		behaviorsMap.put("producer1", behaviours);
+		message = new MessageConfigurationProducer("me", "you", "p1", 10,behaviorsMap);
+	}
+	/**
+	 * Test of handleMessage method, of class MessageHandler.
+	 */
+	@Test
+	public void testFromJSONtoMessage() {
+		String messageJson = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
+		MessageHandler instance = new MessageHandler(new Model(20));
+		MessageConfigurationProducer messageGenerated = instance.fromJSONtoMessage(messageJson);
+		assertNotNull(messageGenerated);
+		assertEquals(message.getDatasize(), messageGenerated.getDatasize());
+		System.out.println(message.getProducerBehaviours().get("producer1"));
+		System.out.println(messageGenerated.getProducerBehaviours().get("producer1"));
+//		assertEquals(message.getProducerBehaviours().get("producer1"),
+//				messageGenerated.getProducerBehaviours().get("producer1"));
+		assertEquals(message.getFrom(), messageGenerated.getFrom());
+		assertEquals(message.getTo(), messageGenerated.getTo());
+		assertEquals(message.getName(), messageGenerated.getName());
+	}
 
-    public MessageHandlerTest() {
-    }
-
-    /**
-     * Test of handleMessage method, of class MessageHandler.
-     */
-    @Test
-    public void testFromJSONtoMessage() {
-//        System.out.println("handleMessage");
-//        String messageJson = "{\"from\":\"P\",\"to\":\"D\",\"name\":\"name\",\"producerBehaviour\":{\"aa\":[{\"begin\":0,\"end\":3,\"datasize\":12,\"processingTime\":10}]}}";
-//        MessageConfigurationProducer expectedMessage = new MessageConfigurationProducer("P", "D", "name", null)
-//        MessageHandler instance = new MessageHandler();
-//        MessageConfigurationProducer message = instance.fromJSONtoMessage(messageJson);
-//        assertNotNull(message);
-//        assertEquals(expectedMessage.getDataSize(), message.getDataSize());
-//        assertEquals(expectedMessage.getDuration(), message.getDuration());
-//        assertEquals(expectedMessage.getFrom(), message.getFrom());
-//        assertEquals(expectedMessage.getTo(), message.getTo());
-    }
-
-    /**
-     * Test of handleMessage method, of class MessageHandler.
-     */
-    @Test
-    public void testFromMessageToJSON() {
-        System.out.println("handleMessage");
-        MessageHandler instance = new MessageHandler(new Model(20));
-         List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(0, 3, 12, 10));
-      
-        HashMap<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
-        producerBehaviours.put("aa", producerBehaviourList);
-        MessageConfigurationProducer message = new MessageConfigurationProducer("P", "D", "name", producerBehaviours);
-        String expectedMessage = "{\"from\":\"P\",\"to\":\"D\",\"name\":\"name\",\"producerBehaviour\":{\"aa\":[{\"begin\":0,\"end\":3,\"datasize\":12,\"processingTime\":10}]}}";
-        System.out.println(message.toJson());
-        assertEquals(expectedMessage, message.toJson());
-    }
+	/**
+	 * Test of handleMessage method, of class MessageHandler.
+	 */
+	@Test
+	public void testFromMessageToJSON() {
+		String expectedMessage = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
+		assertEquals(expectedMessage, message.toJson());
+	}
 }
