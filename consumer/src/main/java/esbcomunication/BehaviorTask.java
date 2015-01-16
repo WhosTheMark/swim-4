@@ -67,23 +67,31 @@ class BehaviorTask implements Runnable {
     }
 
     /**
-     * Builds the message that will be sent.
+     * Builds the message that will be sent. It builds the message using the
+     * following format:
+     *
+     * <ns2:request xmlns:ns2="http://producer.swim.com/">
+     *      <from>consumerId</from>
+     *      <messageRequest>aaaaaaaaa</messageRequest>
+     *  </ns2:request>
+     *
      * @param datasize the size of the message.
      * @return the message to be sent.
-     * TODO Take in mind the format of the message as stated in the WSDL.
-     * and maybe the consumerId.
      */
     private String buildMessage(int datasize){
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append("<ns2:hello xmlns:ns2=\"http://serv/\"><name>");
+        builder.append("<ns2:request xmlns:ns2=\"http://producer.swim.com/\"><from>");
+
+        builder.append(deliveryInfo.getConsumerId());
+        builder.append("</from><messageRequest>");
 
         for(int i = 0; i < datasize; ++i){
             builder.append('a');
         }
 
-        builder.append("</name></ns2:hello>");
+        builder.append("</messageRequest></ns2:request>");
 
         return builder.toString();
     }
