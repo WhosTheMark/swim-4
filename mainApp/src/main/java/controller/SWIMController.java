@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 
-import model.Scenario;
 import jmsmainapp.JMSException;
 import jmsmainapp.JMSManager;
 import jmsmainapp.JavaAppSender;
+import model.Scenario;
 import scenario.Configurator;
 import scenario.ScenarioException;
 import scenario.ScenarioParser;
@@ -31,6 +30,10 @@ public class SWIMController {
 		} catch(JMSException exception) {
 			writeErrorReport(exception.getMessage());
 		}
+	}
+	
+	public String getReportName() {
+		return ERRORREPORT;
 	}
 	
 	public void runScenario(String scenarioName) {
@@ -64,6 +67,10 @@ public class SWIMController {
 		int year = today.get(Calendar.YEAR);
         int month = today.get(Calendar.MONTH)+1;
         int day = today.get(Calendar.DAY_OF_MONTH);
-		writer.write("Ran on : " + day + "/" + month + "/" + year + "\n");
+        int hour = today.get(Calendar.HOUR);
+        int minute = today.get(Calendar.MINUTE);
+        int seconde = today.get(Calendar.SECOND);
+		writer.write("Ran on: " + day + "/" + month + "/" + year
+				   + " at: " + hour + "h" + minute + "min" + seconde + "s\n");
 	}
 }

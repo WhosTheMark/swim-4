@@ -23,7 +23,7 @@ public class ScenarioParser {
 			Unmarshaller unmarshaller = setUpUnmarshaller(jc);
 			scenario = (Scenario) unmarshaller.unmarshal(scenarioFile);
 		} catch (Exception e) {
-			throw new ScenarioException(e.getMessage());
+			throw new ScenarioException("ERROR - file " + scenarioFile.getPath() + " does not correspond to model");
 		}
 		return scenario;
 	}
