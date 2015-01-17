@@ -18,9 +18,11 @@ public class MessageResult extends Message{
 	
 	public MessageResult() {
 		super();
+                setType(Type.RESULT);
 	}
 	public MessageResult(String from, String to) {
 		super(from, to);
+                setType(Type.RESULT);
 	}
 	public String getConsumerId() {
 		return consumerId;
@@ -62,6 +64,7 @@ public class MessageResult extends Message{
 			String producerId, long requestTime, long responseTime,
 			int requestDataSize, int responseDataSize, final String status) {
 		super(from, to);
+                this.setType(Type.RESULT);
 		this.consumerId = consumerId;
 		this.producerId = producerId;
 		this.requestTime = requestTime;

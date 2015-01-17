@@ -14,6 +14,7 @@ public class MessageConfigurationProducer extends Message {
 	public MessageConfigurationProducer(String from, String to, String name, int datasize,
 										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(from, to);
+                this.setType(Type.CONFIGURATIONPRODUCER);
 		this.name = name;
 		this.datasize = datasize;
 		this.producerBehaviours = producerBehaviours;
@@ -22,6 +23,7 @@ public class MessageConfigurationProducer extends Message {
 	public MessageConfigurationProducer(String to, String name, int datasize,
 										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(null, to);
+                this.setType(Type.CONFIGURATIONPRODUCER);
 		this.name = name;
 		this.datasize = datasize;
 		this.producerBehaviours = producerBehaviours;
@@ -29,6 +31,7 @@ public class MessageConfigurationProducer extends Message {
 
 	public MessageConfigurationProducer() {
 		super();
+                this.setType(Type.CONFIGURATIONPRODUCER);
 	}
 
 	public int getDatasize() {
