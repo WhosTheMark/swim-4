@@ -26,11 +26,10 @@ public class ScenarioParserTest {
 	@Test(expected=ScenarioException.class)
 	public void fileDoesNotExist() {
 		Scenario scenario = null;
-		String scenarioName = "ressources/notExistingFile.txt";
 		try {
-			scenario = scenarioParser.parseScenario(scenarioName);
+			scenario = scenarioParser.parseScenario(ScenarioNames.NOTEXISTINGFILE);
 		} catch(ScenarioException exception) {
-			assertEquals("ERROR - file " + scenarioName + " does not exist", exception.getMessage());
+			assertEquals("ERROR - file " + ScenarioNames.NOTEXISTINGFILE + " does not exist", exception.getMessage());
 			assertNull(scenario);
 			throw new ScenarioException(exception);
 		}
@@ -39,11 +38,10 @@ public class ScenarioParserTest {
 	@Test(expected=ScenarioException.class)
 	public void inputIsNotAnXMLFile() {
 		Scenario scenario = null;
-		String scenarioName = "ressources/notXMLInput.txt";
 		try {
-			scenario = scenarioParser.parseScenario(scenarioName);
+			scenario = scenarioParser.parseScenario(ScenarioNames.NOTXMLINPUT);
 		} catch(ScenarioException exception) {
-			assertEquals("ERROR - file " + scenarioName + " is not an XML file", exception.getMessage());
+			assertEquals("ERROR - file " + ScenarioNames.NOTXMLINPUT + " is not an XML file", exception.getMessage());
 			assertNull(scenario);
 			throw new ScenarioException(exception);
 		}
@@ -51,64 +49,45 @@ public class ScenarioParserTest {
 	
 	@Test(expected=ScenarioException.class)
 	public void noConsumersInScenario() {
-		Scenario scenario = null;
-		String scenarioName = "ressources/scenarioWithoutConsumer.xml";
-		try {
-			scenario = scenarioParser.parseScenario(scenarioName);
-		} catch(ScenarioException exception) {
-			assertNull(scenario);
-			throw new ScenarioException(exception);
-		}
+		runFailingScenario(ScenarioNames.SCENARIOWITHOUTCONSUMER);
 	}
 	
 	@Test(expected=ScenarioException.class)
 	public void validStructureButWrongValues() {
-		Scenario scenario = null;
-		String scenarioName = "ressources/scenarioWithWrongValues.xml";
-		try {
-			scenario = scenarioParser.parseScenario(scenarioName);
-		} catch(ScenarioException exception) {
-			assertNull(scenario);
-			throw new ScenarioException(exception);
-		}
+		runFailingScenario(ScenarioNames.SCENARIOWITHWRONGVALUES);
 	}
 	
 	@Test(expected=ScenarioException.class)
 	public void nonExistingProducerReferenced() {
-		Scenario scenario = null;
-		String scenarioName = "ressources/wrongProducerReferenced.xml";
-		try {
-			scenario = scenarioParser.parseScenario(scenarioName);
-		} catch(ScenarioException exception) {
-			assertNull(scenario);
-			throw new ScenarioException(exception);
-		}
-	}
-	@Test
-	public void inputIsValid() {
-		String scenarioName = "ressources/xml/scenario1.xml";
-		Scenario scenario = scenarioParser.parseScenario(scenarioName);
-		assertNotNull(scenario);
-		Scenario expectedScenario = scenarioFactory.buildExpectedNormalScenario();
-		assertTrue(expectedScenario.equals(scenario));
+		runFailingScenario(ScenarioNames.WRONGPRODUCERREFERENCED);
 	}
 	
 	@Test(expected=ScenarioException.class)
 	public void scenarioIsIllFormated() {
+		runFailingScenario(ScenarioNames.NOTVALIDSCENARIO);
+	}
+	
+	private void runFailingScenario(String scenarioName) {
 		Scenario scenario = null;
 		try {
-			String scenarioName = "ressources/xml/notValidScenario.xml";
 			scenario = scenarioParser.parseScenario(scenarioName);
 		} catch(ScenarioException exception) {
 			assertNull(scenario);
 			throw new ScenarioException(exception);
 		}
 	}
+	
+	@Test
+	public void inputIsValid() {
+		Scenario scenario = scenarioParser.parseScenario(ScenarioNames.VALIDNORMALSCENARIO);
+		assertNotNull(scenario);
+		Scenario expectedScenario = scenarioFactory.buildExpectedNormalScenario();
+		assertTrue(expectedScenario.equals(scenario));
+	}
 
 	@Test
 	public void veryLargeValidScenario() {
-		String scenarioName = "ressources/xml/largeScenario.xml";
-		Scenario scenario = scenarioParser.parseScenario(scenarioName);
+		Scenario scenario = scenarioParser.parseScenario(ScenarioNames.VALIDLARGESCENARIO);
 		Scenario expectedScenario = scenarioFactory.buildExpectedLargeScenario();
 		assertEquals(expectedScenario, scenario);
 	}

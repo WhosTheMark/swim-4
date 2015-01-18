@@ -25,20 +25,27 @@ import database.Database;
  * Described as classes and objects to manage their structure
  * Stored into database in JSON
  */
-public abstract class Message {
+public class Message {
 	private String from;
 	private String to;
+    protected MessageType type;
 
-	public Message(String from, String to) {
-		this.from = from;
-		this.to = to;
-	}
-	
-	public Message() {
-		this.from = null;
-		this.to = null;
-	}
+    public Message(String from, String to) {
+        this.from = from;
+        this.to = to;
+        this.type = MessageType.START;
+    }
 
+    public Message() {
+        this.from = null;
+        this.to = null;
+        this.type = MessageType.START;
+    }
+
+    public MessageType getType() {
+        return type;
+    }
+    
 	public String getFrom() {
 		return from;
 	}

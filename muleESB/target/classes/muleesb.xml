@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ws="http://www.mulesoft.org/schema/mule/ws" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.5.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd">
+    <ws:consumer-config name="Web_Service_Consumer" wsdlLocation="ProducerService.wsdl" service="ProducerService" port="ProducerServicePort" serviceAddress="http://localhost:8080/ProducerService/ProducerService" doc:name="Web Service Consumer"/>
+    <flow name="muleesbFlow1" doc:name="muleesbFlow1">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="9081" doc:name="HTTP" path="p1"/>
+        <ws:consumer config-ref="Web_Service_Consumer" operation="request" doc:name="Web Service Consumer"/>
+    </flow>
+</mule>

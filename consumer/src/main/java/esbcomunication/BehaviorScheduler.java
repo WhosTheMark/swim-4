@@ -17,10 +17,11 @@ public class BehaviorScheduler {
 
     private List<ConsumerBehaviour> behaviors;
     private ESBDeliveryInformation deliveryInfo;
-    private long scenarioDuration;
 
     /** Max number of threads in the pool.*/
     private static final int MAX_NUMBER_THREADS = 4;
+
+    private static final int MAX_HOURS_TO_WAIT = 3;
 
     /**
      * Class to build a {@link BehaviorScheduler} object.
@@ -32,7 +33,6 @@ public class BehaviorScheduler {
         private String consumerId;
         private String producerId;
         private String esbAddress;
-        private long scenarioDuration;
 
         public BehaviorSchedulerBuilder() {}
 
@@ -67,11 +67,6 @@ public class BehaviorScheduler {
             return this;
         }
 
-        public BehaviorSchedulerBuilder setScenarioDuration(long scenarioDuration){
-            this.scenarioDuration = scenarioDuration;
-            return this;
-        }
-
         public BehaviorSchedulerBuilder setBehaviors(List<ConsumerBehaviour> behaviors){
             this.behaviors = behaviors;
             return this;
@@ -90,15 +85,14 @@ public class BehaviorScheduler {
             }
 
             return new BehaviorScheduler(behaviors,consumerId,producerId,
-                    esbAddress, scenarioDuration);
+                    esbAddress);
         }
     }
 
     private BehaviorScheduler(List<ConsumerBehaviour> behaviors, String consumerId,
-            String producerId, String esbAddress, long scenarioDuration) {
+            String producerId, String esbAddress) {
 
         this.behaviors = behaviors;
-        this.scenarioDuration = scenarioDuration;
         this.deliveryInfo = new ESBDeliveryInformation(consumerId,producerId,esbAddress);
     }
 
@@ -124,7 +118,7 @@ public class BehaviorScheduler {
      */
     private void waitForBehaviors(ScheduledExecutorService executor) {
         try {
-            executor.awaitTermination(scenarioDuration, TimeUnit.MILLISECONDS);
+            executor.awaitTermination(MAX_HOURS_TO_WAIT, TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
