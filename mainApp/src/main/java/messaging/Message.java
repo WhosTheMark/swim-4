@@ -56,15 +56,12 @@ public abstract class Message {
 	}
 
 	public String toJson(){
-		// instance a json mapper
 		ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 		String json = "";
-		// generate json
 		try {
 			json = mapper.writeValueAsString(this);
 		} catch (JsonProcessingException e) {
-			System.out.println("Problem.");
-			e.printStackTrace();
+			throw new MessageException("ERROR - Problem when converting a message to json "+e.getMessage());
 		}
 		return json;
 
@@ -116,24 +113,19 @@ public abstract class Message {
 		for (SearchHit s : responseSearch.getHits().getHits()){
 			try {
 				object = (T) T.newInstance();
-			} catch (InstantiationException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			} catch (InstantiationException e) {
+				throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
+			} catch (IllegalAccessException e) {
+				throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
 			}
 			try {
 				object = (T) new ObjectMapper().readValue(s.getSourceAsString(), T);
 			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
 			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
 			}
 			result.add(object);
 		}
@@ -151,12 +143,11 @@ public abstract class Message {
 	public static void delete(String type, String id){
 		Node node = nodeBuilder().client(true).node();
 		Client client = node.client();
-		DeleteResponse response = client.prepareDelete(Database.DATABASE_NAME, type, id)
+		client.prepareDelete(Database.DATABASE_NAME, type, id)
 				.execute()
 				.actionGet();
 		client.close();
 		node.close();
-		return ;
 	}
 	
 	public boolean equals(Object o) {

@@ -21,33 +21,29 @@ public class JMSManager {
 	private QueueAssociation queueAssociation;
 	private ConsumerReceiverThread receiver;//donner l acces
 	private String ipAdress="localhost";
-	
+
 	/**
 	 * Constructor
 	 * @throws IOException
 	 */
 	protected JMSManager() {
-		
-		try {
-			this.topicAssociation=new TopicAssociation(this.ipAdress);		
-			this.queueAssociation=new QueueAssociation(this.ipAdress);
-			this.sender=new ConsumerSender(this.queueAssociation);			
-			this.receiver=new ConsumerReceiverThread(this.topicAssociation);
-			this.receiver.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		this.topicAssociation=new TopicAssociation(this.ipAdress);		
+		this.queueAssociation=new QueueAssociation(this.ipAdress);
+		this.sender=new ConsumerSender(this.queueAssociation);			
+		this.receiver=new ConsumerReceiverThread(this.topicAssociation);
+		this.receiver.start();
+
 	}
-		
-	
+
+
 	/**
 	 * Singleton de JMS Connection
 	 * @return
 	 * @throws IOException 
 	 */
 	public synchronized static JMSManager getInstance() throws IOException{
-		
+
 		if(jmsConnection==null){
 			jmsConnection=new JMSManager();
 		}
@@ -65,11 +61,11 @@ public class JMSManager {
 	}
 
 
-	
-	
 
 
 
-	
-	
+
+
+
+
 }
