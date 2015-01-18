@@ -18,12 +18,28 @@ public class MessageResult extends Message{
 	
 	public MessageResult() {
 		super();
-                setType(Type.RESULT);
+        type = MessageType.RESULT;
 	}
+	
 	public MessageResult(String from, String to) {
 		super(from, to);
-                setType(Type.RESULT);
+         type = MessageType.RESULT;
 	}
+	
+	public MessageResult(String from, String to, String consumerId,
+			String producerId, long requestTime, long responseTime,
+			int requestDataSize, int responseDataSize, final String status) {
+		super(from, to);
+        type = MessageType.RESULT;
+		this.consumerId = consumerId;
+		this.producerId = producerId;
+		this.requestTime = requestTime;
+		this.responseTime = responseTime;
+		this.requestDataSize = requestDataSize;
+		this.responseDataSize = responseDataSize;
+		this.status = status;
+	}
+	
 	public String getConsumerId() {
 		return consumerId;
 	}
@@ -60,19 +76,7 @@ public class MessageResult extends Message{
 	public void setResponseDataSize(int responseDataSize) {
 		this.responseDataSize = responseDataSize;
 	}
-	public MessageResult(String from, String to, String consumerId,
-			String producerId, long requestTime, long responseTime,
-			int requestDataSize, int responseDataSize, final String status) {
-		super(from, to);
-                this.setType(Type.RESULT);
-		this.consumerId = consumerId;
-		this.producerId = producerId;
-		this.requestTime = requestTime;
-		this.responseTime = responseTime;
-		this.requestDataSize = requestDataSize;
-		this.responseDataSize = responseDataSize;
-		this.status = status;
-	}
+	
 
 
 

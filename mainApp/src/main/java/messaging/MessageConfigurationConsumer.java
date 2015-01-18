@@ -6,8 +6,9 @@ public class MessageConfigurationConsumer extends Message {
 
 	public MessageConfigurationConsumer() {
 		super();
-                this.setType(Type.CONFIGURATIONCONSUMER);
+        type = MessageType.CONFIGURATIONCONSUMER;
 	}
+	
 	private String producerId;
 	private String name;
 	private List<ConsumerBehaviour> consumerBehaviours;
@@ -15,17 +16,19 @@ public class MessageConfigurationConsumer extends Message {
 	public MessageConfigurationConsumer(String from, String to, String producerId,
 										String name, List<ConsumerBehaviour> consumerBehaviours) {
 		super(from, to);
-                this.setType(Type.CONFIGURATIONCONSUMER);
-		this.name = name;
-		this.producerId = producerId;
-		this.consumerBehaviours = consumerBehaviours;
+        initializeMessage(producerId, name, consumerBehaviours);
 	}
 	
 	public MessageConfigurationConsumer(String to, String producerId, String name,
 										List<ConsumerBehaviour> consumerBehaviours) {
 		super(null, to);
-                this.setType(Type.CONFIGURATIONCONSUMER);
+        initializeMessage(producerId, name, consumerBehaviours);
+	}
+	
+	private void initializeMessage(String producerId, String name, List<ConsumerBehaviour> consumerBehaviours) {
+		type = MessageType.CONFIGURATIONCONSUMER;
 		this.name = name;
+		this.producerId = producerId;
 		this.consumerBehaviours = consumerBehaviours;
 	}
 

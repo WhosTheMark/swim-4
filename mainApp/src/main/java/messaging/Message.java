@@ -29,41 +29,22 @@ public class Message {
 
     private String from;
     private String to;
-    private Type type;
-
-    public enum Type {
-
-        CONFIGURATIONPRODUCER,
-        CONFIGURATIONCONSUMER,
-        ERROR,
-        RESULT,
-        START
-    }
+    protected MessageType type;
 
     public Message(String from, String to) {
         this.from = from;
         this.to = to;
-        this.type = Type.START;
+        this.type = MessageType.START;
     }
 
     public Message() {
         this.from = null;
         this.to = null;
-        this.type =null;
+        this.type = MessageType.START;
     }
 
-    /**
-     * @return the type
-     */
-    public Type getType() {
+    public MessageType getType() {
         return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(Type type) {
-        this.type = type;
     }
 
     public String getFrom() {
