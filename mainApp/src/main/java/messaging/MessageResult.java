@@ -3,7 +3,9 @@ package messaging;
 import java.util.concurrent.TimeUnit;
 
 public class MessageResult extends Message{
-
+	public static final String STATUS_OK = "STATUS_OK";
+	public static final String STATUS_TIMEOUT = "STATUS_TIMEOUT";
+	
 	private String consumerId;
 	private String producerId;
 	// always in TimeUnit.milliseconds
@@ -12,13 +14,32 @@ public class MessageResult extends Message{
 	// Later, we will add a time unit, like seconds, milliseconds, nanoseconds...
 	private int requestDataSize;
 	private int responseDataSize;
+	private String status;
 	
 	public MessageResult() {
 		super();
+        type = MessageType.RESULT;
 	}
+	
 	public MessageResult(String from, String to) {
 		super(from, to);
+         type = MessageType.RESULT;
 	}
+	
+	public MessageResult(String from, String to, String consumerId,
+			String producerId, long requestTime, long responseTime,
+			int requestDataSize, int responseDataSize, final String status) {
+		super(from, to);
+        type = MessageType.RESULT;
+		this.consumerId = consumerId;
+		this.producerId = producerId;
+		this.requestTime = requestTime;
+		this.responseTime = responseTime;
+		this.requestDataSize = requestDataSize;
+		this.responseDataSize = responseDataSize;
+		this.status = status;
+	}
+	
 	public String getConsumerId() {
 		return consumerId;
 	}
@@ -55,17 +76,7 @@ public class MessageResult extends Message{
 	public void setResponseDataSize(int responseDataSize) {
 		this.responseDataSize = responseDataSize;
 	}
-	public MessageResult(String from, String to, String consumerId,
-			String producerId, long requestTime, long responseTime,
-			int requestDataSize, int responseDataSize) {
-		super(from, to);
-		this.consumerId = consumerId;
-		this.producerId = producerId;
-		this.requestTime = requestTime;
-		this.responseTime = responseTime;
-		this.requestDataSize = requestDataSize;
-		this.responseDataSize = responseDataSize;
-	}
+	
 
 
 

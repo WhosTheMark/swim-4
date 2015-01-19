@@ -10,25 +10,29 @@ public class MessageConfigurationProducer extends Message {
 	
 	private Map<String, List<ProducerBehaviour>> producerBehaviours;
 
+	public MessageConfigurationProducer() {
+		super();
+        type = MessageType.CONFIGURATIONPRODUCER;
+	}
 
 	public MessageConfigurationProducer(String from, String to, String name, int datasize,
 										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(from, to);
-		this.name = name;
-		this.datasize = datasize;
-		this.producerBehaviours = producerBehaviours;
+        initializeMessage(name, datasize, producerBehaviours);      
 	}
 	
 	public MessageConfigurationProducer(String to, String name, int datasize,
 										Map<String, List<ProducerBehaviour>> producerBehaviours) {
 		super(null, to);
+        initializeMessage(name, datasize, producerBehaviours);
+	}
+	
+	private void initializeMessage(String name, int datasize, Map<String, List<ProducerBehaviour>> producerBehaviours) {
+		type = MessageType.CONFIGURATIONPRODUCER;
 		this.name = name;
 		this.datasize = datasize;
 		this.producerBehaviours = producerBehaviours;
-	}
-
-	public MessageConfigurationProducer() {
-		super();
+		
 	}
 
 	public int getDatasize() {

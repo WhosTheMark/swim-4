@@ -1,6 +1,11 @@
 package fr.insa.toulouse.tp2g2.mainApp;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jms.JavaAppSender;
-
+import jmsmainapp.JavaAppSender;
 import messaging.ConsumerBehaviour;
 import messaging.Message;
 import messaging.MessageConfigurationConsumer;
@@ -20,7 +24,6 @@ import model.Scenario;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
 import scenario.Configurator;
 import scenario.ScenarioException;
@@ -94,12 +97,7 @@ public class ConfiguratorTest {
 			configurator.sendConfigurationMessages(scenario);
 		} catch(ScenarioException exception) {
 			assertEquals(expectedErrorMsg, exception.getMessage());
-			try {
-				verify(sender,never()).send(any(Message.class));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			verify(sender,never()).send(any(Message.class));
 			throw new ScenarioException(exception);
 		}
 		
@@ -114,16 +112,33 @@ public class ConfiguratorTest {
 			configurator.sendConfigurationMessages(scenario);
 		} catch(ScenarioException exception) {
 			assertEquals(expectedErrorMsg, exception.getMessage());
-			try {
-				verify(sender,never()).send(any(Message.class));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			verify(sender,never()).send(any(Message.class));
 			throw new ScenarioException(exception);
 		}
 	}
 	
+	@Test(expected=ScenarioException.class)
+	public void behaviourIncompatibleWithScenarioDuration() {
+		Scenario scenario = scenarioFactory.buildIncompatibleBehaviourScenario();
+		BehaviourT behaviour = scenarioFactory.getIncompatibleBehaviour();
+		int duration = scenarioFactory.getScenarioDuration();
+		String expectedErrorMsg = getExpectedIncompatibleBehaviourMsg(behaviour, duration);
+		try {
+			configurator.sendConfigurationMessages(scenario);
+		} catch(ScenarioException exception) {
+			assertEquals(expectedErrorMsg, exception.getMessage());
+			verify(sender,never()).send(any(Message.class));
+			throw new ScenarioException(exception);
+		}
+		/**/
+	}
+	
+	private String getExpectedIncompatibleBehaviourMsg(BehaviourT behaviour, int duration) {
+		return "ERROR - Behaviour "
+			  + behaviour.toString()
+				+ " is not compatible with scenario duration "
+				+ duration;
+	}
 	private String getExpectedImpossibleBehaviourMsg(BehaviourT behaviour) {
 		return "ERROR - Behaviour "
 			 + behaviour.toString()

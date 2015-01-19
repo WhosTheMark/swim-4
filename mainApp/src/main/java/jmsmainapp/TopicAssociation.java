@@ -15,18 +15,25 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class TopicAssociation {
-	private String ipAdress="localhost";// TODO  Change with the right ipAdress
+	private String ipAddress="localhost";// TODO  Change with the right ipAdress
 	private final String EXCHANGE_NAME = "topic";
 	private Channel channel;
 	private Connection connection;
 	
-	public TopicAssociation(String ipAdress) throws IOException{
-		this.ipAdress=ipAdress;
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(this.ipAdress);
-		this.connection = factory.newConnection();
-		this.channel = this.connection.createChannel();
-		this.channel.exchangeDeclare(this.EXCHANGE_NAME, "fanout");
+	public TopicAssociation(String ipAddress) {
+		try {
+			this.ipAddress=ipAddress;
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(this.ipAddress);
+
+			this.connection = factory.newConnection();
+
+			this.channel = this.connection.createChannel();
+			this.channel.exchangeDeclare(this.EXCHANGE_NAME, "fanout");
+		} catch (IOException e) {
+			throw new JMSException("ERROR - Problem at creation of topic with ip address " + ipAddress + " "
+									+ e.getMessage());
+		}
 	}
 
 	public Channel getChannel() {

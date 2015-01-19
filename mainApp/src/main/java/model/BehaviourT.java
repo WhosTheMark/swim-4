@@ -283,6 +283,9 @@ public class BehaviourT implements Comparable<BehaviourT>{
 		return getBeginInMs() < getEndInMs();
 	}
 	
+	public boolean isCompatibleWithScenarioDuration(int duration) {
+		return getEndInMs() > duration;
+	}
 	public String toString() {
 		   return "{ frequency : " + frequency.toString()
 				   + " processing time : " + processingTime.toString()

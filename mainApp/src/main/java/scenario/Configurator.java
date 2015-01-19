@@ -1,6 +1,5 @@
 package scenario;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,17 +8,19 @@ import java.util.Map;
 
 import messaging.*;
 import model.*;
-import jms.JavaAppSender;
+import jmsmainapp.JavaAppSender;
 
 public class Configurator {
 
 	private JavaAppSender sender;
+	private int scenarioDuration;
 	
 	public Configurator(JavaAppSender sender) {
 		this.sender = sender;
 	}
 	
 	public void sendConfigurationMessages(Scenario scenario) {
+		scenarioDuration = scenario.getDurationInMs();
 		sendConfigurationMessageToConsumers(scenario.getConsumers());
 		sendConfigurationMessageToProducers(scenario);
 	}
@@ -28,11 +29,7 @@ public class Configurator {
 		List<MessageConfigurationConsumer> messages
 			= createConsumersConfigurationMessage(consumers.getConsumers());
 		for(MessageConfigurationConsumer message: messages) {
-			try {
-				sender.send(message);
-			} catch(IOException exception) {
-				System.out.println("ouch consumer");
-			}
+			sender.send(message);
 		}
 	}
 	
@@ -68,7 +65,13 @@ public class Configurator {
 	private void checkIfBehavioursOK(List<BehaviourT> behaviours) {
 		Collections.sort(behaviours);
 		for(int i=0; i < behaviours.size(); i++) {
-			if(!behaviours.get(i).isPossibleBehaviour()) {
+			if(!behaviours.get(i).isCompatibleWithScenarioDuration(scenarioDuration)) {
+				throw new ScenarioException("ERROR - Behaviour "
+						+ behaviours.get(i).toString()
+						+ " is not compatible with scenario duration "
+						+ scenarioDuration);
+				
+			} else if(!behaviours.get(i).isPossibleBehaviour()) {
 				throw new ScenarioException("ERROR - Behaviour "
 						+ behaviours.get(i).toString()
 						+ " is impossible to achieve");
@@ -101,11 +104,7 @@ public class Configurator {
 	
 	private void sendConfigurationMessageToProducer(ProducerT producer, Scenario scenario) {
 		MessageConfigurationProducer message = createProducerConfigurationMessage(producer, scenario);
-		try {
-			sender.send(message);
-		} catch(IOException exceptio) {
-			System.out.println("ouch");
-		}
+		sender.send(message);
 	}
 	
 	private MessageConfigurationProducer createProducerConfigurationMessage(ProducerT producer, Scenario scenario) {

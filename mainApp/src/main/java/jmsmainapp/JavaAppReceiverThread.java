@@ -16,8 +16,6 @@ import com.rabbitmq.client.ShutdownSignalException;
 public class JavaAppReceiverThread extends Thread{
 	private QueueAssociation association;
 	
-	
-	
 	public JavaAppReceiverThread(QueueAssociation association){
 		this.association=association;
 	}
@@ -36,13 +34,13 @@ public class JavaAppReceiverThread extends Thread{
 			}
 			
 		} catch (IOException e) {			
-			e.printStackTrace();
+			throw new JMSException(e);
 		} catch (ShutdownSignalException e) {			
-			e.printStackTrace();
+			throw new JMSException(e);
 		} catch (ConsumerCancelledException e) {			
-			e.printStackTrace();
+			throw new JMSException(e);
 		} catch (InterruptedException e) {			
-			e.printStackTrace();
+			throw new JMSException(e);
 		}
 	}
 }

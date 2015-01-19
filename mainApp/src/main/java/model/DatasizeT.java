@@ -97,8 +97,6 @@ public class DatasizeT {
     public boolean equals(Object o) {
     	if(o.getClass() == DatasizeT.class) {
     		DatasizeT aux = (DatasizeT) o;
-    		System.out.println("value : " +  value.equals(aux.getValue()));
-    		System.out.println("v : " + value + " aux_v : " + aux.getValue());
     		return value.equals(aux.getValue())
     			&& sizeUnit.equals(aux.getSizeUnit());
     	}

@@ -24,7 +24,7 @@ public class JMSManager {
 	private QueueAssociation queueAssociation;
 	private ConsumerReceiverThread receiver;//donner l acces
 	private String ipAdress="localhost";
-	
+
 	/**
 	 * Constructor
 	 * @param nameConsumer 
@@ -46,7 +46,6 @@ public class JMSManager {
 	public ConsumerReceiverThread createConsumerThread (String nameConsumer, String esbAddr) {
 		return new ConsumerReceiverThread(this.topicAssociation, nameConsumer, esbAddr);
 	}
-		
 	
 	/**
 	 * Singleton de JMS Connection
@@ -54,7 +53,7 @@ public class JMSManager {
 	 * @throws IOException 
 	 */
 	public synchronized static JMSManager getInstance() throws IOException{
-		
+
 		if(jmsConnection==null){
 			jmsConnection=new JMSManager();
 		}
@@ -72,11 +71,11 @@ public class JMSManager {
 	}
 
 
-	
-	
 
 
 
-	
-	
+
+
+
+
 }

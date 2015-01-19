@@ -35,9 +35,9 @@ public class MessagesAreRetrievedFromDB {
 
 	@Test
 	public void testGetValidResultMessagesFromDB() {
-		MessageResult mr1 = new MessageResult("him", "JavaApp", "c1", "p1", 2, 5, 10, 30);
-		MessageResult mr2 = new MessageResult("me", "JavaApp", "c2", "p2", 2, 5, 10, 30);
-		MessageResult mr3 = new MessageResult("me", "JavaApp", "c1", "p1", 3, 5, 20, 30);
+		MessageResult mr1 = new MessageResult("him", "JavaApp", "c1", "p1", 2, 5, 10, 30, MessageResult.STATUS_OK);
+		MessageResult mr2 = new MessageResult("me", "JavaApp", "c2", "p2", 2, 5, 10, 30, MessageResult.STATUS_OK);
+		MessageResult mr3 = new MessageResult("me", "JavaApp", "c1", "p1", 3, 5, 20, 30, MessageResult.STATUS_OK);
 		MessageError me1 = new MessageError("me", "you", "NullPointerException");
 		
 		// .store() stores under collection swim/result

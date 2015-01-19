@@ -44,21 +44,26 @@ class SendMessageRunnable implements Runnable {
     public void run() {
 
         Message jmsMessage = null;
+        long beforeSendTime = System.currentTimeMillis();
 
         try {
 
-            long beforeSendTime = System.currentTimeMillis();
             reply = deliberyInfo.getESBSender().send(message);
             long afterSendTime = System.currentTimeMillis();
 
             // TODO extra nulls for "from" and "to"
             jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
                                 deliberyInfo.getProducerId(),beforeSendTime,
-                                afterSendTime,message.length(),getResponseDataSize(reply));
+                                afterSendTime,message.length(),getResponseDataSize(reply),
+                                MessageResult.STATUS_OK);
 
         } catch (SocketTimeoutException e) {
             // Ran out of time, send lost message to the JavaAPP
-            jmsMessage = new MessageError();
+            // TODO extra nulls for "from" and "to"
+            jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
+                                deliberyInfo.getProducerId(),beforeSendTime,
+                                -1,message.length(),-1,
+                                MessageResult.STATUS_TIMEOUT);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,17 +100,22 @@ class SendMessageRunnable implements Runnable {
 
 
     /**
-     * Gets the response from the xml returned by the producer.
-     * @param xml the xml returned by the producer.
+     * Gets the response from the XML returned by the producer. The input XML
+     * has the following format:
+     *
+     *  <ns2:requestResponse xmlns:ns2="http://producer.swim.com/">
+     *      <return>aaaaaaaaaa</return>
+     *  </ns2:requestResponse>
+     *
+     * @param xml the XML returned by the producer.
      * @return the response.
      * @throws Exception if the response is malformed.
-     * TODO the response format depends on the WSDL of the producer.
      */
     private String getResponseFromXML(String xml) throws Exception {
 
         xml = xml.replaceAll("ns2:", "");
 
-        String xpath = "/helloResponse/return";
+        String xpath = "/requestResponse/return";
         XPath xPath = XPathFactory.newInstance().newXPath();
         return xPath.evaluate(xpath, new InputSource(new StringReader(xml)));
 

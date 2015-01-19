@@ -132,9 +132,6 @@ public class ProducerT {
     public boolean equals(Object o) {
     	if(o.getClass() == ProducerT.class) {
     		ProducerT aux = (ProducerT) o;
-    		System.out.println("name : " + name.equals(aux.getName()));
-    		System.out.println("datasize : " + datasize.equals(aux.getDatasize()));
-    		System.out.println("name : " + name + " aux_name : " + aux.getName());
     		return name.equals(aux.getName())
     			&& datasize.equals(aux.getDatasize())
     			&& id.equals(aux.getId());
