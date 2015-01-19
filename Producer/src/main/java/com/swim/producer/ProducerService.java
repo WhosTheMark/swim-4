@@ -7,6 +7,7 @@ package com.swim.producer;
 
 import com.swim.messaging.MessageHandler;
 import static java.lang.Thread.sleep;
+import static java.lang.System.out;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -42,18 +43,14 @@ public class ProducerService {
     private MessageHandler messageHandler;
 
     public ProducerService() {
-        this.model = new Model(10);
-       // this.messageHandler = new MessageHandler(model);
+        this.model = Model.getInstance();
+        JMSManager instance = JMSManager.getInstance();
+        out.println("\n\n\n\n\n\n\n\n\n\n\n\nMS manager instanciated");
     }
 
     public ProducerService(int dataSize) {
-        this.model = new Model(dataSize);
-        //MessageHandler messageHandler = new MessageHandler(model);
-//        try {
-//            JMSManager.getInstance().getReceiver().start();
-//        } catch (IOException ex) {
-//            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        this.model = Model.getInstance();
+        this.model.setDataSize(dataSize);
     }
 
     /**
@@ -65,17 +62,22 @@ public class ProducerService {
      */
     @WebMethod(operationName = "request")
     public String getRequest(@WebParam(name = "from") String from, @WebParam(name = "messageRequest") String messageRequest) {
-        long currentTime = System.currentTimeMillis();
-        long elapsedTime = currentTime - startTime;
-        try {
-          sleep(model.getProcessingTime(from, elapsedTime));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String response = getModel().getData();
-        System.out.println("response : " + response);
+        if (model.getState() == Model.State.RUN) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - startTime;
+            try {
+                sleep(model.getProcessingTime(from, elapsedTime));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String response = getModel().getData();
+            System.out.println("response : " + response);
 
-        return response;
+            return response;
+        } else {
+            System.out.println("response : null");
+            return null;
+        }
     }
 
     /**

@@ -7,10 +7,9 @@
  */
 package jmsproducer;
 
-
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.ConsumerCancelledException;
 import java.util.Date;
+import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.QueueingConsumer;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.swim.messaging.MessageHandler;
@@ -29,7 +28,7 @@ public class ProducerReceiverThread extends Thread {
         String queueName;
         handler = new MessageHandler();
         Channel channel = association.getChannel();
-        
+
         try {
             queueName = channel.queueDeclare().getQueue();
 
@@ -40,16 +39,17 @@ public class ProducerReceiverThread extends Thread {
             channel.basicConsume(queueName, true, consumer);
 
             waitForMessages(consumer, queueName);
-            
+
         } catch (Exception e) {
 
             e.printStackTrace();
         }
     }
 
+
     private void waitForMessages(QueueingConsumer consumer, String queueName)
             throws ShutdownSignalException, ConsumerCancelledException, InterruptedException {
-        
+
         while (true) {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String message = new String(delivery.getBody());
@@ -58,4 +58,5 @@ public class ProducerReceiverThread extends Thread {
             handler.handleMessage(message);
         }
     }
+
 }
