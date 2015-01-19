@@ -1,6 +1,5 @@
 package esbcomunication;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.SocketTimeoutException;
 
@@ -70,22 +69,9 @@ class SendMessageRunnable implements Runnable {
         }
 
         if(jmsMessage != null) {
-            sendToJavaApp(jmsMessage);
-        }
-
-    }
-
-    /**
-     * Sends the message through JMS.
-     * @param jmsMessage the message to send.
-     */
-    private void sendToJavaApp(Message jmsMessage) {
-
-        try {
             JMSManager.getInstance().getSender().send(jmsMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
     /**

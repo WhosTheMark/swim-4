@@ -1,6 +1,5 @@
 package esbcomunication;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -123,13 +122,9 @@ public class BehaviorScheduler {
     private void sendFinishedMessage() {
 
         Message msg = new Message(deliveryInfo.getConsumerId(),null);
-        msg.setType(MessageType.STOP);
+        msg.setType(MessageType.OK);
 
-        try {
-            JMSManager.getInstance().getSender().send(msg);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JMSManager.getInstance().getSender().send(msg);
     }
 
     /**
