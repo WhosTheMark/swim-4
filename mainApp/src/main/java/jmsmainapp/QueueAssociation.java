@@ -15,7 +15,7 @@ import com.rabbitmq.client.Channel;
 
 public class QueueAssociation {
 	
-	private static final  String QUEUE_NAME = "result";
+	public static final String QUEUE_NAME = "result";
 	private static final String USERNAME = "fafa";
 	private static final String PASSWORD = "fafa";
 	
@@ -37,10 +37,6 @@ public class QueueAssociation {
 			throw new JMSException("ERROR - Problem at creation of queue with IP address " + ipAddress + " "
 									+ exception.getMessage());
 		}
-	}
-
-	public String getQUEUE_NAME() {
-		return QUEUE_NAME;
 	}
 
 	public String getIpAddress() {
