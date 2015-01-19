@@ -18,7 +18,7 @@ public class Model {
     private String id;
     private int dataSize;
     private String name;
-    private final String data;
+    private String data ="";
     private Map<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
 
     /**
@@ -60,7 +60,6 @@ public class Model {
     private State state;
 
     private Model() {
-        this.data = createData(dataSize);
         this.state = State.WAITCONFIG;
         // populateWithFakeData(); //Only for testing
     }
@@ -121,6 +120,7 @@ public class Model {
      */
     public void setDataSize(int dataSize) {
         this.dataSize = dataSize;
+        this.data = createData(dataSize);
     }
 
     /**

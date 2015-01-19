@@ -19,7 +19,7 @@ public class JMSManager {
 	
 	/**
 	 * Constructor
-	 * @throws IOException
+	 * 
 	 */
 	protected JMSManager() {
 		

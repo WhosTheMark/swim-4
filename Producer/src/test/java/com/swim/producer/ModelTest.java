@@ -39,7 +39,8 @@ public class ModelTest {
     @Test
     public void testGetProcessingTime() {
         System.out.println("getProcessingTime");
-        Model instance = new Model(2048);
+        Model instance = Model.getInstance();
+        instance.setDataSize(2048);
         List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
         producerBehaviourList.add(new ProducerBehaviour(0, 3,10));
         producerBehaviourList.add(new ProducerBehaviour(3, 6,1));

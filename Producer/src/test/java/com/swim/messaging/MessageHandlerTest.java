@@ -33,7 +33,7 @@ public class MessageHandlerTest {
 	@Test
 	public void testFromJSONtoMessage() {
 		String messageJson = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
-		MessageHandler instance = new MessageHandler(new Model(20));
+		MessageHandler instance = new MessageHandler();
 		MessageConfigurationProducer messageGenerated = instance.fromJSONtoMessage(messageJson);
 		assertNotNull(messageGenerated);
 		assertEquals(message.getDatasize(), messageGenerated.getDatasize());
@@ -51,7 +51,8 @@ public class MessageHandlerTest {
 	 */
 	@Test
 	public void testFromMessageToJSON() {
-		String expectedMessage = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
+		String expectedMessage = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONPRODUCER\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
+                System.out.println(message.toJson());
 		assertEquals(expectedMessage, message.toJson());
 	}
 }
