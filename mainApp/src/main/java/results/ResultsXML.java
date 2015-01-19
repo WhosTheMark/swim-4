@@ -23,7 +23,7 @@ public class ResultsXML {
 	 * @throws JAXB Exception
 	 * @throws Marshaller Property Exception
 	 */
-	public void createXMLresults(Results results) throws JAXBException,
+	public static void createXMLresults(Results results) throws JAXBException,
 			PropertyException {
 		
 		JAXBContext jaxbContext = JAXBContext.newInstance(Results.class);
@@ -40,7 +40,7 @@ public class ResultsXML {
 	 * @param busEnvironment
 	 * @return results
 	 */
-	public Results createResults(GeneralResults generalResults, Exchanges exchanges,
+	public static Results createResults(GeneralResults generalResults, Exchanges exchanges,
 			BusEnvironmentUsage busEnvironment) {
 		
 		Results results = new Results();
@@ -57,7 +57,7 @@ public class ResultsXML {
 	 * @param memoryUsedValue : memeoryUsed during the screenshot
 	 * @return screenshot type
 	 */
-	public ScreenshotT createScreenshot(int cpuUsedValue, int memoryUsedValue) {
+	public static ScreenshotT createScreenshot(int cpuUsedValue, int memoryUsedValue) {
 		
 		BigDecimal cpuUsed = new BigDecimal(cpuUsedValue);
 		BigDecimal memoryUsed = new BigDecimal(memoryUsedValue);
@@ -76,7 +76,7 @@ public class ResultsXML {
 	 * @param receiveValue
 	 * @return exchange
 	 */
-	public ExchangeT createExchange(String responseTimeValue,
+	public static ExchangeT createExchange(String responseTimeValue,
 			String consumerId, String producerId, boolean receiveValue) {
 		
 		ExchangeT exchange = new ExchangeT();
@@ -96,7 +96,7 @@ public class ResultsXML {
 	 * @param responseTime string
 	 * @return response time object
 	 */
-	public ResponseTimeT createResponseTime(String responseTime) {
+	public static ResponseTimeT createResponseTime(String responseTime) {
 		
 		ResponseTimeT averageResponseTime = new ResponseTimeT();
 		averageResponseTime.setTimeUnit(MILLISECOND);
@@ -115,7 +115,7 @@ public class ResultsXML {
 	 * @param min
 	 * @return general results
 	 */
-	public GeneralResults createGeneralResults(BigDecimal cpu,
+	public static GeneralResults createGeneralResults(BigDecimal cpu,
 			BigDecimal memory, BigDecimal lostMessages,
 			ResponseTimeT averageResponseTime, ResponseTimeT max, ResponseTimeT min) {
 		
