@@ -46,11 +46,7 @@ public class SendMessageRunnableTest {
         manager = mock(JMSManager.class);
         consumerSenderMock = mock(ConsumerSender.class);
         when(manager.getSender()).thenReturn(consumerSenderMock);
-        try {
-            when(JMSManager.getInstance()).thenReturn(manager);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        when(JMSManager.getInstance()).thenReturn(manager);
         when(deliberyInfoMock.getESBSender()).thenReturn(senderMock);
     }
 
