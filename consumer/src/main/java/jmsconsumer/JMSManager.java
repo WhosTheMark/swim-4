@@ -11,8 +11,11 @@ package jmsconsumer;
 import java.io.IOException;
 
 
-import jmsmainapp.QueueAssociation;
-import jmsmainapp.TopicAssociation;
+
+
+
+import jmsconsumer.QueueAssociation;
+import jmsconsumer.TopicAssociation;
 
 public class JMSManager {
 	protected static JMSManager jmsConnection=null;
@@ -24,6 +27,8 @@ public class JMSManager {
 	
 	/**
 	 * Constructor
+	 * @param nameConsumer 
+	 * @param esbAddr 
 	 * @throws IOException
 	 */
 	protected JMSManager() {
@@ -31,13 +36,15 @@ public class JMSManager {
 		try {
 			this.topicAssociation=new TopicAssociation(this.ipAdress);		
 			this.queueAssociation=new QueueAssociation(this.ipAdress);
-			this.sender=new ConsumerSender(this.queueAssociation);			
-			this.receiver=new ConsumerReceiverThread(this.topicAssociation);
-			this.receiver.start();
+			this.sender=new ConsumerSender(this.queueAssociation);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public ConsumerReceiverThread createConsumerThread (String nameConsumer, String esbAddr) {
+		return new ConsumerReceiverThread(this.topicAssociation, nameConsumer, esbAddr);
 	}
 		
 	

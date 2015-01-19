@@ -11,8 +11,6 @@ package jmsconsumer;
 import java.io.IOException ;
 import java.util.Date;
 
-import jmsmainapp.TopicAssociation;
-
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.QueueingConsumer;
@@ -22,9 +20,12 @@ public class ConsumerReceiverThread extends Thread{
 	
 
 	private TopicAssociation association;
+	private String nameConsumer;
+	private String esbAddr ;
 	
-	public ConsumerReceiverThread(TopicAssociation association){
-			
+	public ConsumerReceiverThread(TopicAssociation association, String nameConsumer, String esbAddr){
+		this.nameConsumer = nameConsumer ;
+		this.esbAddr = esbAddr ;
 		this.association=association;
 		
 	}
@@ -34,6 +35,8 @@ public class ConsumerReceiverThread extends Thread{
 	public void run() {
 		
 		String queueName;
+		MessageHandler handler = new MessageHandler(nameConsumer, esbAddr);
+		
 		try {
 			queueName = this.association.getChannel().queueDeclare().getQueue();
 		
@@ -46,6 +49,7 @@ public class ConsumerReceiverThread extends Thread{
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 				String message = new String(delivery.getBody());				
 				System.out.println(queueName + " Je suis un consumer et j ai recu : '" + message + "'" +" at "+ new Date());
+				handler.handleMessage(message);
 			}
 		} catch (IOException | ShutdownSignalException | ConsumerCancelledException | InterruptedException e) {
 			

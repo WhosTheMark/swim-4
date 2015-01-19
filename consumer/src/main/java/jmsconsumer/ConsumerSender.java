@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import javax.xml.ws.handler.MessageContext;
 
-import jmsmainapp.QueueAssociation;
+import jmsconsumer.QueueAssociation;
 
 import messaging.Message;
 
