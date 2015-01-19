@@ -15,15 +15,54 @@ public class Model {
 
     private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
-    private int dataSize ; //in BYTES
-    private String name = "";
+    private String id;
+    private int dataSize;
+    private String name;
     private final String data;
     private Map<String, List<ProducerBehaviour>> producerBehaviours = new HashMap<>();
 
-    public Model(int dataSize) {
-        this.dataSize = dataSize;
+    /**
+     * Instance unique non préinitialisée
+     */
+    private static Model INSTANCE = null;
+
+    /**
+     * Point d'accès pour l'instance unique du singleton
+     */
+    public static synchronized Model getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new Model();
+        }
+        return INSTANCE;
+    }
+
+    /**
+     * @return the state
+     */
+    public State getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public enum State {
+        WAITCONFIG,
+        WAITSTART,
+        RUN,
+        FINISH
+    }
+
+    private State state;
+
+    private Model() {
         this.data = createData(dataSize);
-       // populateWithFakeData(); //Only for testing
+        this.state = State.WAITCONFIG;
+        // populateWithFakeData(); //Only for testing
     }
 
     String decodeUTF8(byte[] bytes) {
@@ -57,9 +96,8 @@ public class Model {
         }
         return processingTime;
     }
-    
-    
-    private void populateWithFakeData(){
+
+    private void populateWithFakeData() {
         List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
         producerBehaviourList.add(new ProducerBehaviour(0, 3, 12));
         producerBehaviourList.add(new ProducerBehaviour(3, 6, 20));
@@ -68,7 +106,7 @@ public class Model {
         producerBehaviourList = new ArrayList<>();
         producerBehaviourList.add(new ProducerBehaviour(2, 3000, 200));
         producersBehaviours.put("bb", producerBehaviourList);
-        this.producerBehaviours= producersBehaviours;
+        this.producerBehaviours = producersBehaviours;
     }
 
     /**
@@ -99,8 +137,6 @@ public class Model {
         this.name = name;
     }
 
-
-
     /**
      * @return the producerBehaviours
      */
@@ -120,5 +156,19 @@ public class Model {
      */
     public String getData() {
         return data;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 }

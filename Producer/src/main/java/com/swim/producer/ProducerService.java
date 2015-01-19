@@ -42,12 +42,12 @@ public class ProducerService {
     private MessageHandler messageHandler;
 
     public ProducerService() {
-        this.model = new Model(10);
+        this.model = Model.getInstance();
        // this.messageHandler = new MessageHandler(model);
     }
 
     public ProducerService(int dataSize) {
-        this.model = new Model(dataSize);
+        this.model = Model.getInstance();
         //MessageHandler messageHandler = new MessageHandler(model);
 //        try {
 //            JMSManager.getInstance().getReceiver().start();
