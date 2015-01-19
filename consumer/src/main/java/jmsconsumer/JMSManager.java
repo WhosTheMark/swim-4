@@ -8,51 +8,39 @@
 
 package jmsconsumer;
 
-import java.io.IOException;
-
-
-
-
-
 import jmsconsumer.QueueAssociation;
 import jmsconsumer.TopicAssociation;
 
 public class JMSManager {
-	protected static JMSManager jmsConnection=null;
+	
+	private static final String IPADDRESS = "localhost";
+	private static JMSManager jmsConnection = null;
+	
 	private TopicAssociation topicAssociation;
 	private ConsumerSender sender;//donner l acces
 	private QueueAssociation queueAssociation;
 	private ConsumerReceiverThread receiver;//donner l acces
-	private String ipAdress="localhost";
 
 	/**
 	 * Constructor
 	 * @param nameConsumer 
-	 * @param esbAddr 
-	 * @throws IOException
+	 * @param esbAddr
 	 */
-	protected JMSManager() {
-		
-		try {
-			this.topicAssociation=new TopicAssociation(this.ipAdress);		
-			this.queueAssociation=new QueueAssociation(this.ipAdress);
-			this.sender=new ConsumerSender(this.queueAssociation);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	protected JMSManager() {		
+		topicAssociation=new TopicAssociation(IPADDRESS);		
+		queueAssociation=new QueueAssociation(IPADDRESS);
+		sender=new ConsumerSender(queueAssociation);
 	}
 	
 	public ConsumerReceiverThread createConsumerThread (String nameConsumer, String esbAddr) {
-		return new ConsumerReceiverThread(this.topicAssociation, nameConsumer, esbAddr);
+		return new ConsumerReceiverThread(topicAssociation, nameConsumer, esbAddr);
 	}
 	
 	/**
 	 * Singleton de JMS Connection
 	 * @return
-	 * @throws IOException 
 	 */
-	public synchronized static JMSManager getInstance() throws IOException{
+	public synchronized static JMSManager getInstance() {
 
 		if(jmsConnection==null){
 			jmsConnection=new JMSManager();

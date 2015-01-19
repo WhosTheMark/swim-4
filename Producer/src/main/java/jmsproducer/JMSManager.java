@@ -12,35 +12,27 @@ package jmsproducer;
 import java.io.IOException;
 
 public class JMSManager {
-	protected static JMSManager jmsConnection=null;
+	private static JMSManager jmsConnection=null;
 	private TopicAssociation topicAssociation;	
 	private ProducerReceiverThread receiver;//donner l acces
-	private String ipAdress="localhost";
+	private static final String IPADDRESS = "localhost";
 	
 	/**
 	 * Constructor
 	 * @throws IOException
 	 */
 	protected JMSManager() {
-		
-		try {
-			this.topicAssociation=new TopicAssociation(this.ipAdress);		
-			this.receiver=new ProducerReceiverThread(this.topicAssociation);
-			this.receiver.start();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		topicAssociation=new TopicAssociation(IPADDRESS);		
+		receiver=new ProducerReceiverThread(topicAssociation);
+		receiver.start();
 	}
 		
 	
 	/**
 	 * Singleton de JMS Connection
-	 * @return
-	 * @throws IOException 
+	 * @return 
 	 */
-	public synchronized static JMSManager getInstance() throws IOException{
-		
+	public synchronized static JMSManager getInstance() {
 		if(jmsConnection==null){
 			jmsConnection=new JMSManager();
 		}

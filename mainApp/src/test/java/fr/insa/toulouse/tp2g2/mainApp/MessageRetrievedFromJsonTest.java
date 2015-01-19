@@ -8,32 +8,57 @@ import java.util.List;
 import java.util.Map;
 
 import messaging.ConsumerBehaviour;
-import messaging.Message;
-import messaging.MessageConfigurationConsumer;
-import messaging.MessageConfigurationProducer;
-import messaging.MessageError;
-import messaging.MessageResult;
-import messaging.ProducerBehaviour;
+import messaging.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class MessageRetrievedFromJsonTest {
-	String messageErrorJson = "{\"from\":\"me\",\"to\":\"you\",\"errorMessage\":\"NullPointerException\"}";
-	String messageConfigurationConsumerJson = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONCONSUMER\",\"producerId\":\"p1\",\"name\":\"consumer1\",\"consumerBehaviours\":[{\"begin\":0,\"end\":10,\"frequency\":12,\"datasize\":20}]}";
-	String messageConfigurationProducerJson = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"consumer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
-	String messageResultJson = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"RESULT\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}";
+	
+	private static final String ERRORJSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"ERROR\",\"errorMessage\":\"NullPointerException\"}";
+	private static final String CONFIGURATIONCONSUMERJSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONCONSUMER\",\"producerId\":\"p1\",\"name\":\"consumer1\",\"consumerBehaviours\":[{\"begin\":0,\"end\":10,\"frequency\":12,\"datasize\":20}]}";
+	private static final String CONFIGURATIONPRODUCERJSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONPRODUCER\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"consumer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
+	private static final String RESULTJSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"RESULT\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}";
+	
+	private MessageFactory factory;
+	
+	@Before
+	public void setUp() {
+		factory = MessageFactory.getInstance();
+	}
 	
 	@Test
 	public void testErrorMessageIsRetrievedFromJson() {
 		MessageError messageError = new MessageError("me", "you", "NullPointerException");
-		assertEquals(Message.getMessageErrorFromJson(messageErrorJson), messageError);
+		assertEquals(messageError,factory.getMessageErrorFromJson(ERRORJSON));
 	}
+	
+	@Test
+	public void testErrorMessageIsRecognizedFromJson() {
+		assertEquals(MessageType.ERROR, factory.identifyMessage(ERRORJSON));
+	}
+	
+	@Test
+	public void testConsumerConfigurationMessageIsRecognizedFromJson() {
+		assertEquals(MessageType.CONFIGURATIONCONSUMER, factory.identifyMessage(CONFIGURATIONCONSUMERJSON));
+	}
+	
+	@Test
+	public void testProducerConfigurationMessageIsRecognizedFromJson() {
+		assertEquals(MessageType.CONFIGURATIONPRODUCER, factory.identifyMessage(CONFIGURATIONPRODUCERJSON));
+	}
+
+	@Test
+	public void testResultMessageIsRecognizedFromJson() {
+		assertEquals(MessageType.RESULT, factory.identifyMessage(RESULTJSON));
+	}
+	
 	@Test
 	public void testConfigurationConsumerMessageIsRetrievedFromJson() {
 		List<ConsumerBehaviour> behaviours = new ArrayList<ConsumerBehaviour> ();
 		behaviours.add(new ConsumerBehaviour(0, 10, 12, 20));
 		MessageConfigurationConsumer message = new MessageConfigurationConsumer("me", "you", "p1", "consumer1", behaviours);
-		assertEquals(Message.getMessageConfigurationConsumerFromJson(messageConfigurationConsumerJson), message);
+		assertEquals(factory.getMessageConfigurationConsumerFromJson(CONFIGURATIONCONSUMERJSON), message);
 	}
 	@Test
 	public void testConfigurationProducerMessageIsRetrievedFromJson() {
@@ -42,12 +67,12 @@ public class MessageRetrievedFromJsonTest {
 		Map<String, List<ProducerBehaviour>> behaviorsMap = new HashMap<String, List<ProducerBehaviour>>();
 		behaviorsMap.put("consumer1", behaviours);
 		MessageConfigurationProducer message = new MessageConfigurationProducer("me", "you", "p1", 10,behaviorsMap);
-		assertEquals(Message.getMessageConfigurationProducerFromJson(messageConfigurationProducerJson), message);
+		assertEquals(factory.getMessageConfigurationProducerFromJson(CONFIGURATIONPRODUCERJSON), message);
 	}
 	@Test
 	public void testResultMessageIsRetrievedFromJson() {
 		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30, MessageResult.STATUS_OK);
-		assertEquals(Message.getMessageResultFromJson(messageResultJson), message);
+		assertEquals(factory.getMessageResultFromJson(RESULTJSON), message);
 	}
 
 }
