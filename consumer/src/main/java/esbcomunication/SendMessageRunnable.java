@@ -81,11 +81,7 @@ class SendMessageRunnable implements Runnable {
      */
     private void sendToJavaApp(Message jmsMessage) {
 
-        try {
-            JMSManager.getInstance().getSender().send(jmsMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        JMSManager.getInstance().getSender().send(jmsMessage);
     }
 
     /**
