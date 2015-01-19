@@ -9,25 +9,36 @@
 package jmsconsumer;
 
 import java.io.IOException;
+
+import jmsmainapp.JMSException;
+
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 
 public class QueueAssociation {
 	
-	private final  String QUEUE_NAME = "result";
-	private String ipAdress="localhost";
+	private static final  String QUEUE_NAME = "result";
+	private String ipAddress ="localhost";
+	private static final String USERNAME = "fafa";
+	private static final String PASSWORD = "fafa";
 	private Connection connection;
 	private Channel channel;
 	
 	
-	public QueueAssociation(String ipAdress) throws IOException{
-		this.ipAdress=ipAdress;
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(this.ipAdress);
-		this.connection = factory.newConnection();
-		this.channel = connection.createChannel();
-		this.channel.queueDeclare(this.QUEUE_NAME, false, false, false, null);
+	public QueueAssociation(String ipAddress) {
+		try {
+			this.ipAddress =ipAddress;
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(this.ipAddress);
+			factory.setUsername(USERNAME);
+			factory.setPassword(PASSWORD);
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+		} catch (IOException e) {
+			throw new JMSException("ERROR - queue association's creation failed \n" + e.getMessage());
+		}
 
 	}
 
@@ -37,8 +48,8 @@ public class QueueAssociation {
 	}
 
 
-	public String getIpAdress() {
-		return ipAdress;
+	public String getIpAddress() {
+		return ipAddress;
 	}
 
 
