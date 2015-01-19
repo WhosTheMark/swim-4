@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import jmsconsumer.ConsumerSender;
@@ -46,11 +45,7 @@ public class SendMessageRunnableTest {
         manager = mock(JMSManager.class);
         consumerSenderMock = mock(ConsumerSender.class);
         when(manager.getSender()).thenReturn(consumerSenderMock);
-        try {
-            when(JMSManager.getInstance()).thenReturn(manager);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        when(JMSManager.getInstance()).thenReturn(manager);
         when(deliberyInfoMock.getESBSender()).thenReturn(senderMock);
     }
 
