@@ -15,8 +15,12 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class TopicAssociation {
+	
+	private static final String EXCHANGE_NAME = "topic";
+	private static final String USERNAME = "fafa";
+	private static final String PASSWORD = "fafa";
+	
 	private String ipAddress="localhost";// TODO  Change with the right ipAdress
-	private final String EXCHANGE_NAME = "topic";
 	private Channel channel;
 	private Connection connection;
 	
@@ -25,11 +29,11 @@ public class TopicAssociation {
 			this.ipAddress=ipAddress;
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(this.ipAddress);
-
-			this.connection = factory.newConnection();
-
-			this.channel = this.connection.createChannel();
-			this.channel.exchangeDeclare(this.EXCHANGE_NAME, "fanout");
+			factory.setUsername(USERNAME);
+			factory.setPassword(PASSWORD);
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
 		} catch (IOException e) {
 			throw new JMSException("ERROR - Problem at creation of topic with ip address " + ipAddress + " "
 									+ e.getMessage());
@@ -41,7 +45,7 @@ public class TopicAssociation {
 	}
 
 	public String getExchangeName() {
-		return this.EXCHANGE_NAME;
+		return EXCHANGE_NAME;
 	}
 
 	public Connection getConnection() {

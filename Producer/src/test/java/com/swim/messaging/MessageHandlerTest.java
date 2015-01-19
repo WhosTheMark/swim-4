@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import com.swim.producer.ProducerService;
 import java.util.Map;
+
+import messaging.Message;
 import messaging.MessageConfigurationProducer;
 import messaging.ProducerBehaviour;
 
@@ -33,8 +35,9 @@ public class MessageHandlerTest {
 	@Test
 	public void testFromJSONtoMessage() {
 		String messageJson = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
-		MessageHandler instance = new MessageHandler();
-		MessageConfigurationProducer messageGenerated = instance.fromJSONtoMessage(messageJson);
+		MessageHandler instance = new MessageHandler(new Model(20));
+//		MessageConfigurationProducer messageGenerated = instance.fromJSONtoMessage(messageJson);
+		MessageConfigurationProducer messageGenerated = Message.getMessageConfigurationProducerFromJson(messageJson);
 		assertNotNull(messageGenerated);
 		assertEquals(message.getDatasize(), messageGenerated.getDatasize());
 		System.out.println(message.getProducerBehaviours().get("producer1"));
@@ -52,7 +55,6 @@ public class MessageHandlerTest {
 	@Test
 	public void testFromMessageToJSON() {
 		String expectedMessage = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONPRODUCER\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
-                System.out.println(message.toJson());
 		assertEquals(expectedMessage, message.toJson());
 	}
 }

@@ -11,7 +11,7 @@ package jmsconsumer;
 import java.io.IOException ;
 import java.util.Date;
 
-import jmsmainapp.TopicAssociation;
+import jmsmainapp.JMSException;
 
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.ShutdownSignalException;
@@ -22,9 +22,12 @@ public class ConsumerReceiverThread extends Thread{
 	
 
 	private TopicAssociation association;
+	private String nameConsumer;
+	private String esbAddr ;
 	
-	public ConsumerReceiverThread(TopicAssociation association){
-			
+	public ConsumerReceiverThread(TopicAssociation association, String nameConsumer, String esbAddr){
+		this.nameConsumer = nameConsumer ;
+		this.esbAddr = esbAddr ;
 		this.association=association;
 		
 	}
@@ -34,22 +37,24 @@ public class ConsumerReceiverThread extends Thread{
 	public void run() {
 		
 		String queueName;
-		try {
-			queueName = this.association.getChannel().queueDeclare().getQueue();
+		MessageHandler handler = new MessageHandler(nameConsumer, esbAddr);
 		
-			this.association.getChannel().queueBind(queueName, this.association.getExchangeName(), "");//modif4 binding exchange to queue
+		try {
+			queueName = association.getChannel().queueDeclare().getQueue();
+		
+			association.getChannel().queueBind(queueName, association.getExchangeName(), "");//modif4 binding exchange to queue
 			System.out.println("Queue " + queueName + " is Waiting for messages. To exit press CTRL+C");
-			QueueingConsumer consumer = new QueueingConsumer(this.association.getChannel());
-			this.association.getChannel().basicConsume(queueName, true, consumer);
+			QueueingConsumer consumer = new QueueingConsumer(association.getChannel());
+			association.getChannel().basicConsume(queueName, true, consumer);
 			
 			while (true) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
 				String message = new String(delivery.getBody());				
 				System.out.println(queueName + " Je suis un consumer et j ai recu : '" + message + "'" +" at "+ new Date());
+				handler.handleMessage(message);
 			}
 		} catch (IOException | ShutdownSignalException | ConsumerCancelledException | InterruptedException e) {
-			
-			e.printStackTrace();
+			throw new JMSException(e.getMessage());
 		}
 	}
 

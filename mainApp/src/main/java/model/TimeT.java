@@ -107,5 +107,20 @@ public class TimeT {
     	return "{ time unit : " + timeUnit
     			+ " value : " + value + " }";
     }
+    
+    public int getTimeElementInMs() {
+    	int timeValue = value.intValue();
+    	switch(timeUnit) {
+    	case MINS:
+    		timeValue = timeValue * 3600;
+    		break;
+    	case MS:
+    		break;
+    	case SECS:
+    		timeValue = timeValue * 60;
+    		break;
+    	}
+    	return timeValue;
+    }
 
 }

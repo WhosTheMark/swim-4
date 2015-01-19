@@ -10,4 +10,5 @@ public class ScenarioNames {
 	public static final String VALIDNORMALSCENARIO = "ressources/xml/scenario1.xml";
 	public static final String NOTVALIDSCENARIO = "ressources/xml/notValidScenario.xml";
 	public static final String VALIDLARGESCENARIO = "ressources/xml/largeScenario.xml";
+	public static final String WRONGBEHAVIOURSCENARIO = "ressources/xml/wrongBehaviourScenario.xml";
 }

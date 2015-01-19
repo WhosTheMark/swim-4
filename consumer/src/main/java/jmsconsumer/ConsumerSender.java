@@ -9,10 +9,8 @@
 package jmsconsumer;
 
 import java.io.IOException;
-
-import javax.xml.ws.handler.MessageContext;
-
-import jmsmainapp.QueueAssociation;
+import jmsconsumer.QueueAssociation;
+import jmsmainapp.JMSException;
 
 import messaging.Message;
 
@@ -23,10 +21,12 @@ public class ConsumerSender {
 		this.queueAssociation=queueAssociation;
 	}
 	
-	public synchronized void send(Message message) throws IOException{
-		this.queueAssociation.getChannel().basicPublish("", this.queueAssociation.getQUEUE_NAME(), null, message.toJson().getBytes());
-		System.out.println(" [x] Sent '" + message + "'");
-		this.queueAssociation.getChannel().close();
-		this.queueAssociation.getConnection().close();
+	public synchronized void send(Message message) {
+		try {
+			this.queueAssociation.getChannel().basicPublish("", queueAssociation.getQUEUE_NAME(), null, message.toJson().getBytes());
+			System.out.println(" [x] Sent '" + message + "'");
+		} catch (IOException e) {
+			throw new JMSException(e.getMessage());
+		}
 	}
 }

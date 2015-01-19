@@ -13,12 +13,14 @@ import jmsmainapp.JavaAppSender;
 public class Configurator {
 
 	private JavaAppSender sender;
+	private int scenarioDuration;
 	
 	public Configurator(JavaAppSender sender) {
 		this.sender = sender;
 	}
 	
 	public void sendConfigurationMessages(Scenario scenario) {
+		scenarioDuration = scenario.getDurationInMs();
 		sendConfigurationMessageToConsumers(scenario.getConsumers());
 		sendConfigurationMessageToProducers(scenario);
 	}
@@ -63,7 +65,13 @@ public class Configurator {
 	private void checkIfBehavioursOK(List<BehaviourT> behaviours) {
 		Collections.sort(behaviours);
 		for(int i=0; i < behaviours.size(); i++) {
-			if(!behaviours.get(i).isPossibleBehaviour()) {
+			if(!behaviours.get(i).isCompatibleWithScenarioDuration(scenarioDuration)) {
+				throw new ScenarioException("ERROR - Behaviour "
+						+ behaviours.get(i).toString()
+						+ " is not compatible with scenario duration "
+						+ scenarioDuration);
+				
+			} else if(!behaviours.get(i).isPossibleBehaviour()) {
 				throw new ScenarioException("ERROR - Behaviour "
 						+ behaviours.get(i).toString()
 						+ " is impossible to achieve");

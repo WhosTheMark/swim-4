@@ -10,23 +10,35 @@ package jmsproducer;
 
 import java.io.IOException;
 
+import jmsmainapp.JMSException;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 public class TopicAssociation {
+	
+	private static final String EXCHANGE_NAME = "topic";
+	private static final String USERNAME = "fafa";
+	private static final String PASSWORD = "fafa";
+	
 	private String ipAdress="localhost";
-	private  final String EXCHANGE_NAME = "topic";
 	private Channel channel;
 	private Connection connection;
 	
-	public TopicAssociation(String ipAdress) throws IOException{
-		this.ipAdress=ipAdress;
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setHost(this.ipAdress);
-		this.connection = factory.newConnection();
-		this.channel = this.connection.createChannel();
-		this.channel.exchangeDeclare(this.EXCHANGE_NAME, "fanout");
+	public TopicAssociation(String ipAdress) {
+		try {
+			this.ipAdress=ipAdress;
+			ConnectionFactory factory = new ConnectionFactory();
+			factory.setHost(this.ipAdress);
+			factory.setUsername(USERNAME);
+			factory.setPassword(PASSWORD);
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+			channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+		} catch (IOException e) {
+			throw new JMSException("ERROR - topic association's creation failed \n" + e.getMessage());
+		}
 	}
 
 	public Channel getChannel() {
@@ -34,7 +46,7 @@ public class TopicAssociation {
 	}
 
 	public  String getExchangeName() {
-		return this.EXCHANGE_NAME;
+		return EXCHANGE_NAME;
 	}
 
 	public Connection getConnection() {

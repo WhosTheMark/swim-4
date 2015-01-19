@@ -112,6 +112,9 @@ public class Scenario {
         return duration;
     }
 
+    public int getDurationInMs() {
+    	return duration.getTimeElementInMs();
+    }
     /**
      * Sets the value of the duration property.
      * 

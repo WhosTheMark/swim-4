@@ -17,6 +17,8 @@ import model.TimeUnitType;
 
 public class TestScenarioFactory {
 
+	private static final int SCENARIODURATION = 155;
+	
 	public Scenario buildExpectedNormalScenario() {
 
 		List<ProducerT> producers = new ArrayList<ProducerT>();
@@ -33,7 +35,7 @@ public class TestScenarioFactory {
 		consumers.add(createConsumer("c1", "consumer1", producers.get(0), behaviours1));
 		consumers.add(createConsumer("c2", "consumer2", producers.get(1), behaviours2));
 
-		return createScenario(155, consumers, producers);
+		return createScenario(SCENARIODURATION, consumers, producers);
 	}
 	
 	public Scenario buildExpectedLargeScenario() {
@@ -72,7 +74,7 @@ public class TestScenarioFactory {
 		consumersList.add(createConsumer("c9", "consumer9", producersList.get(8), behaviours));
 		consumersList.add(createConsumer("c10", "consumer10", producersList.get(9), behaviours));
 		
-		return createScenario(155,consumersList,producersList);
+		return createScenario(SCENARIODURATION,consumersList,producersList);
 	}
 	
 	
@@ -97,7 +99,7 @@ public class TestScenarioFactory {
 		consumersList.add(createConsumer("c2", "consumer2", producersList.get(0), behaviours2));
 		consumersList.add(createConsumer("c3", "consumer3", producersList.get(1), behaviours2));
 		
-		return createScenario(155,consumersList,producersList);
+		return createScenario(SCENARIODURATION,consumersList,producersList);
 	}
 	
 	public List<BehaviourT> getOverlappingBehaviour() {
@@ -126,11 +128,37 @@ public class TestScenarioFactory {
 		consumersList.add(createConsumer("c1", "consumer1", producersList.get(0), behaviours1));
 		consumersList.add(createConsumer("c2", "consumer2", producersList.get(0), behaviours2));
 		
-		return createScenario(155,consumersList,producersList);
+		return createScenario(SCENARIODURATION,consumersList,producersList);
+	}
+	
+	public Scenario buildIncompatibleBehaviourScenario() {
+		List<ProducerT> producersList = new ArrayList<ProducerT>();
+		producersList.add(createProducer("p1", "producer1", 40));
+		producersList.add(createProducer("p2", "producer2", 50));
+
+		List<BehaviourT> behaviours1 = new ArrayList<BehaviourT> ();
+		behaviours1.add(createBehaviour(1, 10, 45, 125, 1));
+		behaviours1.add(createBehaviour(10, 20, 60, 100, 2));
+		
+		List<BehaviourT> behaviours2 = new ArrayList<BehaviourT> ();
+		behaviours2.add(createBehaviour(1, 10, 45, 125, 1));
+		behaviours2.add(createBehaviour(25, 20, 60, 100, 2));
+		behaviours2.add(getIncompatibleBehaviour());
+
+		List<ConsumerT> consumersList = new ArrayList<ConsumerT>();
+		
+		consumersList.add(createConsumer("c1", "consumer1", producersList.get(0), behaviours1));
+		consumersList.add(createConsumer("c2", "consumer2", producersList.get(0), behaviours2));
+		
+		return createScenario(SCENARIODURATION,consumersList,producersList);
 	}
 	
 	public BehaviourT getImpossibleBehaviour() {
 		return createBehaviour(25, 20, 60, 100, 2);
+	}
+	
+	public BehaviourT getIncompatibleBehaviour() {
+		return createBehaviour(21, SCENARIODURATION + 10, 30, 150, 4);
 	}
 	
 	private Scenario createScenario(long timeDuration, List<ConsumerT> consumers, List<ProducerT> producers) {
@@ -185,5 +213,9 @@ public class TestScenarioFactory {
 		consumer.setName(name);
 		consumer.setBehaviours(behaviours);
 		return consumer;
+	}
+	
+	public int getScenarioDuration() {
+		return SCENARIODURATION;
 	}
 }

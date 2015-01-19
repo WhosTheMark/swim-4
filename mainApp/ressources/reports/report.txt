@@ -1,3 +1,3 @@
-Scenario ressources/notXMLInput.txt 
-Ran on : 14/1/2015
-ERROR - file ressources/notXMLInput.txt is not an XML file
+Scenario ressources/notExistingFile.txt 
+Ran on: 17/1/2015 at: 7h39min2s
+ERROR - file ressources/notExistingFile.txt does not exist

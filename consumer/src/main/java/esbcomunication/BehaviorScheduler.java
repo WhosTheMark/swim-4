@@ -1,12 +1,16 @@
 package esbcomunication;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import jmsconsumer.JMSManager;
 import messaging.ConsumerBehaviour;
+import messaging.Message;
+import messaging.MessageType;
 
 /**
  * This class schedules when each behavior will start. This class cannot be
@@ -110,6 +114,22 @@ public class BehaviorScheduler {
         }
 
         waitForBehaviors(executor);
+        sendFinishedMessage();
+    }
+
+    /**
+     * Sends the message to alert the java application that the consumer finished.
+     */
+    private void sendFinishedMessage() {
+
+        Message msg = new Message(deliveryInfo.getConsumerId(),null);
+        msg.setType(MessageType.STOP);
+
+        try {
+            JMSManager.getInstance().getSender().send(msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
