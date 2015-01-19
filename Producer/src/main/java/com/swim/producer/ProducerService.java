@@ -44,13 +44,8 @@ public class ProducerService {
 
     public ProducerService() {
         this.model = Model.getInstance();
-        try {
-            JMSManager instance = JMSManager.getInstance();
-            out.println("\n\n\n\n\n\n\n\n\n\n\n\nMS manager instanciated");
-            // this.messageHandler = new MessageHandler(model);
-        } catch (IOException ex) {
-            Logger.getLogger(ProducerService.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        JMSManager instance = JMSManager.getInstance();
+        out.println("\n\n\n\n\n\n\n\n\n\n\n\nMS manager instanciated");
     }
 
     public ProducerService(int dataSize) {

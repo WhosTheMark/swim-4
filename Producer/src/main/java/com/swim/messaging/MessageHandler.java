@@ -11,6 +11,7 @@ import messaging.Message;
 import messaging.MessageConfigurationProducer;
 
 import messaging.MessageConfigurationProducer;
+import messaging.MessageType;
 import org.json.JSONObject;
 
 /**
@@ -29,7 +30,7 @@ public class MessageHandler {
     public void handleMessage(String stringMessage) {
         JSONObject jsonMessage = new JSONObject(stringMessage);
         if (jsonMessage.getJSONObject("to").toString().equals(model.getId())) {
-            switch (Message.Type.valueOf(jsonMessage.getJSONObject("type").toString())) {
+            switch (MessageType.valueOf(jsonMessage.getJSONObject("type").toString())) {
                 case CONFIGURATIONPRODUCER:
                     if (model.getState() == Model.State.WAITCONFIG) {
                         MessageConfigurationProducer message = fromJSONtoMessage(stringMessage);
