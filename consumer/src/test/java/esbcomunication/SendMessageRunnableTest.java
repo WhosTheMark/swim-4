@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
-import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import jmsconsumer.ConsumerSender;

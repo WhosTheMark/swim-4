@@ -5,6 +5,7 @@ public enum MessageType {
 	CONFIGURATIONCONSUMER,
 	ERROR,
 	RESULT,
-	START;
+	START,
+	OK;
 }
 

@@ -1,6 +1,5 @@
 package esbcomunication;
 
-import java.io.IOException;
 import java.io.StringReader;
 import java.net.SocketTimeoutException;
 
@@ -51,16 +50,16 @@ class SendMessageRunnable implements Runnable {
             reply = deliberyInfo.getESBSender().send(message);
             long afterSendTime = System.currentTimeMillis();
 
-            // TODO extra nulls for "from" and "to"
-            jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
+            // TODO extra nulls for "to"
+            jmsMessage = new MessageResult(deliberyInfo.getConsumerId(),null,deliberyInfo.getConsumerId(),
                                 deliberyInfo.getProducerId(),beforeSendTime,
                                 afterSendTime,message.length(),getResponseDataSize(reply),
                                 MessageResult.STATUS_OK);
 
         } catch (SocketTimeoutException e) {
             // Ran out of time, send lost message to the JavaAPP
-            // TODO extra nulls for "from" and "to"
-            jmsMessage = new MessageResult(null,null,deliberyInfo.getConsumerId(),
+            // TODO extra nulls for "to"
+            jmsMessage = new MessageResult(deliberyInfo.getConsumerId(),null,deliberyInfo.getConsumerId(),
                                 deliberyInfo.getProducerId(),beforeSendTime,
                                 -1,message.length(),-1,
                                 MessageResult.STATUS_TIMEOUT);
@@ -70,6 +69,7 @@ class SendMessageRunnable implements Runnable {
         }
 
         if(jmsMessage != null) {
+<<<<<<< HEAD
             sendToJavaApp(jmsMessage);
         }
 
@@ -82,6 +82,11 @@ class SendMessageRunnable implements Runnable {
     private void sendToJavaApp(Message jmsMessage) {
 
         JMSManager.getInstance().getSender().send(jmsMessage);
+=======
+            JMSManager.getInstance().getSender().send(jmsMessage);
+        }
+
+>>>>>>> 84c4a356552c00350f3bed7adf25ae299162f0ab
     }
 
     /**

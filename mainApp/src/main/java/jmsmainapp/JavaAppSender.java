@@ -13,23 +13,30 @@ import java.io.IOException;
 import messaging.Message;
 
 public class JavaAppSender {
-	
-	private TopicAssociation topicAssociation;
-	private static final String FROMCONTENT ="JavaApp";
-	
-	public JavaAppSender(TopicAssociation topicAssociation) {
-		this.topicAssociation=topicAssociation;
-	}
-	
-	public void send(Message message) {
-		try {
-			message.setFrom(FROMCONTENT);
-			System.out.println("Sending a message");
-			this.topicAssociation.getChannel().basicPublish(topicAssociation.getExchangeName(), "", null, message.toJson().getBytes());//modif2 publish to the named exchange
-			System.out.println(" The Publisher Sent: "+message.toJson());
-		} catch(IOException exception) {
-			throw new JMSException("ERROR - Problem when sending message via topic "
-					+ exception.getMessage());
-		}
-	}
+
+    private TopicAssociation topicAssociation;
+    private static final String FROMCONTENT = "JavaApp";
+
+    public JavaAppSender(TopicAssociation topicAssociation) {
+        this.topicAssociation = topicAssociation;
+    }
+
+    public void send(Message message) {
+        try {
+            message.setFrom(FROMCONTENT);
+            System.out.println("Sending a message");
+
+            // modif2 publish to the named exchange
+            topicAssociation.getChannel().basicPublish(
+                    topicAssociation.getExchangeName(), "", null,
+                    message.toJson().getBytes());
+
+            System.out.println(" The Publisher Sent: " + message.toJson());
+
+        } catch (IOException exception) {
+            throw new JMSException(
+                    "ERROR - Problem when sending message via topic "
+                            + exception.getMessage());
+        }
+    }
 }
