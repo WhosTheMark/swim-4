@@ -3,8 +3,6 @@ package messaging;
 import java.util.List;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -17,7 +15,9 @@ import static org.elasticsearch.node.NodeBuilder.*;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import database.Database;
 
@@ -28,24 +28,28 @@ import database.Database;
 public class Message {
 	private String from;
 	private String to;
-    protected MessageType type;
+	protected MessageType type;
 
-    public Message(String from, String to) {
-        this.from = from;
-        this.to = to;
-        this.type = MessageType.START;
-    }
+	public Message(String from, String to) {
+		this.from = from;
+		this.to = to;
+		this.type = MessageType.START;
+	}
 
-    public Message() {
-        this.from = null;
-        this.to = null;
-        this.type = MessageType.START;
-    }
+	public Message() {
+		this.from = null;
+		this.to = null;
+		this.type = MessageType.START;
+	}
 
-    public MessageType getType() {
-        return type;
-    }
-    
+	public MessageType getType() {
+		return type;
+	}
+
+	public void setType(MessageType type) {
+		this.type = type;
+	}
+
 	public String getFrom() {
 		return from;
 	}
@@ -71,9 +75,46 @@ public class Message {
 			throw new MessageException("ERROR - Problem when converting a message to json "+e.getMessage());
 		}
 		return json;
-
 	}
-
+	
+	public static Message getMessageFromJson(String json){
+		return fromJson(Message.class, json);
+	}
+	
+	public static MessageResult getMessageResultFromJson(String json){
+		return fromJson(MessageResult.class, json);
+	}
+	
+	public static MessageError getMessageErrorFromJson(String json){
+		return fromJson(MessageError.class, json);
+	}
+	
+	public static MessageConfigurationProducer getMessageConfigurationProducerFromJson(String json){
+		return fromJson(MessageConfigurationProducer.class, json);
+	}
+	
+	public static MessageConfigurationConsumer getMessageConfigurationConsumerFromJson(String json){
+		return fromJson(MessageConfigurationConsumer.class, json);
+	}
+	
+	public static <T> T fromJson(Class T, String json){
+		T message = null;
+		try {
+			message = (T) T.newInstance();
+		} catch (InstantiationException e) {
+			throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
+		} catch (IllegalAccessException e) {
+			throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			message = (T) mapper.readValue(json, T);
+		} catch (IOException e) {
+			throw new MessageException("ERROR - Problem when retrieving a message from json "+e.getMessage());
+		}
+		return message;
+	}
+	
 	public String store(){
 		// Initialize client to work with DB
 		Node node = nodeBuilder().client(true).node();
@@ -151,12 +192,12 @@ public class Message {
 		Node node = nodeBuilder().client(true).node();
 		Client client = node.client();
 		client.prepareDelete(Database.DATABASE_NAME, type, id)
-				.execute()
-				.actionGet();
+		.execute()
+		.actionGet();
 		client.close();
 		node.close();
 	}
-	
+
 	public boolean equals(Object o) {
 		if(Message.class.isInstance(o)) {
 			Message aux = (Message) o;
@@ -167,11 +208,25 @@ public class Message {
 
 	public boolean areSendersEquals(Message aux) {
 		return (from == null && aux.getFrom() == null)
-			|| from.equals(aux.getFrom());
+				|| from.equals(aux.getFrom());
 	}
-	
+
 	public boolean areReceiversEquals(Message aux) {
 		return (to== null && aux.getTo() == null)
-			|| to.equals(aux.getTo());
+				|| to.equals(aux.getTo());
+	}
+
+	public static MessageType identifyMessage(String json){
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode root;
+		try {
+			root = mapper.readTree(json);
+		} catch (JsonProcessingException e) {
+			throw new MessageException("ERROR - Problem when identifying a message "+e.getMessage());
+		} catch (IOException e) {
+			throw new MessageException("ERROR - Problem when identifying a message "+e.getMessage());
+		}
+		String type = root.get("type").asText();		
+		return MessageType.valueOf(type);
 	}
 }

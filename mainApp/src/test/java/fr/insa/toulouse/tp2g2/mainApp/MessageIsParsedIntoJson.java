@@ -62,6 +62,6 @@ public class MessageIsParsedIntoJson {
 	@Test
 	public void testResultMessageIsConvertedIntoJson() {
 		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30, MessageResult.STATUS_OK);
-		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}", message.toJson());
+		assertEquals("{\"from\":\"me\",\"to\":\"you\",\"type\":\"RESULT\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}", message.toJson());
 	}
 }

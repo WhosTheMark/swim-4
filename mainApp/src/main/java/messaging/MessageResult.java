@@ -76,6 +76,14 @@ public class MessageResult extends Message{
 	public void setResponseDataSize(int responseDataSize) {
 		this.responseDataSize = responseDataSize;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	
 
 

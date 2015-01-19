@@ -7,6 +7,10 @@ public class ConsumerBehaviour {
 	private int frequency;
 	private int datasize;
 	
+	public ConsumerBehaviour() {
+		super();
+	}
+
 	public ConsumerBehaviour(int begin, int end, int frequency, int datasize) {
 		this.begin = begin;
 		this.end = end;
