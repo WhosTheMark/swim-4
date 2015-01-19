@@ -11,6 +11,8 @@ package jmsconsumer;
 import java.io.IOException ;
 import java.util.Date;
 
+import jmsmainapp.JMSException;
+
 import com.rabbitmq.client.ConsumerCancelledException;
 import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.QueueingConsumer;
@@ -38,12 +40,12 @@ public class ConsumerReceiverThread extends Thread{
 		MessageHandler handler = new MessageHandler(nameConsumer, esbAddr);
 		
 		try {
-			queueName = this.association.getChannel().queueDeclare().getQueue();
+			queueName = association.getChannel().queueDeclare().getQueue();
 		
-			this.association.getChannel().queueBind(queueName, this.association.getExchangeName(), "");//modif4 binding exchange to queue
+			association.getChannel().queueBind(queueName, association.getExchangeName(), "");//modif4 binding exchange to queue
 			System.out.println("Queue " + queueName + " is Waiting for messages. To exit press CTRL+C");
-			QueueingConsumer consumer = new QueueingConsumer(this.association.getChannel());
-			this.association.getChannel().basicConsume(queueName, true, consumer);
+			QueueingConsumer consumer = new QueueingConsumer(association.getChannel());
+			association.getChannel().basicConsume(queueName, true, consumer);
 			
 			while (true) {
 				QueueingConsumer.Delivery delivery = consumer.nextDelivery();
@@ -52,8 +54,7 @@ public class ConsumerReceiverThread extends Thread{
 				handler.handleMessage(message);
 			}
 		} catch (IOException | ShutdownSignalException | ConsumerCancelledException | InterruptedException e) {
-			
-			e.printStackTrace();
+			throw new JMSException(e.getMessage());
 		}
 	}
 

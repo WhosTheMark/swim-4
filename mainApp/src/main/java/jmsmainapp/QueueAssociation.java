@@ -15,7 +15,10 @@ import com.rabbitmq.client.Channel;
 
 public class QueueAssociation {
 	
-	private final  String QUEUE_NAME = "result";
+	private static final  String QUEUE_NAME = "result";
+	private static final String USERNAME = "fafa";
+	private static final String PASSWORD = "fafa";
+	
 	private String ipAddress="localhost";
 	private Connection connection;
 	private Channel channel;
@@ -25,9 +28,11 @@ public class QueueAssociation {
 			this.ipAddress=ipAddress;
 			ConnectionFactory factory = new ConnectionFactory();
 			factory.setHost(ipAddress);
-			this.connection = factory.newConnection();
-			this.channel = connection.createChannel();
-			this.channel.queueDeclare(this.QUEUE_NAME, false, false, false, null);
+			factory.setUsername(USERNAME);
+			factory.setPassword(PASSWORD);
+			connection = factory.newConnection();
+			channel = connection.createChannel();
+			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 		} catch(IOException exception) {
 			throw new JMSException("ERROR - Problem at creation of queue with IP address " + ipAddress + " "
 									+ exception.getMessage());

@@ -10,22 +10,24 @@ package jmsmainapp;
 
 
 public class JMSManager {
-	protected static JMSManager jmsConnection=null;
+	
+	private static JMSManager jmsConnection=null;
 	private TopicAssociation topicAssociation;
 	private JavaAppSender sender;//donner l acces
 	private QueueAssociation queueAssociation;
 	private JavaAppReceiverThread receiver;//donner l acces
-	private String ipAdress="localhost";
+
+	private static final String IPADDRESS ="localhost";
 	
 	/**
 	 * Constructor
 	 */
 	private JMSManager() {
-		this.topicAssociation=new TopicAssociation(this.ipAdress);		
-		this.sender=new JavaAppSender(this.topicAssociation);
-		this.queueAssociation=new QueueAssociation(this.ipAdress);
-		this.receiver=new JavaAppReceiverThread(this.queueAssociation);
-		this.receiver.start();
+		topicAssociation=new TopicAssociation(IPADDRESS);		
+		sender=new JavaAppSender(topicAssociation);
+		queueAssociation=new QueueAssociation(IPADDRESS);
+		receiver=new JavaAppReceiverThread(queueAssociation);
+		receiver.start();
 	}
 			
 	/**

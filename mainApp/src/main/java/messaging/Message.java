@@ -77,44 +77,6 @@ public class Message {
 		return json;
 	}
 	
-	public static Message getMessageFromJson(String json){
-		return fromJson(Message.class, json);
-	}
-	
-	public static MessageResult getMessageResultFromJson(String json){
-		return fromJson(MessageResult.class, json);
-	}
-	
-	public static MessageError getMessageErrorFromJson(String json){
-		return fromJson(MessageError.class, json);
-	}
-	
-	public static MessageConfigurationProducer getMessageConfigurationProducerFromJson(String json){
-		return fromJson(MessageConfigurationProducer.class, json);
-	}
-	
-	public static MessageConfigurationConsumer getMessageConfigurationConsumerFromJson(String json){
-		return fromJson(MessageConfigurationConsumer.class, json);
-	}
-	
-	public static <T> T fromJson(Class T, String json){
-		T message = null;
-		try {
-			message = (T) T.newInstance();
-		} catch (InstantiationException e) {
-			throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
-		} catch (IllegalAccessException e) {
-			throw new MessageException("ERROR - Problem when searching a message "+e.getMessage());
-		}
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			message = (T) mapper.readValue(json, T);
-		} catch (IOException e) {
-			throw new MessageException("ERROR - Problem when retrieving a message from json "+e.getMessage());
-		}
-		return message;
-	}
-	
 	public String store(){
 		// Initialize client to work with DB
 		Node node = nodeBuilder().client(true).node();
@@ -214,19 +176,5 @@ public class Message {
 	public boolean areReceiversEquals(Message aux) {
 		return (to== null && aux.getTo() == null)
 				|| to.equals(aux.getTo());
-	}
-
-	public static MessageType identifyMessage(String json){
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode root;
-		try {
-			root = mapper.readTree(json);
-		} catch (JsonProcessingException e) {
-			throw new MessageException("ERROR - Problem when identifying a message "+e.getMessage());
-		} catch (IOException e) {
-			throw new MessageException("ERROR - Problem when identifying a message "+e.getMessage());
-		}
-		String type = root.get("type").asText();		
-		return MessageType.valueOf(type);
 	}
 }
