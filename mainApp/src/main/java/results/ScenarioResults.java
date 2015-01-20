@@ -5,43 +5,44 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.PropertyException;
-
 import messaging.Message;
 import messaging.MessageResult;
 import model.*;
 
+/**
+ * Handles the results : retrieves them from the database, orders them into coherent objects and creates
+ * 						 the xml report
+ * @author swim
+ */
 public class ScenarioResults {
 	
-	private static List<MessageResult> allResults = new ArrayList<MessageResult> () ;
+	private static List<MessageResult> allResults;
 	
 	public ScenarioResults() {
-		allResults = Message.getMessageResults();
+		allResults = new ArrayList<MessageResult> ();
 	}
 	
 	/**
 	 * Generate XML Result file
-	 * @throws PropertyException
-	 * @throws JAXBException
 	 */
-	public void generateXMLresult () throws PropertyException, JAXBException {
+	public void generateXMLresult() {
+		allResults = Message.getMessageResults();
 		Results results = createResultsObject();
 		ResultsXML.createXMLresults(results);
 	}
 
 	private GeneralResults createGeneralResultsObject () {
-		BigDecimal cpu = this.getCPUUsed();
-		BigDecimal memory = this.getMemoryUsed();
-		ResponseTimeT averageResponseTime = this.getAverageResponseTime();
-		BigDecimal lostMsg = this.getLostMsg();
-		ResponseTimeT max = this.getMaxResponseTime();
-		ResponseTimeT min = this.getMinResposneTime();
+		BigDecimal cpu = getCPUUsed();
+		BigDecimal memory = getMemoryUsed();
+		ResponseTimeT averageResponseTime = getAverageResponseTime();
+		BigDecimal lostMsg = getLostMsg();
+		ResponseTimeT max = getMaxResponseTime();
+		ResponseTimeT min = getMinResponseTime();
 		
 		return ResultsXML.createGeneralResults(cpu, memory, lostMsg, averageResponseTime, max, min);
 	}
 	
-	private ResponseTimeT getMinResposneTime() {
+	private ResponseTimeT getMinResponseTime() {
 		long min = allResults.get(0).getResponseTime() ;
 		for (MessageResult messageResult : allResults) {
 			if (messageResult.getResponseTime() < min) {
@@ -70,7 +71,7 @@ public class ScenarioResults {
 	private BigDecimal getLostMsg() {
 		int cpt = 0 ;
 		for (MessageResult messageResult : allResults) {
-			if (messageResult.getStatus().equals("STATUS_TIMEOUT")) {
+			if ("STATUS_TIMEOUT".equals(messageResult.getStatus())) {
 				cpt++;
 			}
 		}
@@ -112,7 +113,7 @@ public class ScenarioResults {
 			boolean receiveValue = false;
 			ExchangeT exchange ;
 			
-			if (messageResult.getStatus().equals("STATUS_TIMEOUT")) {
+			if ("STATUS_TIMEOUT".equals(messageResult.getStatus())) {
 				exchange = ResultsXML.createExchange(responseTimeValue, consumerId, producerId, receiveValue);
 			} else {
 				responseTimeValue = String.valueOf(messageResult.getResponseTime());

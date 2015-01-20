@@ -14,15 +14,21 @@ public class Configurator {
 
 	private JavaAppSender sender;
 	private int scenarioDuration;
+	private List<String> consumersID;
 	
 	public Configurator(JavaAppSender sender) {
 		this.sender = sender;
+		consumersID = new ArrayList<String>();
 	}
 	
 	public void sendConfigurationMessages(Scenario scenario) {
 		scenarioDuration = scenario.getDurationInMs();
 		sendConfigurationMessageToConsumers(scenario.getConsumers());
 		sendConfigurationMessageToProducers(scenario);
+	}
+	
+	public List<String> getConsumersID() {
+		return consumersID;
 	}
 	
 	private void sendConfigurationMessageToConsumers(Consumers consumers) {
@@ -45,6 +51,7 @@ public class Configurator {
 		MessageConfigurationConsumer message = new MessageConfigurationConsumer();
 		message.setName(consumer.getName());
 		message.setTo(consumer.getId());
+		consumersID.add(consumer.getId());
 		message.setProducerId(((ProducerT)consumer.getProducerId()).getId());
 		message.setConsumerBehaviours(determineConsumerBehaviours(consumer.getBehaviours()));
 		return message;

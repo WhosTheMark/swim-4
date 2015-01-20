@@ -8,37 +8,52 @@
 
 package jmsmainapp;
 
+import java.util.concurrent.BlockingQueue;
+
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.QueueingConsumer;
+
+import controller.SWIMController;
 
 public class JavaAppReceiverThread extends Thread {
     private QueueAssociation association;
 
+    private QueueingConsumer consumer;
+    private BlockingQueue<String> messages;
+    private SWIMController controller;
+    
     public JavaAppReceiverThread(QueueAssociation association) {
         this.association = association;
+        messages = null;
+    }
+    
+    public void setMessagesList(BlockingQueue<String> messages) {
+    	this.messages = messages;
+    }
+    
+    public void setSWIMController(SWIMController controller) {
+    	this.controller = controller;
     }
 
     public void run() {
         System.out.println(" [*] Waiting for messages. To exit press CTRL+C");
         Channel channel = association.getChannel();
-        QueueingConsumer consumer = new QueueingConsumer(channel);
-
+        consumer = new QueueingConsumer(channel);
         try {
-
             channel.basicConsume(QueueAssociation.QUEUE_NAME, true, consumer);
-            readMessages(consumer);
-
+            readMessages();
         } catch (Exception e) {
             throw new JMSException(e);
         }
     }
 
-    private void readMessages(QueueingConsumer consumer) throws InterruptedException {
-
-        while (true) {
+    private void readMessages() throws InterruptedException {
+        while (controller.keepRunning()) {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String message = new String(delivery.getBody());
-            System.out.println(" [x] Received '" + message + "'");
+            if(!message.isEmpty()) {
+            	messages.put(message);
+            }
         }
     }
 }

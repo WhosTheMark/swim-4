@@ -6,7 +6,7 @@ import java.math.BigInteger;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
+import controller.SWIMException;
 
 import model.*;
 
@@ -23,13 +23,16 @@ public class ResultsXML {
 	 * @throws JAXB Exception
 	 * @throws Marshaller Property Exception
 	 */
-	public static void createXMLresults(Results results) throws JAXBException,
-			PropertyException {
-		
-		JAXBContext jaxbContext = JAXBContext.newInstance(Results.class);
-		Marshaller marshaller = jaxbContext.createMarshaller();
-		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
-		marshaller.marshal(results, new File(OUTPUTXML));
+	public static void createXMLresults(Results results)  {
+		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(Results.class);
+			Marshaller marshaller = jaxbContext.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
+			marshaller.marshal(results, new File(OUTPUTXML));
+		} catch(JAXBException exception) {
+			throw new SWIMException("ERROR - Problem encountered when creating report\n"
+									+ exception.getMessage());
+		}
 	}
 
 	/**
@@ -68,14 +71,7 @@ public class ResultsXML {
 		
 		return screenshot;
 	}
-	/**
-	 * @author David
-	 * @param responseTimeValue
-	 * @param consumerId
-	 * @param producerId
-	 * @param receiveValue
-	 * @return exchange
-	 */
+
 	public static ExchangeT createExchange(String responseTimeValue,
 			String consumerId, String producerId, boolean receiveValue) {
 		
@@ -90,12 +86,6 @@ public class ResultsXML {
 		return exchange;
 	}
 
-
-	/**
-	 * @author David
-	 * @param responseTime string
-	 * @return response time object
-	 */
 	public static ResponseTimeT createResponseTime(String responseTime) {
 		
 		ResponseTimeT averageResponseTime = new ResponseTimeT();
@@ -105,16 +95,6 @@ public class ResultsXML {
 		return averageResponseTime;
 	}
 
-	/**
-	 * @author David
-	 * @param cpu
-	 * @param memory
-	 * @param lostMessages
-	 * @param averageResponseTime
-	 * @param max
-	 * @param min
-	 * @return general results
-	 */
 	public static GeneralResults createGeneralResults(BigDecimal cpu,
 			BigDecimal memory, BigDecimal lostMessages,
 			ResponseTimeT averageResponseTime, ResponseTimeT max, ResponseTimeT min) {

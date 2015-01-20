@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -17,11 +16,13 @@ public class JavaAppMessageHandler extends Thread {
 	private SWIMController controller;
 	private List<String> consumers;
 	
-	public JavaAppMessageHandler(BlockingQueue<String> messages, SWIMController controller,
-	                             List<String> consumers) {
+	public JavaAppMessageHandler(BlockingQueue<String> messages, SWIMController controller) {
 		factory = MessageFactory.getInstance();
 		this.messages = messages;
 		this.controller = controller;
+	}
+	
+	public void setConsumersID(List<String> consumers) {
 		this.consumers = consumers;
 	}
 	
