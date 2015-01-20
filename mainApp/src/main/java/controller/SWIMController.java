@@ -8,6 +8,7 @@ import java.util.Calendar;
 import jmsmainapp.JMSException;
 import jmsmainapp.JMSManager;
 import jmsmainapp.JavaAppSender;
+import messaging.Message;
 import model.Scenario;
 import scenario.Configurator;
 import scenario.ScenarioException;
@@ -17,19 +18,32 @@ import scenario.ScenarioParser;
 public class SWIMController {
 	
 	private static final String ERRORREPORT = "ressources/reports/report.txt";
-	
+	private static final String BROADCAST = "broadcast";
 	private ScenarioParser scenarioParser;
 	private Configurator configurator;
+	private JavaAppSender sender;
 	private String scenarioName;
+	private boolean scenarioRunning;
 	
 	public SWIMController() {
+		scenarioRunning = false;
 		try {
-		JavaAppSender sender = JMSManager.getInstance().getSender();
-		scenarioParser = new ScenarioParser();
-		configurator = new Configurator(sender);
+			sender = JMSManager.getInstance().getSender();
+			scenarioParser = new ScenarioParser();
+			configurator = new Configurator(sender);
 		} catch(JMSException exception) {
 			writeErrorReport(exception.getMessage());
 		}
+	}
+	
+	private void sendStartMessage() {
+		scenarioRunning = true;
+		Message start = new Message(null,BROADCAST);
+		sender.send(start);
+	}
+	
+	public boolean keepRunning() {
+		return scenarioRunning; 
 	}
 	
 	public String getReportName() {
@@ -41,6 +55,7 @@ public class SWIMController {
 			this.scenarioName = scenarioName;
 			Scenario scenario = scenarioParser.parseScenario(scenarioName);
 			configurator.sendConfigurationMessages(scenario);
+			sendStartMessage();
 			//TODO continue to run the entire scenario
 		} catch(ScenarioException exception) {
 			writeErrorReport(exception.getMessage());
