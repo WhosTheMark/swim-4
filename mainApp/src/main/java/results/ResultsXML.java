@@ -23,7 +23,7 @@ public class ResultsXML {
 	 * @throws JAXB Exception
 	 * @throws Marshaller Property Exception
 	 */
-	public static void createXMLresults(Results results)  {
+	public void createXMLresults(Results results)  {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Results.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -43,7 +43,7 @@ public class ResultsXML {
 	 * @param busEnvironment
 	 * @return results
 	 */
-	public static Results createResults(GeneralResults generalResults, Exchanges exchanges,
+	public Results createResults(GeneralResults generalResults, Exchanges exchanges,
 			BusEnvironmentUsage busEnvironment) {
 		
 		Results results = new Results();
@@ -60,7 +60,7 @@ public class ResultsXML {
 	 * @param memoryUsedValue : memeoryUsed during the screenshot
 	 * @return screenshot type
 	 */
-	public static ScreenshotT createScreenshot(int cpuUsedValue, int memoryUsedValue) {
+	public ScreenshotT createScreenshot(int cpuUsedValue, int memoryUsedValue) {
 		
 		BigDecimal cpuUsed = new BigDecimal(cpuUsedValue);
 		BigDecimal memoryUsed = new BigDecimal(memoryUsedValue);
@@ -72,7 +72,7 @@ public class ResultsXML {
 		return screenshot;
 	}
 
-	public static ExchangeT createExchange(String responseTimeValue,
+	public ExchangeT createExchange(String responseTimeValue,
 			String consumerId, String producerId, boolean receiveValue) {
 		
 		ExchangeT exchange = new ExchangeT();
@@ -86,7 +86,7 @@ public class ResultsXML {
 		return exchange;
 	}
 
-	public static ResponseTimeT createResponseTime(String responseTime) {
+	public ResponseTimeT createResponseTime(String responseTime) {
 		
 		ResponseTimeT averageResponseTime = new ResponseTimeT();
 		averageResponseTime.setTimeUnit(MILLISECOND);
@@ -95,7 +95,7 @@ public class ResultsXML {
 		return averageResponseTime;
 	}
 
-	public static GeneralResults createGeneralResults(BigDecimal cpu,
+	public GeneralResults createGeneralResults(BigDecimal cpu,
 			BigDecimal memory, BigDecimal lostMessages,
 			ResponseTimeT averageResponseTime, ResponseTimeT max, ResponseTimeT min) {
 		

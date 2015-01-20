@@ -15,11 +15,16 @@ import model.*;
  * @author swim
  */
 public class ScenarioResults {
+
+	public static final String STATUS_OK = "STATUS_OK";
+	public static final String STATUS_TIMEOUT = "STATUS_TIMEOUT";
 	
 	private static List<MessageResult> allResults;
+	private static ResultsXML resultsXML;
 	
 	public ScenarioResults() {
 		allResults = new ArrayList<MessageResult> ();
+		resultsXML = new ResultsXML() ;
 	}
 	
 	/**
@@ -28,7 +33,7 @@ public class ScenarioResults {
 	public void generateXMLresult() {
 		allResults = Message.getMessageResults();
 		Results results = createResultsObject();
-		ResultsXML.createXMLresults(results);
+		resultsXML.createXMLresults(results);
 	}
 
 	private GeneralResults createGeneralResultsObject () {
@@ -39,7 +44,7 @@ public class ScenarioResults {
 		ResponseTimeT max = getMaxResponseTime();
 		ResponseTimeT min = getMinResponseTime();
 		
-		return ResultsXML.createGeneralResults(cpu, memory, lostMsg, averageResponseTime, max, min);
+		return resultsXML.createGeneralResults(cpu, memory, lostMsg, averageResponseTime, max, min);
 	}
 	
 	private ResponseTimeT getMinResponseTime() {
@@ -71,7 +76,7 @@ public class ScenarioResults {
 	private BigDecimal getLostMsg() {
 		int cpt = 0 ;
 		for (MessageResult messageResult : allResults) {
-			if ("STATUS_TIMEOUT".equals(messageResult.getStatus())) {
+			if (STATUS_TIMEOUT.equals(messageResult.getStatus())) {
 				cpt++;
 			}
 		}
@@ -113,15 +118,15 @@ public class ScenarioResults {
 			boolean receiveValue = false;
 			ExchangeT exchange ;
 			
-			if ("STATUS_TIMEOUT".equals(messageResult.getStatus())) {
-				exchange = ResultsXML.createExchange(responseTimeValue, consumerId, producerId, receiveValue);
+			if (STATUS_TIMEOUT.equals(messageResult.getStatus())) {
+				exchange = resultsXML.createExchange(responseTimeValue, consumerId, producerId, receiveValue);
 			} else {
 				responseTimeValue = String.valueOf(messageResult.getResponseTime());
 				consumerId = messageResult.getConsumerId();
 				producerId = messageResult.getProducerId();
 				receiveValue = true;
 				
-				exchange = ResultsXML.createExchange(responseTimeValue, consumerId, producerId, receiveValue);
+				exchange = resultsXML.createExchange(responseTimeValue, consumerId, producerId, receiveValue);
 			}
 			exchanges.getExchange().add(exchange);
 		}
@@ -138,7 +143,7 @@ public class ScenarioResults {
 		GeneralResults generalResults = createGeneralResultsObject();
 		Exchanges exchanges = createExchangesObject();
 		BusEnvironmentUsage bus = createBusEnvironmentUsageObject();
-		Results results = ResultsXML.createResults(generalResults, exchanges, bus) ;
+		Results results = resultsXML.createResults(generalResults, exchanges, bus) ;
 		
 		return results;
 	}
