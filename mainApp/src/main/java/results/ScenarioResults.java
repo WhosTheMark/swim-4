@@ -20,6 +20,11 @@ public class ScenarioResults {
 		allResults = Message.getMessageResults();
 	}
 	
+	/**
+	 * Generate XML Result file
+	 * @throws PropertyException
+	 * @throws JAXBException
+	 */
 	public void generateXMLresult () throws PropertyException, JAXBException {
 		Results results = createResultsObject();
 		ResultsXML.createXMLresults(results);

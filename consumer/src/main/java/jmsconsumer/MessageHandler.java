@@ -1,14 +1,9 @@
 package jmsconsumer;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import messaging.MessageConfigurationConsumer;
-
-import org.json.JSONObject;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import messaging.MessageFactory;
+import messaging.MessageType;
 
 import esbcomunication.BehaviorScheduler;
 import esbcomunication.BehaviorScheduler.BehaviorSchedulerBuilder;
@@ -19,31 +14,30 @@ public class MessageHandler {
 	private String esbAddr ;
 	private BehaviorScheduler scheduler = null ;
 	
-
+	/**
+	 * MessageHandler Constructor
+	 * @param name
+	 * @param esbAddr
+	 */
 	public MessageHandler(String name, String esbAddr) {
 		this.consumerName = name ;
 		this.esbAddr = esbAddr ;
 	}
 
+	/**
+	 * Handle consumer behavior according to the message receive
+	 * @param message
+	 */
 	public void handleMessage(String message) {
-		JSONObject jsonMessage = new JSONObject (message) ;
-		if (forThisConsumer(jsonMessage)) {
-			if (isConfiguration(jsonMessage)) {
-				configConsumer(message) ;
-			} else if (isStart(jsonMessage)){
-				startconsumer() ;
+		
+		MessageFactory msg = MessageFactory.getInstance() ;
+		if (msg.identifyMessage(message).equals(MessageType.CONFIGURATIONCONSUMER)) {
+			if (msg.getMessageFromJson(message).getTo().equals(consumerName)) {
+				configConsumer(message);
 			}
+		} else if (msg.identifyMessage(message).equals(MessageType.START)) {
+			startconsumer() ;
 		}
-	}
-
-	// à modifier
-	private boolean isConfiguration(JSONObject jsonMessage) {
-		return (jsonMessage.getJSONObject("type").toString()=="configuration");
-	}
-
-	// à modifier
-	private boolean isStart(JSONObject jsonMessage) {
-		return (jsonMessage.getJSONObject("type").toString()=="start") ;
 	}
 
 	private void startconsumer() {
@@ -57,32 +51,13 @@ public class MessageHandler {
 
 	private void configConsumer(String message) {
 		BehaviorSchedulerBuilder builder = new BehaviorSchedulerBuilder() ;
-		
-		MessageConfigurationConsumer consumerConfiguration = fromJSONtoMessage(message);
+
+		MessageConfigurationConsumer consumerConfiguration = MessageFactory.getInstance().getMessageConfigurationConsumerFromJson(message);
 		builder.setBehaviors(consumerConfiguration.getConsumerBehaviours());
 		builder.setConsumerId(consumerName);
 		builder.setESBAddress(esbAddr);
 		
 		scheduler = builder.build() ;
 	}
-
-	private boolean forThisConsumer(JSONObject jsonMessage) {
-		return (jsonMessage.getJSONObject("to").toString()==consumerName) ;
-	}
-	
-	// dans la classe message (main app)
-	public MessageConfigurationConsumer fromJSONtoMessage(String message) {
-        ObjectMapper mapper = new ObjectMapper();
-        MessageConfigurationConsumer messageConfiguration = null;
-        try {
-            messageConfiguration = mapper.readValue(message, MessageConfigurationConsumer.class);
-            //producerService.setProcessingTime(messageConfiguration.getDuration());
-            //producerService.setResponseSize(messageConfiguration.getDataSize());
-        } catch (IOException ex) {
-            Logger.getLogger(MessageHandler.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error during reading value");
-        }
-        return messageConfiguration;
-    }
 
 }

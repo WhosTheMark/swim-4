@@ -69,9 +69,18 @@ class SendMessageRunnable implements Runnable {
         }
 
         if(jmsMessage != null) {
-            JMSManager.getInstance().getSender().send(jmsMessage);
+            sendToJavaApp(jmsMessage);
         }
 
+    }
+
+    /**
+     * Sends the message through JMS.
+     * @param jmsMessage the message to send.
+     */
+    private void sendToJavaApp(Message jmsMessage) {
+
+        JMSManager.getInstance().getSender().send(jmsMessage);
     }
 
     /**
