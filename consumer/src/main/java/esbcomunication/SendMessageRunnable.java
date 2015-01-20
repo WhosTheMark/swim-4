@@ -69,7 +69,6 @@ class SendMessageRunnable implements Runnable {
         }
 
         if(jmsMessage != null) {
-<<<<<<< HEAD
             sendToJavaApp(jmsMessage);
         }
 
@@ -82,11 +81,6 @@ class SendMessageRunnable implements Runnable {
     private void sendToJavaApp(Message jmsMessage) {
 
         JMSManager.getInstance().getSender().send(jmsMessage);
-=======
-            JMSManager.getInstance().getSender().send(jmsMessage);
-        }
-
->>>>>>> 84c4a356552c00350f3bed7adf25ae299162f0ab
     }
 
     /**
