@@ -12,6 +12,7 @@ import java.util.Map;
 
 import messaging.Message;
 import messaging.MessageConfigurationProducer;
+import messaging.MessageFactory;
 import messaging.ProducerBehaviour;
 
 import static org.junit.Assert.*;
@@ -36,7 +37,7 @@ public class MessageHandlerTest {
 	public void testFromJSONtoMessage() {
 		String messageJson = "{\"from\":\"me\",\"to\":\"you\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"producer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
 		MessageHandler instance = new MessageHandler();
-		MessageConfigurationProducer messageGenerated = instance.fromJSONtoMessage(messageJson);
+		MessageConfigurationProducer messageGenerated = MessageFactory.getInstance().getMessageConfigurationProducerFromJson(messageJson);
 		//MessageConfigurationProducer messageGenerated = Message.getMessageConfigurationProducerFromJson(messageJson);
 		assertNotNull(messageGenerated);
 		assertEquals(message.getDatasize(), messageGenerated.getDatasize());

@@ -15,6 +15,7 @@ public class Model {
 
     private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
+    private long startTime;
     private String id;
     private int dataSize;
     private String name;
@@ -48,6 +49,21 @@ public class Model {
      */
     public void setState(State state) {
         this.state = state;
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * @return the startTime
+     */
+    public long getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public enum State {

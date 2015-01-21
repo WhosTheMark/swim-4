@@ -39,7 +39,6 @@ import org.apache.commons.lang.StringUtils;
 public class ProducerService {
 
     private Model model;
-    private long startTime;
     private MessageHandler messageHandler;
 
     public ProducerService() {
@@ -64,7 +63,7 @@ public class ProducerService {
     public String getRequest(@WebParam(name = "from") String from, @WebParam(name = "messageRequest") String messageRequest) {
         if (model.getState() == Model.State.RUN) {
             long currentTime = System.currentTimeMillis();
-            long elapsedTime = currentTime - startTime;
+            long elapsedTime = currentTime - model.getStartTime();
             try {
                 sleep(model.getProcessingTime(from, elapsedTime));
             } catch (InterruptedException ex) {
