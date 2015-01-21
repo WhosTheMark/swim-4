@@ -13,7 +13,7 @@ import jmsconsumer.TopicAssociation;
 
 public class JMSManager {
 	
-	private static final String IPADDRESS = "localhost";
+	private static final String IPADDRESS = "10.1.5.160";
 	private static JMSManager jmsConnection = null;
 	
 	private TopicAssociation topicAssociation;
