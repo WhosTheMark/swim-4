@@ -13,6 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import controller.SWIMController;
+import controller.SWIMException;
+import jmsmainapp.JMSManager;
 
 public class SWIMControllerTest {
 
@@ -20,10 +22,10 @@ public class SWIMControllerTest {
 	
 	@Before
 	public void setUp() {
-		swimController = new SWIMController();
+		swimController = new SWIMController(JMSManager.getInstance());
 	}
 	
-	@Test
+	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNoXMLFileScenario() {
 		swimController.runScenario(ScenarioNames.NOTXMLINPUT);
 		String report = retrieveReportContent();
@@ -33,7 +35,7 @@ public class SWIMControllerTest {
 								 + " is not an XML file"));
 	}
 	
-	@Test
+	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNotExistingFileScenario() {
 		swimController.runScenario(ScenarioNames.NOTEXISTINGFILE);
 		String report = retrieveReportContent();
@@ -43,7 +45,7 @@ public class SWIMControllerTest {
 								 + " does not exist"));
 	}
 	
-	@Test
+	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNotValidScenario() {
 		swimController.runScenario(ScenarioNames.NOTVALIDSCENARIO);
 		String report = retrieveReportContent();
@@ -53,7 +55,7 @@ public class SWIMControllerTest {
 								 + " does not correspond to model"));
 	}
 
-	@Test
+	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterWrongBehaviour() {
 		swimController.runScenario(ScenarioNames.WRONGBEHAVIOURSCENARIO);
 		String report = retrieveReportContent();

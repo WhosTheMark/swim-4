@@ -35,12 +35,12 @@ public class SWIMController {
 	private boolean scenarioRunning;
 	private ScenarioResults resultsHandler;
 	
-	public SWIMController() {
+	public SWIMController(JMSManager manager) {
 		scenarioRunning = false;
 		try {
-			sender = JMSManager.getInstance().getSender();
+			sender = manager.getSender();
 			configurator = new Configurator(sender);
-			initializeMessageReception();
+			initializeMessageReception(manager);
 			scenarioParser = new ScenarioParser();
 			resultsHandler = new ScenarioResults();
 		} catch(JMSException exception) {
@@ -48,9 +48,9 @@ public class SWIMController {
 		}
 	}
 	
-	private void initializeMessageReception() {
+	private void initializeMessageReception(JMSManager manager) {
 		BlockingQueue<String> messages = new LinkedBlockingQueue<String>();
-		receiver = JMSManager.getInstance().getReceiver();
+		receiver = manager.getReceiver();
 		receiver.setMessagesList(messages);
 		receiver.setSWIMController(this);
 		messageHandler = new JavaAppMessageHandler(messages, this);
@@ -64,12 +64,19 @@ public class SWIMController {
 		return ERRORREPORT;
 	}
 	
+	public String getBroadcastValue() {
+		return BROADCAST;
+	}
+	
 	public void runScenario(String scenarioName) {
 		try {
 			this.scenarioName = scenarioName;
+			System.out.println("parsing scenario");
 			Scenario scenario = scenarioParser.parseScenario(scenarioName);
+			System.out.println("configuring messages");
 			configurator.sendConfigurationMessages(scenario);
 			messageHandler.setConsumersID(configurator.getConsumersID());
+			System.out.println("starting scenario");
 			startScenario();
 		} catch(ScenarioException exception) {
 			writeErrorReport(exception.getMessage());
@@ -83,8 +90,8 @@ public class SWIMController {
 	private void startScenario() {
 		scenarioRunning = true;
 		sendStartMessage();
-		receiver.run();
-		messageHandler.run();
+		receiver.start();
+		messageHandler.start();
 	}
 	
 	private void sendStartMessage() {
@@ -100,6 +107,7 @@ public class SWIMController {
           writeDate(output);
           output.write(errorMsg + "\n");
           output.close();
+          throw new SWIMException("Scenario aborted - See error repors at " + ERRORREPORT);
         } catch ( IOException e ) {
            e.printStackTrace();
         } 
