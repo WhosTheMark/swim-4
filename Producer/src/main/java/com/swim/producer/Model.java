@@ -1,7 +1,6 @@
 package com.swim.producer;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,18 +109,6 @@ public class Model {
             j++;
         }
         return processingTime;
-    }
-
-    private void populateWithFakeData() {
-        List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(0, 3, 12));
-        producerBehaviourList.add(new ProducerBehaviour(3, 6, 20));
-        HashMap<String, List<ProducerBehaviour>> producersBehaviours = new HashMap<>();
-        producersBehaviours.put("aa", producerBehaviourList);
-        producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(2, 3000, 200));
-        producersBehaviours.put("bb", producerBehaviourList);
-        this.producerBehaviours = producersBehaviours;
     }
 
     /**

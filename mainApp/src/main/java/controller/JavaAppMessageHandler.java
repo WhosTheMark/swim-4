@@ -9,7 +9,7 @@ import messaging.MessageFactory;
 import messaging.MessageResult;
 import messaging.MessageType;
 
-public class JavaAppMessageHandler extends Thread {
+public class JavaAppMessageHandler {
 
 	private MessageFactory factory;
 	private BlockingQueue<String> messages;
@@ -26,18 +26,25 @@ public class JavaAppMessageHandler extends Thread {
 		this.consumers = consumers;
 	}
 	
-	public void run() {
+	public BlockingQueue<String> getMessagesList() {
+		return messages;
+	}
+	
+	public void handleMessages() {
 		while(controller.keepRunning()) {
+			System.out.println("hey");
 			try {
                 String json = messages.take();
                 handleMessage(json);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+			System.out.println(controller.keepRunning());
 		}
 	}
 	
 	private void handleMessage(String json) {
+		System.out.println(json);
 		MessageType type = factory.identifyMessage(json);
 		switch(type) {
 		case RESULT:
@@ -50,6 +57,7 @@ public class JavaAppMessageHandler extends Thread {
 			break;
 		case OK:
 			handleTerminatedConsumerMessage(json);
+			break;
 	    default:
 	    	throw new SWIMException("ERROR - message of type " + type + " not expected" );
 		}

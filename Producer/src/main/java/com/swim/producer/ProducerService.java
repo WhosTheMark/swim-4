@@ -5,17 +5,9 @@
  */
 package com.swim.producer;
 
-import com.swim.messaging.MessageHandler;
 import static java.lang.Thread.sleep;
 import static java.lang.System.out;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
@@ -23,12 +15,6 @@ import javax.jws.WebMethod;
 import javax.ejb.Stateless;
 import javax.jws.WebParam;
 import jmsproducer.JMSManager;
-import jmsproducer.ProducerReceiverThread;
-import jmsproducer.TopicAssociation;
-
-import messaging.ProducerBehaviour;
-
-import org.apache.commons.lang.StringUtils;
 
 /**
  *
@@ -39,11 +25,10 @@ import org.apache.commons.lang.StringUtils;
 public class ProducerService {
 
     private Model model;
-    private MessageHandler messageHandler;
 
     public ProducerService() {
         this.model = Model.getInstance();
-        JMSManager instance = JMSManager.getInstance();
+        JMSManager.getInstance();
         out.println("\n\n\n\n\n\n\n\n\n\n\n\nMS manager instanciated");
     }
 
