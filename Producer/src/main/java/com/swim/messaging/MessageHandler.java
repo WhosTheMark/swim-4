@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import messaging.Message;
+import messaging.MessageFactory;
 import messaging.MessageConfigurationProducer;
 
 import messaging.MessageConfigurationProducer;
@@ -30,10 +31,10 @@ public class MessageHandler {
     public void handleMessage(String stringMessage) {
         JSONObject jsonMessage = new JSONObject(stringMessage);
         if (jsonMessage.getJSONObject("to").toString().equals(model.getId())) {
-            switch (MessageType.valueOf(jsonMessage.getJSONObject("type").toString())) {
+            switch (MessageFactory.getInstance().identifyMessage(stringMessage)) {
                 case CONFIGURATIONPRODUCER:
                     if (model.getState() == Model.State.WAITCONFIG) {
-                        MessageConfigurationProducer message = fromJSONtoMessage(stringMessage);
+                        MessageConfigurationProducer message=MessageFactory.getInstance().getMessageConfigurationProducerFromJson(stringMessage);
                         model.setProducerBehaviours(message.getProducerBehaviours());
                         model.setDataSize(message.getDatasize());
                         model.setName(message.getName());
@@ -48,22 +49,22 @@ public class MessageHandler {
 
     }
 
-    /**
-     *
-     * @param message : the JSON message
-     * @return the object Message created or null if error
-     */
-    public MessageConfigurationProducer fromJSONtoMessage(String message) {
-        ObjectMapper mapper = new ObjectMapper();
-        MessageConfigurationProducer messageConfiguration = null;
-        try {
-            messageConfiguration = mapper.readValue(message, MessageConfigurationProducer.class);
-            //producerService.setProcessingTime(messageConfiguration.getDuration());
-            //producerService.setResponseSize(messageConfiguration.getDataSize());
-        } catch (IOException ex) {
-            Logger.getLogger(MessageHandler.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Error during reading value");
-        }
-        return messageConfiguration;
-    }
+//    /**
+//     *
+//     * @param message : the JSON message
+//     * @return the object Message created or null if error
+//     */
+//    public MessageConfigurationProducer fromJSONtoMessage(String message) {
+//        ObjectMapper mapper = new ObjectMapper();
+//        MessageConfigurationProducer messageConfiguration = null;
+//        try {
+//            messageConfiguration = mapper.readValue(message, MessageConfigurationProducer.class);
+//            //producerService.setProcessingTime(messageConfiguration.getDuration());
+//            //producerService.setResponseSize(messageConfiguration.getDataSize());
+//        } catch (IOException ex) {
+//            Logger.getLogger(MessageHandler.class.getName()).log(Level.SEVERE, null, ex);
+//            System.out.println("Error during reading value");
+//        }
+//        return messageConfiguration;
+//    }
 }
