@@ -30,22 +30,24 @@ public class MessageHandler {
 
     public void handleMessage(String stringMessage) {
         JSONObject jsonMessage = new JSONObject(stringMessage);
-        if (jsonMessage.getJSONObject("to").toString().equals(model.getId())) {
+        
             switch (MessageFactory.getInstance().identifyMessage(stringMessage)) {
                 case CONFIGURATIONPRODUCER:
-                    if (model.getState() == Model.State.WAITCONFIG) {
-                        MessageConfigurationProducer message=MessageFactory.getInstance().getMessageConfigurationProducerFromJson(stringMessage);
-                        model.setProducerBehaviours(message.getProducerBehaviours());
-                        model.setDataSize(message.getDatasize());
-                        model.setName(message.getName());
-                        model.setState(Model.State.WAITSTART);
-                    }
+                	if (jsonMessage.getJSONObject("to").toString().equals(model.getId())) {
+	                    if (model.getState() == Model.State.WAITCONFIG) {
+	                        MessageConfigurationProducer message=MessageFactory.getInstance().getMessageConfigurationProducerFromJson(stringMessage);
+	                        model.setProducerBehaviours(message.getProducerBehaviours());
+	                        model.setDataSize(message.getDatasize());
+	                        model.setName(message.getName());
+	                        model.setState(Model.State.WAITSTART);
+	                    }
+                	}
                 case START:
                     if (model.getState() == Model.State.WAITSTART) {
                         model.setState(Model.State.RUN);
                     }
             }
-        }
+        
 
     }
 
