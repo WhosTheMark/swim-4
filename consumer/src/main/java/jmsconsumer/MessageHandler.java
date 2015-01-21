@@ -27,8 +27,9 @@ public class MessageHandler {
 	/**
 	 * Handle consumer behavior according to the message receive
 	 * @param message
+	 * @return false if it shouldn't handle more messages.
 	 */
-	public void handleMessage(String message) {
+	public boolean handleMessage(String message) {
 		
 		MessageFactory msg = MessageFactory.getInstance() ;
 		if (msg.identifyMessage(message).equals(MessageType.CONFIGURATIONCONSUMER)) {
@@ -37,7 +38,10 @@ public class MessageHandler {
 			}
 		} else if (msg.identifyMessage(message).equals(MessageType.START)) {
 			startconsumer() ;
+			return false;
 		}
+		
+		return true;
 	}
 
 	private void startconsumer() {
