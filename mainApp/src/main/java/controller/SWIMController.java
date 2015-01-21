@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import database.Database;
+
 import jmsmainapp.JMSException;
 import jmsmainapp.JMSManager;
 import jmsmainapp.JavaAppReceiverThread;
@@ -43,6 +45,7 @@ public class SWIMController {
 			initializeMessageReception(manager);
 			scenarioParser = new ScenarioParser();
 			resultsHandler = new ScenarioResults();
+			Database.dropDatabase();
 		} catch(JMSException exception) {
 			writeErrorReport(exception.getMessage());
 		}
@@ -68,12 +71,16 @@ public class SWIMController {
 		return BROADCAST;
 	}
 	
+	public String getResultReportName() {
+		return resultsHandler.getResultReportName();
+	}
+	
 	public void runScenario(String scenarioName) {
 		try {
 			this.scenarioName = scenarioName;
 			System.out.println("parsing scenario");
 			Scenario scenario = scenarioParser.parseScenario(scenarioName);
-			System.out.println("configuring messages");
+			System.out.println("configurating");
 			configurator.sendConfigurationMessages(scenario);
 			messageHandler.setConsumersID(configurator.getConsumersID());
 			System.out.println("starting scenario");
@@ -91,7 +98,7 @@ public class SWIMController {
 		scenarioRunning = true;
 		sendStartMessage();
 		receiver.start();
-		messageHandler.start();
+		messageHandler.handleMessages();
 	}
 	
 	private void sendStartMessage() {
@@ -99,6 +106,10 @@ public class SWIMController {
 		sender.send(start);
 	}
 
+	public JavaAppMessageHandler getMessageHandler() {
+		return messageHandler;
+	}
+	
 	private void writeErrorReport(String errorMsg) {
 		try {
           File file = new File(ERRORREPORT);
@@ -126,7 +137,16 @@ public class SWIMController {
 	}
 	
 	public void handleAllConsumersHaveFinished() {
+		System.out.println("consumers have finished");
 		scenarioRunning = false;
 		resultsHandler.generateXMLresult();
+		cleanSystem();
+	}
+	
+	private void cleanSystem() {
+		Database.dropDatabase();
+		System.out.println("Execution successfully completed - Please see "
+				+ resultsHandler.getResultReportName()
+				+ " for results");
 	}
 }
