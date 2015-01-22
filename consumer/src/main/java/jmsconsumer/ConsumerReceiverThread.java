@@ -68,5 +68,4 @@ public class ConsumerReceiverThread extends Thread {
             keepWaiting = handler.handleMessage(message);
         }
     }
-
 }

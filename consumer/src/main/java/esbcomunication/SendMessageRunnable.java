@@ -49,11 +49,13 @@ class SendMessageRunnable implements Runnable {
 
             reply = deliberyInfo.getESBSender().send(message);
             long afterSendTime = System.currentTimeMillis();
+            long totalRTT = afterSendTime - beforeSendTime;
 
+            System.out.println(reply);
             // TODO extra nulls for "to"
             jmsMessage = new MessageResult(deliberyInfo.getConsumerId(),null,deliberyInfo.getConsumerId(),
                                 deliberyInfo.getProducerId(),beforeSendTime,
-                                afterSendTime,message.length(),getResponseDataSize(reply),
+                                totalRTT,message.length(),getResponseDataSize(reply),
                                 MessageResult.STATUS_OK);
 
         } catch (SocketTimeoutException e) {

@@ -24,7 +24,7 @@ public class ConsumerSender {
 	public synchronized void send(Message message) {
 		try {
 			this.queueAssociation.getChannel().basicPublish("", queueAssociation.getQUEUE_NAME(), null, message.toJson().getBytes());
-			System.out.println(" [x] Sent '" + message + "'");
+			System.out.println(" [x] Sent message.");
 		} catch (IOException e) {
 			throw new JMSException(e.getMessage());
 		}
