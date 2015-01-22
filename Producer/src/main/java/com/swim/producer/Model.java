@@ -1,7 +1,6 @@
 package com.swim.producer;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +14,7 @@ public class Model {
 
     private final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
+    private long startTime;
     private String id;
     private int dataSize;
     private String name;
@@ -48,6 +48,21 @@ public class Model {
      */
     public void setState(State state) {
         this.state = state;
+        startTime = System.currentTimeMillis();
+    }
+
+    /**
+     * @return the startTime
+     */
+    public long getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public enum State {
@@ -61,7 +76,7 @@ public class Model {
 
     private Model() {
         this.state = State.WAITCONFIG;
-        // populateWithFakeData(); //Only for testing
+        id="p1";
     }
 
     String decodeUTF8(byte[] bytes) {
@@ -94,18 +109,6 @@ public class Model {
             j++;
         }
         return processingTime;
-    }
-
-    private void populateWithFakeData() {
-        List<ProducerBehaviour> producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(0, 3, 12));
-        producerBehaviourList.add(new ProducerBehaviour(3, 6, 20));
-        HashMap<String, List<ProducerBehaviour>> producersBehaviours = new HashMap<>();
-        producersBehaviours.put("aa", producerBehaviourList);
-        producerBehaviourList = new ArrayList<>();
-        producerBehaviourList.add(new ProducerBehaviour(2, 3000, 200));
-        producersBehaviours.put("bb", producerBehaviourList);
-        this.producerBehaviours = producersBehaviours;
     }
 
     /**

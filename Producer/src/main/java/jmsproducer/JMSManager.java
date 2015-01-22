@@ -14,8 +14,8 @@ import java.io.IOException;
 public class JMSManager {
 	private static JMSManager jmsConnection=null;
 	private TopicAssociation topicAssociation;	
-	private ProducerReceiverThread receiver;//donner l acces
-	private static final String IPADDRESS = "localhost";
+	private ProducerReceiverThread receiver;
+	private static final String IPADDRESS = "10.1.5.160";
 	
 	/**
 	 * Constructor
