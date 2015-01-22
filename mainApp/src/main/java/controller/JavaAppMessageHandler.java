@@ -32,14 +32,12 @@ public class JavaAppMessageHandler {
 	
 	public void handleMessages() {
 		while(controller.keepRunning()) {
-			System.out.println("hey");
 			try {
                 String json = messages.take();
                 handleMessage(json);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-			System.out.println(controller.keepRunning());
 		}
 	}
 	

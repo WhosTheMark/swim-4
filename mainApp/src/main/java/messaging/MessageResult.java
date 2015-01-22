@@ -55,13 +55,13 @@ public class MessageResult extends Message{
 	public long getRequestTime() {
 		return requestTime;
 	}
-	public void setRequestTime(int requestTime) {
+	public void setRequestTime(long requestTime) {
 		this.requestTime = requestTime;
 	}
 	public long getResponseTime() {
 		return responseTime;
 	}
-	public void setResponseTime(int responseTime) {
+	public void setResponseTime(long responseTime) {
 		this.responseTime = responseTime;
 	}
 	public int getRequestDataSize() {

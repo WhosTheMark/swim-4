@@ -27,7 +27,6 @@ public class JMSManager {
 		sender=new JavaAppSender(topicAssociation);
 		queueAssociation=new QueueAssociation(IPADDRESS);
 		receiver=new JavaAppReceiverThread(queueAssociation);
-		receiver.start();
 	}
 			
 	/**
