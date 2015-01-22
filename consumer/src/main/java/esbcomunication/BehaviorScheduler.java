@@ -22,7 +22,7 @@ public class BehaviorScheduler {
     private ESBDeliveryInformation deliveryInfo;
 
     /** Max number of threads in the pool.*/
-    private static final int MAX_NUMBER_THREADS = 4;
+    private static final int MAX_NUMBER_THREADS = 1;
 
     private static final int MAX_HOURS_TO_WAIT = 3;
 
@@ -113,13 +113,13 @@ public class BehaviorScheduler {
         }
 
         waitForBehaviors(executor);
-        sendFinishedMessage();
+        sendOKMessage();
     }
 
     /**
      * Sends the message to alert the java application that the consumer finished.
      */
-    private void sendFinishedMessage() {
+    private void sendOKMessage() {
 
         Message msg = new Message(deliveryInfo.getConsumerId(),null);
         msg.setType(MessageType.OK);
@@ -133,6 +133,7 @@ public class BehaviorScheduler {
      */
     private void waitForBehaviors(ScheduledExecutorService executor) {
         try {
+        	executor.shutdown();
             executor.awaitTermination(MAX_HOURS_TO_WAIT, TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();

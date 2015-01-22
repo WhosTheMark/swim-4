@@ -1,10 +1,6 @@
 package fr.insa.toulouse.tp2g2.mainApp;
 
 import static org.junit.Assert.*;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.List;
 
 import model.BehaviourT;
@@ -28,37 +24,39 @@ public class SWIMControllerTest {
 	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNoXMLFileScenario() {
 		swimController.runScenario(ScenarioNames.NOTXMLINPUT);
-		String report = retrieveReportContent();
-		System.out.println(report);
-		assertTrue(report.contains("ERROR - file "
-								 + ScenarioNames.NOTXMLINPUT
-								 + " is not an XML file"));
+		checkReportContent("ERROR - file "
+						  + ScenarioNames.NOTXMLINPUT
+						  + " is not an XML file");
 	}
 	
 	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNotExistingFileScenario() {
 		swimController.runScenario(ScenarioNames.NOTEXISTINGFILE);
-		String report = retrieveReportContent();
+		checkReportContent("ERROR - file "
+						 + ScenarioNames.NOTEXISTINGFILE
+						 + " does not exist");
+	}
+	
+	private void checkReportContent(String expectedContent) {
+		String filename = swimController.getReportName();
+		String report = TestUtilities.retrieveFileContent(filename);
 		System.out.println(report);
-		assertTrue(report.contains("ERROR - file "
-								 + ScenarioNames.NOTEXISTINGFILE
-								 + " does not exist"));
+		assertTrue(report.contains(expectedContent));
 	}
 	
 	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterNotValidScenario() {
 		swimController.runScenario(ScenarioNames.NOTVALIDSCENARIO);
-		String report = retrieveReportContent();
-		System.out.println(report);
-		assertTrue(report.contains("ERROR - file "
-								 + ScenarioNames.NOTVALIDSCENARIO
-								 + " does not correspond to model"));
+		checkReportContent("ERROR - file "
+						 + ScenarioNames.NOTVALIDSCENARIO
+					     + " does not correspond to model");
 	}
 
 	@Test(expected=SWIMException.class)
 	public void reportCreatedAfterWrongBehaviour() {
 		swimController.runScenario(ScenarioNames.WRONGBEHAVIOURSCENARIO);
-		String report = retrieveReportContent();
+		String filename = swimController.getReportName();
+		String report = TestUtilities.retrieveFileContent(filename);
 		System.out.println(report);
 		TestScenarioFactory factory = new TestScenarioFactory();
 		List<BehaviourT> behaviours = factory.getOverlappingBehaviour();
@@ -67,35 +65,5 @@ public class SWIMControllerTest {
 								 + behaviours.get(0).toString() + " and "
 								 + behaviours.get(1).toString()
 								 + " overlap"));
-	}
-	
-	private String retrieveReportContent() {
-		String reportName = swimController.getReportName();
-		String content = "";
-		BufferedReader input = null;
-	    try {
-	    	input = new BufferedReader(new FileReader(reportName));
-	        StringBuilder sb = new StringBuilder();
-	        String line = input.readLine();
-
-	        while (line != null) {
-	            sb.append(line);
-	            sb.append(System.lineSeparator());
-	            line = input.readLine();
-	        }
-	        content = sb.toString();
-	    }catch(IOException exception) {
-	    	
-	    } finally {
-	    	if(input != null) {
-	    		try {
-					input.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    	}
-	    }
-	    return content;
 	}
 }

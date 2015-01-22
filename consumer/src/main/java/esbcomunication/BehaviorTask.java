@@ -54,7 +54,7 @@ class BehaviorTask implements Runnable {
      */
     private void sendMessages(String message, int numberOfCycles){
 
-        for(int i = 0; i < numberOfCycles; ++i){
+        for(int i = 0; i <= numberOfCycles; ++i){
             SendMessageRunnable runnable = new SendMessageRunnable(deliveryInfo,message);
             new Thread(runnable).run();
 

@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;sequence>
  *           &lt;element ref="{}generalResults"/>
  *           &lt;element ref="{}exchanges"/>
- *           &lt;element ref="{}busEnvironmentUsage"/>
  *         &lt;/sequence>
  *       &lt;/restriction>
  *     &lt;/complexContent>
@@ -41,8 +40,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "generalResults",
-    "exchanges",
-    "busEnvironmentUsage"
+    "exchanges"
 })
 @XmlRootElement(name = "results")
 public class Results {
@@ -51,8 +49,6 @@ public class Results {
     protected GeneralResults generalResults;
     @XmlElement(required = true)
     protected Exchanges exchanges;
-    @XmlElement(required = true)
-    protected BusEnvironmentUsage busEnvironmentUsage;
 
     /**
      * Gets the value of the generalResults property.
@@ -100,30 +96,6 @@ public class Results {
      */
     public void setExchanges(Exchanges value) {
         this.exchanges = value;
-    }
-
-    /**
-     * Gets the value of the busEnvironmentUsage property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BusEnvironmentUsage }
-     *     
-     */
-    public BusEnvironmentUsage getBusEnvironmentUsage() {
-        return busEnvironmentUsage;
-    }
-
-    /**
-     * Sets the value of the busEnvironmentUsage property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BusEnvironmentUsage }
-     *     
-     */
-    public void setBusEnvironmentUsage(BusEnvironmentUsage value) {
-        this.busEnvironmentUsage = value;
     }
 
 }

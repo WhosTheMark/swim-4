@@ -12,7 +12,7 @@ import model.*;
 
 public class ResultsXML {
 
-	private static final String OUTPUTXML = "/mainApp/src/main/java/results/results.xml";
+	private static final String OUTPUTXML = "ressources/reports/results.xml";
 	private static final TimeUnitType MILLISECOND = TimeUnitType.MS;
 	
 	
@@ -30,59 +30,41 @@ public class ResultsXML {
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 			marshaller.marshal(results, new File(OUTPUTXML));
 		} catch(JAXBException exception) {
+			exception.printStackTrace();
 			throw new SWIMException("ERROR - Problem encountered when creating report\n"
 									+ exception.getMessage());
 		}
 	}
 
+	public String getResultReportName() {
+		return OUTPUTXML;
+	}
+	
 	/**
 	 * Create the Results object
 	 * @author David
 	 * @param generalResults
 	 * @param exchanges
-	 * @param busEnvironment
 	 * @return results
 	 */
-	public Results createResults(GeneralResults generalResults, Exchanges exchanges,
-			BusEnvironmentUsage busEnvironment) {
+	public Results createResults(GeneralResults generalResults, Exchanges exchanges) {
 		
 		Results results = new Results();
-		results.setBusEnvironmentUsage(busEnvironment);
 		results.setExchanges(exchanges);
 		results.setGeneralResults(generalResults);
 
 		return results;
 	}
 
-	/**
-	 * @author David
-	 * @param cpuUsedValue : cpuUsed during the screenshot
-	 * @param memoryUsedValue : memeoryUsed during the screenshot
-	 * @return screenshot type
-	 */
-	public ScreenshotT createScreenshot(int cpuUsedValue, int memoryUsedValue) {
-		
-		BigDecimal cpuUsed = new BigDecimal(cpuUsedValue);
-		BigDecimal memoryUsed = new BigDecimal(memoryUsedValue);
-		// TODO define date
-		ScreenshotT screenshot = new ScreenshotT();
-		screenshot.setCpuUsed(cpuUsed);
-		screenshot.setMemoryUsed(memoryUsed);
-		
-		return screenshot;
-	}
-
-	public ExchangeT createExchange(String responseTimeValue,
-			String consumerId, String producerId, boolean receiveValue) {
-		
+	public ExchangeT createExchange(String responseTimeValue, String consumerId, String producerId,
+									boolean receiveValue, String date) {		
 		ExchangeT exchange = new ExchangeT();
 		exchange.setConsumerId(consumerId);
 		exchange.setProducerId(producerId);
-		// TODO define date
 		exchange.setReceived(receiveValue);
 		ResponseTimeT responseTime = createResponseTime(responseTimeValue);
-		exchange.setResponseTime(responseTime);
-		
+		exchange.setResponseTime(responseTime);	
+		exchange.setDate(date);
 		return exchange;
 	}
 
@@ -90,18 +72,17 @@ public class ResultsXML {
 		
 		ResponseTimeT averageResponseTime = new ResponseTimeT();
 		averageResponseTime.setTimeUnit(MILLISECOND);
-		averageResponseTime.setValue(new BigInteger(responseTime));
+		if(responseTime != null) {
+			averageResponseTime.setValue(new BigInteger(responseTime));
+		}
 		
 		return averageResponseTime;
 	}
 
-	public GeneralResults createGeneralResults(BigDecimal cpu,
-			BigDecimal memory, BigDecimal lostMessages,
-			ResponseTimeT averageResponseTime, ResponseTimeT max, ResponseTimeT min) {
+	public GeneralResults createGeneralResults(BigDecimal lostMessages, ResponseTimeT averageResponseTime,
+											ResponseTimeT max, ResponseTimeT min) {
 		
 		GeneralResults generalResults = new GeneralResults();
-		generalResults.setAverageCPUUsed(cpu);
-		generalResults.setAverageMemoryUsed(memory);
 		generalResults.setAverageResponseTime(averageResponseTime);
 		generalResults.setLostMessages(lostMessages);
 		generalResults.setMaxResponseTime(max);

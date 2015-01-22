@@ -31,6 +31,10 @@ public class JavaAppReceiverThread extends Thread {
     	this.messages = messages;
     }
     
+    public BlockingQueue<String> getMessagesList() {
+    	return messages;
+    }
+    
     public void setSWIMController(SWIMController controller) {
     	this.controller = controller;
     }

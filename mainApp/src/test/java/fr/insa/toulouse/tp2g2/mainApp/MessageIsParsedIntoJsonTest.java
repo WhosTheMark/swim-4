@@ -1,7 +1,7 @@
 package fr.insa.toulouse.tp2g2.mainApp;
+
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,39 +15,24 @@ import messaging.MessageError;
 import messaging.MessageResult;
 import messaging.ProducerBehaviour;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class MessageIsParsedIntoJson {
+public class MessageIsParsedIntoJsonTest {
+
 	private final static String MESSAGE_ERROR_JSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"ERROR\",\"errorMessage\":\"NullPointerException\"}";
 	private final static String MESSAGE_CONFIGURATION_CONSUMER_JSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONCONSUMER\",\"producerId\":\"p1\",\"name\":\"consumer1\",\"consumerBehaviours\":[{\"begin\":0,\"end\":10,\"frequency\":12,\"datasize\":20}]}";
 	private final static String MESSAGE_CONFIGURATION_PRODUCER_JSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"CONFIGURATIONPRODUCER\",\"name\":\"p1\",\"datasize\":10,\"producerBehaviours\":{\"consumer1\":[{\"begin\":0,\"end\":100,\"processingTime\":12}]}}";
 	private final static String MESSAGE_RESULT_JSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"RESULT\",\"consumerId\":\"c1\",\"producerId\":\"p1\",\"requestTime\":2,\"responseTime\":5,\"requestDataSize\":10,\"responseDataSize\":30,\"status\":\""+MessageResult.STATUS_OK+"\"}";
+    private static final String MESSAGE_JSON = "{\"from\":\"me\",\"to\":\"you\",\"type\":\"START\"}";
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-	@Before
-	public void setUp() throws Exception {
-	}
-	@After
-	public void tearDown() throws Exception {
-	}
+
 	@Test
 	public void testErrorMessageIsConvertedIntoJson() {
 		MessageError messageError = new MessageError("me", "you", "NullPointerException");
 		assertEquals(messageError.toJson(), MESSAGE_ERROR_JSON);
 	}
+	
 	@Test
 	public void testConfigurationConsumerMessageIsConvertedIntoJson() {
 		List<ConsumerBehaviour> behaviours = new ArrayList<ConsumerBehaviour> ();
@@ -55,6 +40,7 @@ public class MessageIsParsedIntoJson {
 		MessageConfigurationConsumer message = new MessageConfigurationConsumer("me", "you", "p1", "consumer1", behaviours);
 		assertEquals(message.toJson(),MESSAGE_CONFIGURATION_CONSUMER_JSON);
 	}
+	
 	@Test
 	public void testConfigurationProducerMessageIsConvertedIntoJson() {
 		List<ProducerBehaviour> behaviours = new ArrayList<ProducerBehaviour> ();
@@ -64,9 +50,17 @@ public class MessageIsParsedIntoJson {
 		MessageConfigurationProducer message = new MessageConfigurationProducer("me", "you", "p1", 10,behaviorsMap);
 		assertEquals( message.toJson(), MESSAGE_CONFIGURATION_PRODUCER_JSON);
 	}
+	
 	@Test
 	public void testResultMessageIsConvertedIntoJson() {
 		MessageResult message = new MessageResult("me", "you", "c1", "p1", 2, 5, 10, 30, MessageResult.STATUS_OK);
 		assertEquals(message.toJson(), MESSAGE_RESULT_JSON);
 	}
+	
+	@Test
+	public void testMessageToJson(){
+	    Message message = new Message("me", "you");
+	    assertEquals(message.toJson(), MESSAGE_JSON);
+	}
+	
 }

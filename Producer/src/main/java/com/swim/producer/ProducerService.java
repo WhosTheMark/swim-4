@@ -6,7 +6,6 @@
 package com.swim.producer;
 
 import static java.lang.Thread.sleep;
-import static java.lang.System.out;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

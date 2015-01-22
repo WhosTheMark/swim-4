@@ -28,6 +28,7 @@ public class MessageHandler {
                 if (msg.getMessageConfigurationProducerFromJson(stringMessage).getTo().equals(model.getId())
                         && model.getState() == Model.State.WAITCONFIG) {
                     MessageConfigurationProducer message=msg.getMessageConfigurationProducerFromJson(stringMessage);
+
                         model.setProducerBehaviours(message.getProducerBehaviours());
                         model.setDataSize(message.getDatasize());
                         model.setName(message.getName());
@@ -36,13 +37,9 @@ public class MessageHandler {
                 }
                 
             case START:
-                System.out.println("start");
                 if (model.getState() == Model.State.WAITSTART) {
                     model.setState(Model.State.RUN);
                 }
         }
-        
-
     }
-
 }

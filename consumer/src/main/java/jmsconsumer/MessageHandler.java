@@ -27,17 +27,21 @@ public class MessageHandler {
 	/**
 	 * Handle consumer behavior according to the message receive
 	 * @param message
+	 * @return false if it shouldn't handle more messages.
 	 */
-	public void handleMessage(String message) {
+	public boolean handleMessage(String message) {
 		
 		MessageFactory msg = MessageFactory.getInstance() ;
 		if (msg.identifyMessage(message).equals(MessageType.CONFIGURATIONCONSUMER)) {
-			if (msg.getMessageFromJson(message).getTo().equals(consumerName)) {
+			if (msg.getMessageConfigurationConsumerFromJson(message).getTo().equals(consumerName)) {
 				configConsumer(message);
 			}
 		} else if (msg.identifyMessage(message).equals(MessageType.START)) {
 			startconsumer() ;
+			return false;
 		}
+		
+		return true;
 	}
 
 	private void startconsumer() {
@@ -55,7 +59,10 @@ public class MessageHandler {
 		MessageConfigurationConsumer consumerConfiguration = MessageFactory.getInstance().getMessageConfigurationConsumerFromJson(message);
 		builder.setBehaviors(consumerConfiguration.getConsumerBehaviours());
 		builder.setConsumerId(consumerName);
+		builder.setProducerId(consumerConfiguration.getProducerId());
 		builder.setESBAddress(esbAddr);
+		
+		System.out.println("Consumer Configuration");
 		
 		scheduler = builder.build() ;
 	}
