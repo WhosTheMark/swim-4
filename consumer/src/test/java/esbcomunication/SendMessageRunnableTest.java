@@ -8,7 +8,6 @@ import java.net.SocketTimeoutException;
 
 import jmsconsumer.ConsumerSender;
 import jmsconsumer.JMSManager;
-import messaging.MessageError;
 import messaging.MessageResult;
 
 import org.junit.Before;
@@ -68,7 +67,7 @@ public class SendMessageRunnableTest {
         SocketTimeoutException exception = new SocketTimeoutException();
         when(senderMock.send(MESSAGE)).thenThrow(exception);
         String reply = runAndGetReply();
-        verify(consumerSenderMock).send(isA(MessageError.class));
+        verify(consumerSenderMock).send(isA(MessageResult.class));
         assertNull(reply);
     }
 
