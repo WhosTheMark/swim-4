@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<results>
+    <generalResults>
+        <lostMessages>2</lostMessages>
+        <averageResponseTime>2</averageResponseTime>
+        <minResponseTime>3</minResponseTime>
+        <maxResponseTime>6</maxResponseTime>
+    </generalResults>
+    <exchanges>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>true</received>
+            <responseTime timeUnit="ms">3</responseTime>
+        </exchange>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>false</received>
+            <responseTime timeUnit="ms"/>
+        </exchange>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>true</received>
+            <responseTime timeUnit="ms">6</responseTime>
+        </exchange>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>true</received>
+            <responseTime timeUnit="ms">4</responseTime>
+        </exchange>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>true</received>
+            <responseTime timeUnit="ms">5</responseTime>
+        </exchange>
+        <exchange date="Thu Jan 01 01:00:00 CET 1970">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>false</received>
+            <responseTime timeUnit="ms"/>
+        </exchange>
+    </exchanges>
+</results>
+

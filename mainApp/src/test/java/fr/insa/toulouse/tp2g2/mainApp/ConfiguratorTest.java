@@ -96,6 +96,7 @@ public class ConfiguratorTest {
 		try {
 			configurator.sendConfigurationMessages(scenario);
 		} catch(ScenarioException exception) {
+			System.out.println(exception.getMessage());
 			assertEquals(expectedErrorMsg, exception.getMessage());
 			verify(sender,never()).send(any(Message.class));
 			throw new ScenarioException(exception);

@@ -85,7 +85,9 @@ public class MessageResult extends Message{
 		this.status = status;
 	}
 	
-
+	public boolean hasExchangeBeenLost() {
+		return STATUS_TIMEOUT.equals(status);
+	}
 
 
 }

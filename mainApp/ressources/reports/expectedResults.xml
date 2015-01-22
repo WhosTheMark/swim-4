@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<results>
+    <generalResults>
+        <lostMessages>17</lostMessages>
+        <averageResponseTime timeUnit="ms">9</averageResponseTime>
+        <minResponseTime timeUnit="ms">6</minResponseTime>
+        <maxResponseTime timeUnit="ms">14</maxResponseTime>
+    </generalResults>
+    <exchanges>
+        <exchange date="Wed Jan 21 15:02:52 CET 2015">
+            <consumerId>c1</consumerId>
+            <producerId>p1</producerId>
+            <received>true</received>
+            <responseTime timeUnit="ms">5</responseTime>
+        </exchange>
+        <exchange date="Wed Jan 21 15:02:52 CET 2015">
+            <consumerId>c1</consumerId>
+            <received>true</received>
+            <responseTime timeUnit="ms"/>
+        </exchange>
+    </exchanges>
+</results>

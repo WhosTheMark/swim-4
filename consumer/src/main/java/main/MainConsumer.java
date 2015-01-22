@@ -16,6 +16,5 @@ public class MainConsumer {
 		receiver.start();
 		receiver.join();
 
-        //System.out.println("J'ai fini!1");
 	}
 }

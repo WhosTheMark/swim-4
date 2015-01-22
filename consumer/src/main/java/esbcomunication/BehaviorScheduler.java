@@ -113,13 +113,13 @@ public class BehaviorScheduler {
         }
 
         waitForBehaviors(executor);
-        sendFinishedMessage();
+        sendOKMessage();
     }
 
     /**
      * Sends the message to alert the java application that the consumer finished.
      */
-    private void sendFinishedMessage() {
+    private void sendOKMessage() {
 
         Message msg = new Message(deliveryInfo.getConsumerId(),null);
         msg.setType(MessageType.OK);

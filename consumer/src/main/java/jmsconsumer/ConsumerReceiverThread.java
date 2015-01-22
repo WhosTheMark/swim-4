@@ -54,9 +54,9 @@ public class ConsumerReceiverThread extends Thread {
     private void waitForMessages(String queueName, MessageHandler handler,
             QueueingConsumer consumer) throws InterruptedException {
 
-    	boolean keepworking = true;
-    	
-        while (keepworking) {
+        boolean keepWaiting = true;
+
+        while (keepWaiting) {
 
             QueueingConsumer.Delivery delivery = consumer.nextDelivery();
             String message = new String(delivery.getBody());
@@ -65,8 +65,7 @@ public class ConsumerReceiverThread extends Thread {
                     + " Je suis un consumer et j ai recu : '" + message
                     + "'" + " at " + new Date());
 
-            keepworking = handler.handleMessage(message);
+            keepWaiting = handler.handleMessage(message);
         }
     }
-
 }

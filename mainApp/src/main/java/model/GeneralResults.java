@@ -31,8 +31,6 @@ import javax.xml.bind.annotation.XmlType;
  *           &lt;element name="averageResponseTime" type="{}responseTime_t"/>
  *           &lt;element name="minResponseTime" type="{}responseTime_t"/>
  *           &lt;element name="maxResponseTime" type="{}responseTime_t"/>
- *           &lt;element name="averageMemoryUsed" type="{}percentage_t"/>
- *           &lt;element name="averageCPUUsed" type="{}percentage_t"/>
  *         &lt;/sequence>
  *       &lt;/restriction>
  *     &lt;/complexContent>
@@ -47,10 +45,9 @@ import javax.xml.bind.annotation.XmlType;
     "lostMessages",
     "averageResponseTime",
     "minResponseTime",
-    "maxResponseTime",
-    "averageMemoryUsed",
-    "averageCPUUsed"
+    "maxResponseTime"
 })
+
 @XmlRootElement(name = "generalResults")
 public class GeneralResults {
 
@@ -62,10 +59,6 @@ public class GeneralResults {
     protected ResponseTimeT minResponseTime;
     @XmlElement(required = true)
     protected ResponseTimeT maxResponseTime;
-    @XmlElement(required = true)
-    protected BigDecimal averageMemoryUsed;
-    @XmlElement(required = true)
-    protected BigDecimal averageCPUUsed;
 
     /**
      * Gets the value of the lostMessages property.
@@ -162,53 +155,4 @@ public class GeneralResults {
     public void setMaxResponseTime(ResponseTimeT value) {
         this.maxResponseTime = value;
     }
-
-    /**
-     * Gets the value of the averageMemoryUsed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getAverageMemoryUsed() {
-        return averageMemoryUsed;
-    }
-
-    /**
-     * Sets the value of the averageMemoryUsed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setAverageMemoryUsed(BigDecimal value) {
-        this.averageMemoryUsed = value;
-    }
-
-    /**
-     * Gets the value of the averageCPUUsed property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public BigDecimal getAverageCPUUsed() {
-        return averageCPUUsed;
-    }
-
-    /**
-     * Sets the value of the averageCPUUsed property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link BigDecimal }
-     *     
-     */
-    public void setAverageCPUUsed(BigDecimal value) {
-        this.averageCPUUsed = value;
-    }
-
 }

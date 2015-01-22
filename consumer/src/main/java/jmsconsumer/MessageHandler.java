@@ -27,6 +27,7 @@ public class MessageHandler {
 	/**
 	 * Handle consumer behavior according to the message receive
 	 * @param message
+	 * @return false if it shouldn't handle more messages.
 	 */
 	public boolean handleMessage(String message) {
 		

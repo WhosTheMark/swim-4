@@ -31,7 +31,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *         &lt;element name="received" type="{http://www.w3.org/2001/XMLSchema}boolean"/>
  *         &lt;element name="responseTime" type="{}responseTime_t"/>
  *       &lt;/sequence>
- *       &lt;attribute name="date" use="required" type="{http://www.w3.org/2001/XMLSchema}date" />
+ *       &lt;attribute name="date" use="required" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -56,7 +56,7 @@ public class ExchangeT {
     @XmlElement(required = true)
     protected ResponseTimeT responseTime;
     @XmlAttribute(required = true)
-    protected XMLGregorianCalendar date;
+    protected String date;
 
     /**
      * Gets the value of the consumerId property.
@@ -151,10 +151,10 @@ public class ExchangeT {
      * 
      * @return
      *     possible object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public XMLGregorianCalendar getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -163,10 +163,10 @@ public class ExchangeT {
      * 
      * @param value
      *     allowed object is
-     *     {@link XMLGregorianCalendar }
+     *     {@link String }
      *     
      */
-    public void setDate(XMLGregorianCalendar value) {
+    public void setDate(String value) {
         this.date = value;
     }
 
